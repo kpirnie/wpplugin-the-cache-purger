@@ -57,7 +57,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 KPTCP::createOptions( $_cp_settings_id, array(
                     'menu_title' => __( 'The Cache Purge' ),
                     'menu_slug'  => 'kpcp_settings',
-                    'menu_capability' => 'list_users',
+                    'menu_capability' => 'manage_options',
                     'menu_icon' => 'dashicons-layout',
                     'show_in_network' => false,
                     'show_reset_all' => false,
@@ -97,7 +97,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 $_opts = KPCPC::get_options( );
 
                 // get the admin page we need to be on
-                $_uri = get_admin_url( get_current_blog_id( ), 'admin.php?page=kpcp_settings&the_log_purge=true#tab=the-purge-log' );
+                $_uri = wp_nonce_url( get_admin_url( get_current_blog_id( ), 'admin.php?page=kpcp_settings&the_log_purge=true#tab=the-purge-log' ), 'kpcp_log_purge' );
 
                 // check the settings to see if we're actually logging
                 if( filter_var( ( $_opts -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
@@ -187,6 +187,9 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                             $_uri .= '?the_purge=true';
 
                         }
+
+                        // secure this URL against CSRF
+                        $_uri = wp_nonce_url( $_uri, 'kpcp_manual_purge' );
 
                         // set the arguments for this admin bar menu item
                         $_args = array (
