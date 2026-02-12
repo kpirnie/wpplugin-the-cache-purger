@@ -56,8 +56,12 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             // hack in some styling
             add_action( 'admin_enqueue_scripts', function( ) : void {
 
-                // we are, so queue up our unminified assets
-                wp_register_style( 'kpcp_css', plugins_url( '/assets/css/style.css?_=' . time( ), TCP_PATH . '/' . TCP_FILENAME ), null, null );
+                // use file modified time for cache-busting while allowing browser caching between releases
+                $_style_file = TCP_PATH . '/assets/css/style.css';
+                $_style_ver = file_exists( $_style_file ) ? (string) filemtime( $_style_file ) : null;
+
+                // queue up our unminified assets
+                wp_register_style( 'kpcp_css', plugins_url( '/assets/css/style.css', TCP_PATH . '/' . TCP_FILENAME ), array( ), $_style_ver );
 
                 // enqueue it
                 wp_enqueue_style( 'kpcp_css' );
@@ -72,6 +76,17 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             
                 // if it's true
                 if( $_do_purge ) {
+
+                    // verify this request came from a trusted admin action
+                    $_nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+                    // ensure capability and nonce are both valid before processing
+                    if( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $_nonce, 'kpcp_manual_purge' ) ) {
+
+                        // deny invalid requests
+                        wp_die( esc_html__( 'Sorry, you are not allowed to purge caches.', 'the-cache-purger' ) );
+
+                    }
 
                     // setup the cache purger
                     $_cp = new KP_Cache_Purge( );
@@ -103,6 +118,17 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
                 /// make sure we are actually purging the log
                 if( $_do_log_purge ) {
+
+                    // verify this request came from a trusted admin action
+                    $_nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+                    // ensure capability and nonce are both valid before processing
+                    if( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $_nonce, 'kpcp_log_purge' ) ) {
+
+                        // deny invalid requests
+                        wp_die( esc_html__( 'Sorry, you are not allowed to purge logs.', 'the-cache-purger' ) );
+
+                    }
 
                     // get the logs path
                     $_l_path = ABSPATH . 'wp-content/purge.log';
@@ -146,6 +172,13 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                         // get our schedule options
                         $_bi_schedule = ( $_opts -> cron_schedule_builtin ) ?? 'hourly';
 
+                        // fallback if schedule was removed or is invalid
+                        if( ! isset( $_cron_info[ $_bi_schedule ]['interval'] ) ) {
+
+                            $_bi_schedule = 'hourly';
+
+                        }
+
                         // schedule the event
                         as_schedule_recurring_action( time( ), $_cron_info[ $_bi_schedule ]['interval'], 'kpcpc_the_purge' );
 
@@ -167,6 +200,13 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
                         // get our schedule options
                         $_bi_schedule = ( $_opts -> cron_log_purge_schedule ) ?? 'weekly';
+
+                        // fallback if schedule was removed or is invalid
+                        if( ! isset( $_cron_info[ $_bi_schedule ]['interval'] ) ) {
+
+                            $_bi_schedule = 'weekly';
+
+                        }
 
                         // schedule the event
                         as_schedule_recurring_action( time( ), $_cron_info[ $_bi_schedule ]['interval'], 'kpcpc_the_log_purge' );
