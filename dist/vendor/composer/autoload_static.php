@@ -13,46 +13,46 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
     );
 
     public static $prefixLengthsPsr4 = array (
-        'P' => 
+        'P' =>
         array (
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
-        'F' => 
+        'F' =>
         array (
             'Fastly\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Fastly\\' => 
+        'Fastly\\' =>
         array (
             0 => __DIR__ . '/..' . '/fastly/fastly/lib',
         ),
@@ -67,6 +67,7 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Api\\AclEntryApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/AclEntryApi.php',
         'Fastly\\Api\\AclsInComputeApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/AclsInComputeApi.php',
         'Fastly\\Api\\ApexRedirectApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ApexRedirectApi.php',
+        'Fastly\\Api\\ApisecurityOperationsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ApisecurityOperationsApi.php',
         'Fastly\\Api\\AutomationTokensApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/AutomationTokensApi.php',
         'Fastly\\Api\\BackendApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/BackendApi.php',
         'Fastly\\Api\\BillingAddressApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/BillingAddressApi.php',
@@ -87,10 +88,12 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Api\\DiffApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DiffApi.php',
         'Fastly\\Api\\DirectorApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DirectorApi.php',
         'Fastly\\Api\\DirectorBackendApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DirectorBackendApi.php',
+        'Fastly\\Api\\DmDomainsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DmDomainsApi.php',
         'Fastly\\Api\\DomainApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DomainApi.php',
         'Fastly\\Api\\DomainInspectorHistoricalApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DomainInspectorHistoricalApi.php',
         'Fastly\\Api\\DomainInspectorRealtimeApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DomainInspectorRealtimeApi.php',
         'Fastly\\Api\\DomainOwnershipsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DomainOwnershipsApi.php',
+        'Fastly\\Api\\DomainResearchApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/DomainResearchApi.php',
         'Fastly\\Api\\EventsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/EventsApi.php',
         'Fastly\\Api\\GzipApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/GzipApi.php',
         'Fastly\\Api\\HeaderApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/HeaderApi.php',
@@ -135,6 +138,7 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Api\\LoggingSplunkApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/LoggingSplunkApi.php',
         'Fastly\\Api\\LoggingSumologicApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/LoggingSumologicApi.php',
         'Fastly\\Api\\LoggingSyslogApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/LoggingSyslogApi.php',
+        'Fastly\\Api\\MetricsPlatformApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/MetricsPlatformApi.php',
         'Fastly\\Api\\MutualAuthenticationApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/MutualAuthenticationApi.php',
         'Fastly\\Api\\NgwafReportsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/NgwafReportsApi.php',
         'Fastly\\Api\\ObjectStorageAccessKeysApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ObjectStorageAccessKeysApi.php',
@@ -147,10 +151,12 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Api\\PoolApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/PoolApi.php',
         'Fastly\\Api\\PopApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/PopApi.php',
         'Fastly\\Api\\ProductAiAcceleratorApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductAiAcceleratorApi.php',
+        'Fastly\\Api\\ProductApiDiscoveryApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductApiDiscoveryApi.php',
         'Fastly\\Api\\ProductBotManagementApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductBotManagementApi.php',
         'Fastly\\Api\\ProductBrotliCompressionApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductBrotliCompressionApi.php',
         'Fastly\\Api\\ProductDdosProtectionApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductDdosProtectionApi.php',
         'Fastly\\Api\\ProductDomainInspectorApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductDomainInspectorApi.php',
+        'Fastly\\Api\\ProductDomainResearchApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductDomainResearchApi.php',
         'Fastly\\Api\\ProductFanoutApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductFanoutApi.php',
         'Fastly\\Api\\ProductImageOptimizerApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductImageOptimizerApi.php',
         'Fastly\\Api\\ProductLogExplorerInsightsApi' => __DIR__ . '/..' . '/fastly/fastly/lib/Api/ProductLogExplorerInsightsApi.php',
@@ -209,6 +215,19 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\AiAcceleratorResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/AiAcceleratorResponseProductProduct.php',
         'Fastly\\Model\\ApexRedirect' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApexRedirect.php',
         'Fastly\\Model\\ApexRedirectAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApexRedirectAllOf.php',
+        'Fastly\\Model\\ApiDiscoveryResponseBodyGetAllServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseBodyGetAllServices.php',
+        'Fastly\\Model\\ApiDiscoveryResponseCustomer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseCustomer.php',
+        'Fastly\\Model\\ApiDiscoveryResponseCustomerCustomer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseCustomerCustomer.php',
+        'Fastly\\Model\\ApiDiscoveryResponseEnable' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseEnable.php',
+        'Fastly\\Model\\ApiDiscoveryResponseEnabledServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseEnabledServices.php',
+        'Fastly\\Model\\ApiDiscoveryResponseLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseLinks.php',
+        'Fastly\\Model\\ApiDiscoveryResponseLinksGetAllServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseLinksGetAllServices.php',
+        'Fastly\\Model\\ApiDiscoveryResponseLinksGetAllServicesLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseLinksGetAllServicesLinks.php',
+        'Fastly\\Model\\ApiDiscoveryResponseLinksLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseLinksLinks.php',
+        'Fastly\\Model\\ApiDiscoveryResponseProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseProduct.php',
+        'Fastly\\Model\\ApiDiscoveryResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseProductProduct.php',
+        'Fastly\\Model\\ApiDiscoveryResponseService' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseService.php',
+        'Fastly\\Model\\ApiDiscoveryResponseServiceService' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ApiDiscoveryResponseServiceService.php',
         'Fastly\\Model\\AsyncResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/AsyncResponse.php',
         'Fastly\\Model\\AttackReport' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/AttackReport.php',
         'Fastly\\Model\\AttackSignal' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/AttackSignal.php',
@@ -244,7 +263,6 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\BotManagementResponseProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BotManagementResponseProduct.php',
         'Fastly\\Model\\BotManagementResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BotManagementResponseProductProduct.php',
         'Fastly\\Model\\BotManagementResponseService' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BotManagementResponseService.php',
-        'Fastly\\Model\\BotManagementResponseServiceService' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BotManagementResponseServiceService.php',
         'Fastly\\Model\\BrotliCompressionResponseBodyEnable' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BrotliCompressionResponseBodyEnable.php',
         'Fastly\\Model\\BrotliCompressionResponseBodyGetAllServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BrotliCompressionResponseBodyGetAllServices.php',
         'Fastly\\Model\\BrotliCompressionResponseCustomer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/BrotliCompressionResponseCustomer.php',
@@ -314,6 +332,7 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\DdosProtectionNotAuthenticated' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionNotAuthenticated.php',
         'Fastly\\Model\\DdosProtectionNotAuthorized' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionNotAuthorized.php',
         'Fastly\\Model\\DdosProtectionNotFound' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionNotFound.php',
+        'Fastly\\Model\\DdosProtectionRequestEnableMode' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRequestEnableMode.php',
         'Fastly\\Model\\DdosProtectionRequestUpdateConfiguration' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRequestUpdateConfiguration.php',
         'Fastly\\Model\\DdosProtectionResponseBodyGetAllServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionResponseBodyGetAllServices.php',
         'Fastly\\Model\\DdosProtectionResponseConfiguration' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionResponseConfiguration.php',
@@ -332,6 +351,8 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\DdosProtectionRule' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRule.php',
         'Fastly\\Model\\DdosProtectionRuleAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRuleAllOf.php',
         'Fastly\\Model\\DdosProtectionRulePatch' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRulePatch.php',
+        'Fastly\\Model\\DdosProtectionRuleWithStats' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRuleWithStats.php',
+        'Fastly\\Model\\DdosProtectionRuleWithStatsAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionRuleWithStatsAllOf.php',
         'Fastly\\Model\\DdosProtectionTrafficStats' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionTrafficStats.php',
         'Fastly\\Model\\DdosProtectionTrafficStatsAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DdosProtectionTrafficStatsAllOf.php',
         'Fastly\\Model\\DefaultSettings' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DefaultSettings.php',
@@ -359,6 +380,9 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\DirectorBackend' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DirectorBackend.php',
         'Fastly\\Model\\DirectorBackendAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DirectorBackendAllOf.php',
         'Fastly\\Model\\DirectorResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DirectorResponse.php',
+        'Fastly\\Model\\DiscoveredOperationBase' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DiscoveredOperationBase.php',
+        'Fastly\\Model\\DiscoveredOperationGet' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DiscoveredOperationGet.php',
+        'Fastly\\Model\\DiscoveredOperationGetExtra' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DiscoveredOperationGetExtra.php',
         'Fastly\\Model\\Domain' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Domain.php',
         'Fastly\\Model\\DomainInspector' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainInspector.php',
         'Fastly\\Model\\DomainInspectorEntry' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainInspectorEntry.php',
@@ -376,6 +400,12 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\DomainInspectorResponseProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainInspectorResponseProduct.php',
         'Fastly\\Model\\DomainInspectorResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainInspectorResponseProductProduct.php',
         'Fastly\\Model\\DomainInspectorResponseService' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainInspectorResponseService.php',
+        'Fastly\\Model\\DomainResearchResponseBodyEnable' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseBodyEnable.php',
+        'Fastly\\Model\\DomainResearchResponseCustomer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseCustomer.php',
+        'Fastly\\Model\\DomainResearchResponseLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseLinks.php',
+        'Fastly\\Model\\DomainResearchResponseLinksLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseLinksLinks.php',
+        'Fastly\\Model\\DomainResearchResponseProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseProduct.php',
+        'Fastly\\Model\\DomainResearchResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResearchResponseProductProduct.php',
         'Fastly\\Model\\DomainResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/DomainResponse.php',
         'Fastly\\Model\\Environment' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Environment.php',
         'Fastly\\Model\\EnvironmentName' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/EnvironmentName.php',
@@ -444,12 +474,12 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\HttpResponseFormat' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/HttpResponseFormat.php',
         'Fastly\\Model\\HttpStreamFormat' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/HttpStreamFormat.php',
         'Fastly\\Model\\IamPermission' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamPermission.php',
-        'Fastly\\Model\\IamRole' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamRole.php',
-        'Fastly\\Model\\IamRoleAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamRoleAllOf.php',
         'Fastly\\Model\\IamServiceGroup' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamServiceGroup.php',
         'Fastly\\Model\\IamServiceGroupAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamServiceGroupAllOf.php',
         'Fastly\\Model\\IamUserGroup' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamUserGroup.php',
         'Fastly\\Model\\IamUserGroupAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamUserGroupAllOf.php',
+        'Fastly\\Model\\IamV1RoleListResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamV1RoleListResponse.php',
+        'Fastly\\Model\\IamV1RoleResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/IamV1RoleResponse.php',
         'Fastly\\Model\\ImageOptimizerResponseBodyEnable' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ImageOptimizerResponseBodyEnable.php',
         'Fastly\\Model\\ImageOptimizerResponseBodyGetAllServices' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ImageOptimizerResponseBodyGetAllServices.php',
         'Fastly\\Model\\ImageOptimizerResponseCustomer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ImageOptimizerResponseCustomer.php',
@@ -467,6 +497,11 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\InlineObject1' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineObject1.php',
         'Fastly\\Model\\InlineResponse200' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse200.php',
         'Fastly\\Model\\InlineResponse2001' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse2001.php',
+        'Fastly\\Model\\InlineResponse20010' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse20010.php',
+        'Fastly\\Model\\InlineResponse20011' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse20011.php',
+        'Fastly\\Model\\InlineResponse20012' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse20012.php',
+        'Fastly\\Model\\InlineResponse20013' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse20013.php',
+        'Fastly\\Model\\InlineResponse20014' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse20014.php',
         'Fastly\\Model\\InlineResponse2002' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse2002.php',
         'Fastly\\Model\\InlineResponse2003' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse2003.php',
         'Fastly\\Model\\InlineResponse2004' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/InlineResponse2004.php',
@@ -493,7 +528,7 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\KvStoreBatchResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreBatchResponse.php',
         'Fastly\\Model\\KvStoreBatchResponseErrors' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreBatchResponseErrors.php',
         'Fastly\\Model\\KvStoreDetails' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreDetails.php',
-        'Fastly\\Model\\KvStoreRequestCreate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreRequestCreate.php',
+        'Fastly\\Model\\KvStoreRequestCreateOrUpdate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreRequestCreateOrUpdate.php',
         'Fastly\\Model\\KvStoreUpsertBatch' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/KvStoreUpsertBatch.php',
         'Fastly\\Model\\ListAttackReport' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ListAttackReport.php',
         'Fastly\\Model\\ListAttackReportMeta' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ListAttackReportMeta.php',
@@ -602,6 +637,7 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\LoggingSyslogResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/LoggingSyslogResponse.php',
         'Fastly\\Model\\LoggingTlsCommon' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/LoggingTlsCommon.php',
         'Fastly\\Model\\LoggingUseTlsString' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/LoggingUseTlsString.php',
+        'Fastly\\Model\\Meta' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Meta.php',
         'Fastly\\Model\\Metadata' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Metadata.php',
         'Fastly\\Model\\ModelInterface' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ModelInterface.php',
         'Fastly\\Model\\MtdInvoiceResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/MtdInvoiceResponse.php',
@@ -639,6 +675,13 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\ObjectStorageResponseLinksLinks' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ObjectStorageResponseLinksLinks.php',
         'Fastly\\Model\\ObjectStorageResponseProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ObjectStorageResponseProduct.php',
         'Fastly\\Model\\ObjectStorageResponseProductProduct' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/ObjectStorageResponseProductProduct.php',
+        'Fastly\\Model\\Offer' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Offer.php',
+        'Fastly\\Model\\OfferAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OfferAllOf.php',
+        'Fastly\\Model\\OperationBase' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OperationBase.php',
+        'Fastly\\Model\\OperationCreate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OperationCreate.php',
+        'Fastly\\Model\\OperationGet' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OperationGet.php',
+        'Fastly\\Model\\OperationGetExtra' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OperationGetExtra.php',
+        'Fastly\\Model\\OperationUpdate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OperationUpdate.php',
         'Fastly\\Model\\OriginInspector' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OriginInspector.php',
         'Fastly\\Model\\OriginInspectorDimensions' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OriginInspectorDimensions.php',
         'Fastly\\Model\\OriginInspectorEntry' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/OriginInspectorEntry.php',
@@ -673,6 +716,9 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\PlatformDdosEntry' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformDdosEntry.php',
         'Fastly\\Model\\PlatformDdosResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformDdosResponse.php',
         'Fastly\\Model\\PlatformDdosResponseAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformDdosResponseAllOf.php',
+        'Fastly\\Model\\PlatformMetadata' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformMetadata.php',
+        'Fastly\\Model\\PlatformMetricsResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformMetricsResponse.php',
+        'Fastly\\Model\\PlatformValues' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PlatformValues.php',
         'Fastly\\Model\\PoolAdditional' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PoolAdditional.php',
         'Fastly\\Model\\PoolResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PoolResponse.php',
         'Fastly\\Model\\PoolResponseAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/PoolResponseAllOf.php',
@@ -772,6 +818,8 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\RelationshipsForTlsDomain' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RelationshipsForTlsDomain.php',
         'Fastly\\Model\\RelationshipsForTlsPrivateKey' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RelationshipsForTlsPrivateKey.php',
         'Fastly\\Model\\RelationshipsForTlsSubscription' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RelationshipsForTlsSubscription.php',
+        'Fastly\\Model\\RequestBodyForCreate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RequestBodyForCreate.php',
+        'Fastly\\Model\\RequestBodyForUpdate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RequestBodyForUpdate.php',
         'Fastly\\Model\\RequestSettingsAdditional' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RequestSettingsAdditional.php',
         'Fastly\\Model\\RequestSettingsResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RequestSettingsResponse.php',
         'Fastly\\Model\\RequestSettingsResponseAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/RequestSettingsResponseAllOf.php',
@@ -844,9 +892,19 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Fastly\\Model\\StarResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/StarResponse.php',
         'Fastly\\Model\\StarResponseAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/StarResponseAllOf.php',
         'Fastly\\Model\\Stats' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Stats.php',
+        'Fastly\\Model\\Status' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Status.php',
+        'Fastly\\Model\\StatusAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/StatusAllOf.php',
+        'Fastly\\Model\\SuccessfulResponseAsObject' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SuccessfulResponseAsObject.php',
+        'Fastly\\Model\\SuccessfulResponseAsObjectAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SuccessfulResponseAsObjectAllOf.php',
         'Fastly\\Model\\SudoGenericTokenError' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SudoGenericTokenError.php',
         'Fastly\\Model\\SudoRequest' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SudoRequest.php',
         'Fastly\\Model\\SudoResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SudoResponse.php',
+        'Fastly\\Model\\Suggestion' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/Suggestion.php',
+        'Fastly\\Model\\SuggestionAllOf' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/SuggestionAllOf.php',
+        'Fastly\\Model\\TagBase' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TagBase.php',
+        'Fastly\\Model\\TagCreate' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TagCreate.php',
+        'Fastly\\Model\\TagGet' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TagGet.php',
+        'Fastly\\Model\\TagGetExtra' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TagGetExtra.php',
         'Fastly\\Model\\TimeseriesGetResponse' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TimeseriesGetResponse.php',
         'Fastly\\Model\\TimeseriesMeta' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TimeseriesMeta.php',
         'Fastly\\Model\\TimeseriesResult' => __DIR__ . '/..' . '/fastly/fastly/lib/Model/TimeseriesResult.php',

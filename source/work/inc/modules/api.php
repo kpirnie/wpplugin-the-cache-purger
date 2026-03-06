@@ -74,7 +74,7 @@ if( ! trait_exists( 'API' ) ) {
             }
 
             // make sure we have keys for sucuri
-            if( $_sucuri_key && $_cf_zone ) {
+            if( $_sucuri_key && $_sucuri_secret  ) {
 
                 // sucuri
                 $this -> purge_api_sucuri( $_sucuri_key, $_sucuri_secret );

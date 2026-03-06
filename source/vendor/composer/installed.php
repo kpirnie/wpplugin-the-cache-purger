@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'fastly/fastly' => array(
-            'pretty_version' => 'v11.0.0',
-            'version' => '11.0.0.0',
-            'reference' => '69849b5d8bc7dfa0199ed48e6305f02149260b26',
+            'pretty_version' => 'v13.0.0',
+            'version' => '13.0.0.0',
+            'reference' => '409728e2b6b89dc97134bf4e4ed8ba5fca6fb5f0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fastly/fastly',
             'aliases' => array(),

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**\Fastly\Model\KvStoreDetails[]**](KvStoreDetails.md) |  | [optional] 
+**data** | [**\Fastly\Model\DdosProtectionEvent[]**](DdosProtectionEvent.md) |  | [optional] 
 **meta** | [**\Fastly\Model\PaginationCursorMeta**](PaginationCursorMeta.md) |  | [optional] 
 
 

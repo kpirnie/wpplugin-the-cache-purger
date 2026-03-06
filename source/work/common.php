@@ -20,11 +20,11 @@ $_pi_path = TCP_PATH . '/the-cache-purger.php';
 register_activation_hook( $_pi_path, function( $_network ) : void {
         
     // check the PHP version, and deny if lower than 8.1
-    if ( version_compare( PHP_VERSION, '8.1', '<=' ) ) {
+    if ( version_compare( PHP_VERSION, '8.2', '<=' ) ) {
 
         // it is, so throw and error message and exit
-        wp_die( __( '<h1>PHP To Low</h1><p>Due to the nature of this plugin, it cannot be run on lower versions of PHP.</p><p>Please contact your hosting provider to upgrade your site to at least version 8.1.</p>' ), 
-            __( 'Cannot Activate: PHP To Low' ),
+        wp_die( esc_html__( '<h1>PHP To Low</h1><p>Due to the nature of this plugin, it cannot be run on lower versions of PHP.</p><p>Please contact your hosting provider to upgrade your site to at least version 8.2.</p>', 'the-cache-purger' ), 
+            esc_html__( 'Cannot Activate: PHP To Low', 'the-cache-purger' ),
             array(
                 'back_link' => true,
             ) );
@@ -36,8 +36,8 @@ register_activation_hook( $_pi_path, function( $_network ) : void {
 
         // we did, so... throw an error message and exit
         wp_die( 
-            __( '<h1>Cannot Network Activate</h1><p>Due to the nature of this plugin, it cannot be network activated.</p><p>Please go back, and activate inside your subsites.</p>' ), 
-            __( 'Cannot Network Activate' ),
+            esc_html__( '<h1>Cannot Network Activate</h1><p>Due to the nature of this plugin, it cannot be network activated.</p><p>Please go back, and activate inside your subsites.</p>', 'the-cache-purger' ), 
+            esc_html__( 'Cannot Network Activate', 'the-cache-purger' ),
             array(
                 'back_link' => true,
             ) 

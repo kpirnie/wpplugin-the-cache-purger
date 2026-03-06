@@ -53,7 +53,7 @@ class InlineResponse2005 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $fastlyTypes = [
-        'data' => '\Fastly\Model\KvStoreDetails[]',
+        'data' => '\Fastly\Model\DdosProtectionEvent[]',
         'meta' => '\Fastly\Model\PaginationCursorMeta'
     ];
 
@@ -208,7 +208,7 @@ class InlineResponse2005 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets data
      *
-     * @return \Fastly\Model\KvStoreDetails[]|null
+     * @return \Fastly\Model\DdosProtectionEvent[]|null
      */
     public function getData()
     {
@@ -218,7 +218,7 @@ class InlineResponse2005 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets data
      *
-     * @param \Fastly\Model\KvStoreDetails[]|null $data data
+     * @param \Fastly\Model\DdosProtectionEvent[]|null $data data
      *
      * @return self
      */

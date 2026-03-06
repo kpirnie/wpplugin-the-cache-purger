@@ -90,7 +90,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
                         ?>
                         <div class="notice notice-success is-dismissible">
-                            <p><?php _e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>" ); ?></p>
+                            <?php esc_html_e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
                         </div>
                         <?php
 
@@ -217,12 +217,12 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             add_action( 'admin_notices', function( ) : void {
 
                 // if the site is under PHP 8.1
-                if ( version_compare( PHP_VERSION, '8.1', '<=' ) ) {
+                if ( version_compare( PHP_VERSION, '8.2', '<=' ) ) {
 
                     // show this notice
                     ?>
                     <div class="notice notice-info is-dismissible">
-                        <p><?php _e( "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.1. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>" ); ?></p>
+                        <?php esc_html_e( "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>", 'the-cache-purger' ); ?>
                     </div>
                 <?php
                 }
@@ -367,7 +367,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_ret = array( );
 
             // the first item needs to be NONE
-            $_ret['none'] = __( ' -- None -- ' );
+            $_ret['none'] = __( ' -- None -- ', 'the-cache-purger' );
 
             // see if we've already got this in cache
             $_post_types = wp_cache_get( 'kpcp_post_types', 'kpcp_post_types' );
@@ -402,7 +402,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                         foreach( $_pts as $_pt ) {
 
                             // add the post type to the returnable array
-                            $_ret[ $_pt['post_type'] ] = ucwords( __( str_replace( '_', ' ', $_pt['post_type'] ) ) );
+                            $_ret[ $_pt['post_type'] ] = ucwords( __( str_replace( '_', ' ', $_pt['post_type'] ), 'the-cache-purger' ) );
 
                         }
 
@@ -414,7 +414,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                     foreach( $_the_pts as $_pt ) {
 
                             // add the post type to the returnable array
-                            $_ret[ $_pt ] = ucwords( __( str_replace( '_', ' ', $_pt ) ) );
+                            $_ret[ $_pt ] = ucwords( __( str_replace( '_', ' ', $_pt ), 'the-cache-purger' ) );
 
                     }
 
@@ -452,7 +452,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_ret = array( );
 
             // the first item needs to be NONE
-            $_ret[0] = __( ' -- None -- ' );
+            $_ret[0] = __( ' -- None -- ', 'the-cache-purger' );
 
             // see if we've already got this in cache
             $_posts = wp_cache_get( "kpcp_posts_$_type", "kpcp_posts_$_type" );
@@ -523,7 +523,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                     foreach( $_rs as $_post ) {
 
                         // add the id as an array index, and the title to the return array
-                        $_ret[$_post -> ID] = __( $_post -> post_title );
+                        $_ret[$_post -> ID] = __( $_post -> post_title, 'the-cache-purger' );
 
                     }
 
@@ -675,7 +675,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 $_path = ABSPATH . 'wp-content/purge.log';
 
                 // I want to append a timestamp to the message
-                $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg ) . PHP_EOL;
+                $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg, 'the-cache-purger' ) . PHP_EOL;
 
                 // unfortunately we cannot use wp's builtin filesystem hanlders for this
                 // the put_contents method only writes/overwrites contents, and does not append
@@ -708,7 +708,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_path = ABSPATH . 'wp-content/purge-exceptions.log';
 
             // I want to append a timestamp to the message
-            $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg ) . PHP_EOL;
+            $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg, 'the-cache-purger' ) . PHP_EOL;
 
             // unfortunately we cannot use wp's builtin filesystem hanlders for this
             // the put_contents method only writes/overwrites contents, and does not append

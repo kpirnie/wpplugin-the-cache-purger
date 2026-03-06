@@ -51,8 +51,27 @@ if( ! trait_exists( 'VARNISH' ) ) {
             // get our URL list
             $_urls = KPCPC::get_urls( );
 
-            // hold a "is cloudflare" flag
-            $_is_cf = ( isset( $_headers[0]['server'] ) && ( strpos( $_headers[0]['server'], 'cloudflare' ) !== false ) );
+            // get the remote URL's headers only
+            $_res = wp_get_http_headers( site_url( ) );
+
+            // default the is_cf flag and headers
+            $_is_cf = false;
+            $_headers = array( );
+
+            // if we got a valid response
+            if ( $_res && ! is_wp_error( $_res ) ) {
+
+                // cast to array same way pagespeed.php does — WP returns a
+                // Requests_Utility_CaseInsensitiveDictionary, not a plain array
+                $_headers = array_values( ( array ) $_res );
+
+                // now we have headers, safe to check for cloudflare
+                $_is_cf = ( isset( $_headers[0]['server'] ) && ( strpos( $_headers[0]['server'], 'cloudflare' ) !== false ) );
+
+            }
+
+            // get the server IP — only needed if cloudflare, but grab it regardless
+            $_server_ip = filter_input( INPUT_SERVER, 'SERVER_ADDR', FILTER_VALIDATE_IP );
 
             // let's get the home page URL
             $_hp = get_home_url( );
@@ -82,7 +101,7 @@ if( ! trait_exists( 'VARNISH' ) ) {
                         // parse the url
                         $_link = wp_parse_url( $_url );
 
-                        // rebuild the URL
+                        // rebuild the URL using the actual server IP
                         $_url = $_link['scheme'] . '://' . $_server_ip . $_link['path'];
 
                         // set some more arguments
@@ -105,7 +124,7 @@ if( ! trait_exists( 'VARNISH' ) ) {
             do_action( 'tcp_post_varnish_purge' );
 
         }
-
+        
     }
 
 }

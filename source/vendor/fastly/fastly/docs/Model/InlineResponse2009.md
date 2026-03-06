@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**\Fastly\Model\ServiceAuthorizationResponseData[]**](ServiceAuthorizationResponseData.md) |  | [optional] 
+**results** | [**\Fastly\Model\Suggestion[]**](Suggestion.md) |  | [optional] 
 
 
 [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

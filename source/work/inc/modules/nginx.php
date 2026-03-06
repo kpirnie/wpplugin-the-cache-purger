@@ -45,7 +45,7 @@ if( ! trait_exists( 'NGINX' ) ) {
         private function purge_nginx_caches( ) : void {
 
             // implement hook
-            do_shortcode( 'tcp_pre_nginx_purge' );
+            do_action( 'tcp_pre_nginx_purge' );
 
             // hold the possible cache locations
             $_cache_paths = array(

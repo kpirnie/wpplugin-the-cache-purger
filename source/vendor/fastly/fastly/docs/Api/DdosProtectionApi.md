@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 ## `ddosProtectionEventList()`
 
 ```php
-ddosProtectionEventList($options): \Fastly\Model\InlineResponse2002 // Get events
+ddosProtectionEventList($options): \Fastly\Model\InlineResponse2005 // Get events
 ```
 
 Get events.
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\Fastly\Model\InlineResponse2002**](../Model/InlineResponse2002.md)
+[**\Fastly\Model\InlineResponse2005**](../Model/InlineResponse2005.md)
 
 [[Back to top]](#) [[Back to API list]](../../README.md#endpoints)
 [[Back to README]](../../README.md)
@@ -106,7 +106,7 @@ Name | Type | Description  | Notes
 ## `ddosProtectionEventRuleList()`
 
 ```php
-ddosProtectionEventRuleList($options): \Fastly\Model\InlineResponse2003 // Get all rules for an event
+ddosProtectionEventRuleList($options): \Fastly\Model\InlineResponse2006 // Get all rules for an event
 ```
 
 Get all rules for an event.
@@ -116,6 +116,7 @@ Get all rules for an event.
     $options['event_id'] = 'event_id_example'; // string | Unique ID of the event.
 $options['cursor'] = 'cursor_example'; // string | Cursor value from the `next_cursor` field of a previous response, used to retrieve the next page. To request the first page, this should be empty.
 $options['limit'] = 20; // int | Limit how many results are returned.
+$options['include'] = 'include_example'; // string | Include relationships. Optional. Comma-separated values.
 
 try {
     $result = $apiInstance->ddosProtectionEventRuleList($options);
@@ -133,10 +134,11 @@ Name | Type | Description  | Notes
 **event_id** | **string** | Unique ID of the event. |
 **cursor** | **string** | Cursor value from the `next_cursor` field of a previous response, used to retrieve the next page. To request the first page, this should be empty. | [optional]
 **limit** | **int** | Limit how many results are returned. | [optional] [defaults to 20]
+**include** | **string** | Include relationships. Optional. Comma-separated values. | [optional]
 
 ### Return type
 
-[**\Fastly\Model\InlineResponse2003**](../Model/InlineResponse2003.md)
+[**\Fastly\Model\InlineResponse2006**](../Model/InlineResponse2006.md)
 
 [[Back to top]](#) [[Back to API list]](../../README.md#endpoints)
 [[Back to README]](../../README.md)

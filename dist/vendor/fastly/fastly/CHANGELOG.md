@@ -1,5 +1,67 @@
 # Changelog
 
+## [v13.0.0](https://github.com/fastly/fastly-php/releases/tag/release/v13.0.0) (2026-02-16)
+
+**Breaking Changes:**
+
+- deprecated(user): The Compute package metadata model `hashsum` and `size` fields have been deprecated.
+
+
+**Enhancements:**
+
+- feat(apisecurity-operations): Add new API Security Operations API.
+- feat(domain-inspector-realtime, domain-inspector-historical): Add new metrics `compute_*`.
+- feat(realtime, historical): Add new metrics `compute_resp_status_*`.
+- feat(realtime, historical): Add new metric `ngwaf_bot_analysis_request_count`.
+- feat(backend): Add support for `fetch_timeout` field.
+- feat(historical): Add support for `datacenter` query.
+
+
+## [v12.1.0](https://github.com/fastly/fastly-php/releases/tag/release/v12.1.0) (2025-12-09)
+
+**Enhancements:**
+
+- feat(realtime, historical): Add new metrics `imgopto_compute_requests`, `dns_billable_responses_count`,
+                              `dns_nonbillable_responses_count`, and `upgrade`.
+- feat(products[ngwaf]): Add new parameter `traffic_ramp` to `enable-product-ngwaf`.
+- feat(products[ddos_protection]): Add new parameter `mode` to `enable-product-ddos-protection`.
+- feat(kv_store): Add `kv-store-put` operation.
+- feat(iam_roles): Add `DisplayName` field to model.
+- feat(domain_research): Add new Domain Research API.
+- feat(ddos_protection): Add `requests_allowed` and `requests_detected` fields to DDoS Protection event API.
+
+- feat(products): Add `domain_research` product to enablement API.
+
+
+
+**Documentation:**
+
+- doc(enabled-products): Add support for optional enablement parameters for some products.
+
+
+## [v12.0.0](https://github.com/fastly/fastly-php/releases/tag/release/v12.0.0) (2025-10-31)
+
+**Bug fixes:**
+
+- fix(dictionary): Correct example dictionary name to use valid characters
+
+**Enhancements:**
+
+- feat(iam_roles): Add new IAM Roles API.
+- feat(api_discovery): Add new API Discovery API.
+- feat(realtime, historical): Add new metric `api_discovery_requests_count`.
+- feat(user): Add the ability to assign multiple roles to users.
+- feat(healthcheck): Clarify the valid range for the `check_interval` parameter.
+- feat(ddos_protection): Add `traffic_percentage` field to DDoS Protection traffic statistics responses.
+- feat(ddos_protection): Update `ddos-protection-event-rule-list` with `include=traffic_stats` parameter for embedded traffic statistics.
+- feat(logging_https): Add `period` parameter to the logging HTTPS endpoint.
+
+**Documentation:**
+
+- doc(sudo): Spelling fixes.
+- doc(enabled-products): Add support for product ID `api_discovery`.
+
+
 ## [v11.0.0](https://github.com/fastly/fastly-php/releases/tag/release/v11.0.0) (2025-08-28)
 
 **Breaking Changes:**

@@ -53,7 +53,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $fastlyTypes = [
-        'expires_at' => 'string'
+        'data' => 'string[]'
     ];
 
     /**
@@ -64,7 +64,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @psalm-var array<string, string|null>
       */
     protected static $fastlyFormats = [
-        'expires_at' => null
+        'data' => null
     ];
 
     /**
@@ -94,7 +94,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'expires_at' => 'expires_at'
+        'data' => 'data'
     ];
 
     /**
@@ -103,7 +103,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'expires_at' => 'setExpiresAt'
+        'data' => 'setData'
     ];
 
     /**
@@ -112,7 +112,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'expires_at' => 'getExpiresAt'
+        'data' => 'getData'
     ];
 
     /**
@@ -172,7 +172,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->container['expires_at'] = $data['expires_at'] ?? null;
+        $this->container['data'] = $data['data'] ?? null;
     }
 
     /**
@@ -200,25 +200,25 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
 
 
     /**
-     * Gets expires_at
+     * Gets data
      *
-     * @return string|null
+     * @return string[]|null
      */
-    public function getExpiresAt()
+    public function getData()
     {
-        return $this->container['expires_at'];
+        return $this->container['data'];
     }
 
     /**
-     * Sets expires_at
+     * Sets data
      *
-     * @param string|null $expires_at Time-stamp (GMT) when the domain_ownership validation will expire.
+     * @param string[]|null $data The service IDs of the services the token will have access to. Separate service IDs with a space.
      *
      * @return self
      */
-    public function setExpiresAt($expires_at)
+    public function setData($data)
     {
-        $this->container['expires_at'] = $expires_at;
+        $this->container['data'] = $data;
 
         return $this;
     }

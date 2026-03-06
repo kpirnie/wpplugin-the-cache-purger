@@ -177,16 +177,19 @@ if( ! trait_exists( 'HOSTING' ) ) {
             // GoDaddy
             if( class_exists( '\WPaaS\Cache' ) ) {
 
+                // always remove the default purge action — has_ban() returns true after
+                // the first run and would silently skip all subsequent scheduled purges
+                remove_action( 'shutdown', [ '\WPaaS\Cache', 'purge' ], PHP_INT_MAX );
+
                 if ( ! \WPaaS\Cache::has_ban( ) ) {
 
-                    // purge and ban the GoDaddy Cache
-                    remove_action( 'shutdown', [ '\WPaaS\Cache', 'purge' ], PHP_INT_MAX );
+                    // set the ban action for this request's shutdown
                     add_action( 'shutdown', [ '\WPaaS\Cache', 'ban' ], PHP_INT_MAX );
 
-                    // log the purge
-                    KPCPC::write_log( "\t\tGoDaddy Cache" );
-
                 }
+
+                // log outside the has_ban() guard so it always records
+                KPCPC::write_log( "\t\tGoDaddy Cache" );
 
             }
 
@@ -320,7 +323,7 @@ if( ! trait_exists( 'HOSTING' ) ) {
                 sg_cachepress_purge_cache( );
 
                 // log the purge
-                KPCPC::wite_log( "\t\tSiteground Cache" );
+                KPCPC::write_log( "\t\tSiteground Cache" );
             }
 
         }

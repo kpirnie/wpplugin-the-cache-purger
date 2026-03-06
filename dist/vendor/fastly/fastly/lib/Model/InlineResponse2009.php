@@ -53,7 +53,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $fastlyTypes = [
-        'data' => '\Fastly\Model\ServiceAuthorizationResponseData[]'
+        'results' => '\Fastly\Model\Suggestion[]'
     ];
 
     /**
@@ -64,7 +64,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @psalm-var array<string, string|null>
       */
     protected static $fastlyFormats = [
-        'data' => null
+        'results' => null
     ];
 
     /**
@@ -94,7 +94,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data'
+        'results' => 'results'
     ];
 
     /**
@@ -103,7 +103,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData'
+        'results' => 'setResults'
     ];
 
     /**
@@ -112,7 +112,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData'
+        'results' => 'getResults'
     ];
 
     /**
@@ -172,7 +172,7 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->container['data'] = $data['data'] ?? null;
+        $this->container['results'] = $data['results'] ?? null;
     }
 
     /**
@@ -200,25 +200,25 @@ class InlineResponse2009 implements ModelInterface, ArrayAccess, \JsonSerializab
 
 
     /**
-     * Gets data
+     * Gets results
      *
-     * @return \Fastly\Model\ServiceAuthorizationResponseData[]|null
+     * @return \Fastly\Model\Suggestion[]|null
      */
-    public function getData()
+    public function getResults()
     {
-        return $this->container['data'];
+        return $this->container['results'];
     }
 
     /**
-     * Sets data
+     * Sets results
      *
-     * @param \Fastly\Model\ServiceAuthorizationResponseData[]|null $data data
+     * @param \Fastly\Model\Suggestion[]|null $results results
      *
      * @return self
      */
-    public function setData($data)
+    public function setResults($results)
     {
-        $this->container['data'] = $data;
+        $this->container['results'] = $results;
 
         return $this;
     }
