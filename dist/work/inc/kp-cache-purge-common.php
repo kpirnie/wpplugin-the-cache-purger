@@ -49,7 +49,11 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             add_action( 'plugins_loaded', function( ) {
 
                 // initialize the field framework
-                KPTCP::init( );
+                // KPTCP::init( );
+
+                // fire up the plugin settings
+                $setts = new KP_Cache_Purge_Admin( );
+                $setts->kpcp_admin( );
 
             }, PHP_INT_MAX );
 
@@ -118,7 +122,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             add_action( 'init', function( ) : void {
 
                 // initialize the field framework
-                KPTCP::init( );
+                // KPTCP::init( );
 
                 // get our options
                 $_opts = KPCPC::get_options( );
@@ -199,6 +203,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
             }, PHP_INT_MAX );
 
+            /*
             // hook into the custom fields loaded
             add_action( 'kptcp_loaded', function( ) : void {
 
@@ -212,6 +217,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 unset( $_cp_admin );
 
             }, PHP_INT_MAX );
+            */
             
             // we'll need a message in wp-admin for PHP 8 compatibility
             add_action( 'admin_notices', function( ) : void {
