@@ -143,7 +143,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 );
 
                 // on settings save, clear cache if we are configured to do so
-                add_action( 'kptcp_' . $_cp_settings_id . '_save_after', function( ) use( $_cp_settings_id ) : void {
+                add_action( 'kptcp_' . $_cp_settings_id . '_save_after', function( ) use( $_cp_settings_id, $_opts ) : void {
 
                     // make sure we are allowed to do this
                     if( filter_var( ( $_opts -> on_plugin_settings ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {

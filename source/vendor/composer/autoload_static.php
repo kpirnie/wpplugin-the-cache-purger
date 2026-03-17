@@ -18,6 +18,10 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
         ),
+        'K' =>
+        array (
+            'KP\\WPFieldFramework\\' => 20,
+        ),
         'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -39,6 +43,10 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
+        'KP\\WPFieldFramework\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src',
         ),
         'GuzzleHttp\\Psr7\\' =>
         array (
@@ -1145,6 +1153,16 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'HOSTING' => __DIR__ . '/../..' . '/work/inc/modules/hosting.php',
         'KPTCP' => __DIR__ . '/..' . '/custom-fields/classes/setup.class.php',
         'KPTCP_Setup' => __DIR__ . '/..' . '/custom-fields/classes/setup.class.php',
+        'KP\\WPFieldFramework\\BlockGenerator' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/BlockGenerator.php',
+        'KP\\WPFieldFramework\\ExportImport' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/ExportImport.php',
+        'KP\\WPFieldFramework\\FieldTypes' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/FieldTypes.php',
+        'KP\\WPFieldFramework\\Framework' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/Framework.php',
+        'KP\\WPFieldFramework\\Loader' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/Loader.php',
+        'KP\\WPFieldFramework\\MetaBox' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/MetaBox.php',
+        'KP\\WPFieldFramework\\OptionsPage' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/OptionsPage.php',
+        'KP\\WPFieldFramework\\Repeater' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/Repeater.php',
+        'KP\\WPFieldFramework\\Sanitizer' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/Sanitizer.php',
+        'KP\\WPFieldFramework\\Storage' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/Storage.php',
         'KP_Cache_Purge' => __DIR__ . '/../..' . '/work/inc/kp-cache-purge.php',
         'KP_Cache_Purge_Admin' => __DIR__ . '/../..' . '/work/inc/kp-cache-purge-admin.php',
         'KP_Cache_Purge_Common' => __DIR__ . '/../..' . '/work/inc/kp-cache-purge-common.php',
