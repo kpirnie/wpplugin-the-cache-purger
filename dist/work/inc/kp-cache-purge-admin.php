@@ -125,9 +125,10 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 if( ! is_network_admin( ) ) {
 
                     // setup the querys
-                    $cache_purge_uri = add_query_arg( 'the_cache_purge', 'true' );
-                    $log_purge_uri = add_query_arg( 'the_log_purge', 'true' );
+                    $cache_purge_uri = wp_nonce_url( add_query_arg( 'the_cache_purge', 'true' ), 'tcp_cache_purge' );
+                    $log_purge_uri = wp_nonce_url( add_query_arg( 'the_log_purge', 'true', admin_url( 'admin.php?page=kpcp_settings&tab=log' ) ), 'tcp_log_purge' );
 
+                    // setup the rest of the args for the main item
                     $_args = array(
                         'id'    => 'tcpmp',
                         'title' => '<span class="ab-icon dashicons-layout"></span> ' . __( 'Cache Purger', 'the-cache-purger' ),
@@ -135,8 +136,10 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                         'meta'  => array( 'title' => __( 'Cache Purger', 'the-cache-purger' ) ),
                     );
 
+                    // add the main node
                     $_admin_bar -> add_node( $_args );
 
+                    // add the main purge as a child node
                     $_admin_bar -> add_node( array(
                         'id'     => 'tcpmp-purge',
                         'parent' => 'tcpmp',
@@ -145,8 +148,8 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                         'meta'   => array( 'title' => __( 'Click here to purge all of your caches.', 'the-cache-purger' ) ),
                     ) );
 
+                    // if we are indeed logging, add the child node to purge it
                     if( filter_var( ( $this->opts -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
-
                         $_admin_bar -> add_node( array(
                             'id'     => 'tcpmp-log',
                             'parent' => 'tcpmp',
@@ -826,6 +829,12 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
             // setup the path
             $_path = ABSPATH . 'wp-content/purge.log';
 
+            // see if we're purging the log before displaying it
+            $_do_log_purge = filter_var( ( isset( $_GET['the_log_purge'] ) ) ? sanitize_text_field( $_GET['the_log_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
+            if( $_do_log_purge && current_user_can( 'manage_options' ) && wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ?? '' ), 'tcp_log_purge' ) ) {
+                file_put_contents( $_path, '', LOCK_EX );
+            }
+
             // if the file exists
             if( file_exists( $_path ) && is_readable( $_path ) ) {
 
@@ -841,6 +850,11 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 // clean and end the output buffer
                 ob_end_clean( );
 
+            }
+            
+            // if the log is actually empty
+            if(empty($_ret)) {
+                $_ret =  __('The log is currently empty...', 'the-cache-purger');
             }
 
             // return it
@@ -1003,12 +1017,12 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                         ],
                     ],
                     [
-                        'label'      => __( 'Clear the Log', 'the-cache-purger' ),
-                        'type'       => 'button',
-                        'id'         => 'kptcp-clear-log',
-                        'class'      => 'button button-secondary',
+                        'label'  => __( 'Clear the Log', 'the-cache-purger' ),
+                        'type'   => 'button',
+                        'id'     => 'kptcp-clear-log',
+                        'class'  => 'button button-secondary',
                         'attributes' => [
-                            'onclick' => 'window.location="' . add_query_arg( 'the_log_purge', 'true', admin_url( 'admin.php?page=kpcp_settings&tab=log' ) ) . '"; return false;',
+                            'onclick' => 'window.location="' . wp_nonce_url( add_query_arg( 'the_log_purge', 'true', admin_url( 'admin.php?page=kpcp_settings&tab=log' ) ), 'tcp_log_purge' ) . '"; return false;',
                         ],
                     ],
                 ],

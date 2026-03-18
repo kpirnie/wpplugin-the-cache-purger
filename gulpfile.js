@@ -93,6 +93,9 @@ const globs = {
             `${src.root}/style.css`,
             `${src.root}/readme.txt`,
             `${src.root}/readme.md`,
+			`!${src.root}/refresh.sh`,
+			`!${src.root}/composer.json`,
+			`!${src.root}/composer.lock`,
         ],
     },
 

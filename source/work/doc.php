@@ -16,9 +16,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed' );
 ?>
 
 <article class="kptcp-doc-content" id="kpcp_top">
-    <header>
-        <h1><?php esc_html_e( 'The Cache Purger Documentation', 'the-cache-purger' ); ?></h1>
-    </header>
     <main>
         <h2 id="kpcp_desc"><?php esc_html_e( 'Description', 'the-cache-purger' ); ?></h2>
         <p class="kpcp_nav"><a href="#kpcp_top"><?php esc_html_e( 'TOP', 'the-cache-purger' ); ?></a> | <a href="#kpcp_desc"><?php esc_html_e( 'DESCRIPTION', 'the-cache-purger' ); ?></a> | <a href="#kpcp_features"><?php esc_html_e( 'FEATURES', 'the-cache-purger' ); ?></a> | <a href="#kpcp_settings"><?php esc_html_e( 'SETTINGS', 'the-cache-purger' ); ?></a> | <a href="#kpcp_api_settings"><?php esc_html_e( 'API/SERVER SETTINGS', 'the-cache-purger' ); ?></a> | <a href="#kpcp_cron_settings"><?php esc_html_e( 'CRON Action SETTINGS', 'the-cache-purger' ); ?></a> | <a href="#kpcp_cron_settings"><?php esc_html_e( 'CRON Action SETTINGS', 'the-cache-purger' ); ?></a> | <a href="#kpcp_in_the_works"><?php esc_html_e( 'IN THE WORKS', 'the-cache-purger' ); ?></a></p>

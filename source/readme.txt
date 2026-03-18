@@ -140,6 +140,7 @@ At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge 
 * Swap: Settings framework
 * Update: Menu names
 * Add: Log purge to top menu
+* Fix: Manual purge's security
 
 = 2.1.63 =
 * Bump: Minimum PHP version to 8.2

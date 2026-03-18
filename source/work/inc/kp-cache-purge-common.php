@@ -100,6 +100,9 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
             }, PHP_INT_MAX );
 
+            // hook for clearing the purge log ajainly
+            add_action( 'wp_ajax_tcp_clear_log', [ __CLASS__, 'ajax_clear_log' ] );
+
             // we'll need a message in wp-admin for PHP 8 compatibility
             add_action( 'admin_notices', function(): void {
 
@@ -115,8 +118,40 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
                 }
 
+                if( get_transient( 'tcp_purge_notice' ) ) {
+                    delete_transient( 'tcp_purge_notice' );
+                    ?>
+                    <div class="notice notice-success is-dismissible">
+                        <?php _e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
+                    </div>
+                    <?php
+                }
+
             }, PHP_INT_MAX );
 
+        }
+
+        /** 
+         * ajax_clear_log
+         * 
+         * Handle the ajaxian clearing of the log
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        public static function ajax_clear_log(): void {
+            check_ajax_referer( 'tcp_log_purge' );
+            if( ! current_user_can( 'manage_options' ) ) {
+                wp_send_json_error( [ 'message' => __( 'Unauthorized', 'the-cache-purger' ) ] );
+            }
+            self::do_log_purge();
+            wp_send_json_success( [ 'message' => __( 'Log cleared.', 'the-cache-purger' ) ] );
         }
 
         /** 
@@ -143,6 +178,11 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             if( ! $_do_purge ) {
                 return;
             }
+            
+            // check the nonce as well
+            if( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ?? '' ), 'tcp_cache_purge' ) ) {
+                return;
+            }
 
             // setup the cache purger
             $_cp = new KP_Cache_Purge();
@@ -155,17 +195,11 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
 
             // clean it up
             unset( $_cp );
-
-            // show an admin notice
-            add_action( 'admin_notices', function(): void {
-
-                ?>
-                <div class="notice notice-success is-dismissible">
-                    <?php _e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
-                </div>
-                <?php
-
-            }, PHP_INT_MAX );
+            
+            // the a transient for showing the notice and safely redirect removing the query's
+            set_transient( 'tcp_purge_notice', true, 60 );
+            wp_safe_redirect( remove_query_arg( [ 'the_log_purge', 'the_cache_purge', '_wpnonce' ] ) );
+            exit;
 
         }
 
@@ -193,6 +227,11 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             if( ! $_do_log_purge ) {
                 return;
             }
+            
+            // verify the wp nonce was passed as well
+            if( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ?? '' ), 'tcp_log_purge' ) ) {
+                return;
+            }
 
             // get the logs path
             $_l_path = ABSPATH . 'wp-content/purge.log';
@@ -200,6 +239,8 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             // clear the log
             file_put_contents( $_l_path, '', LOCK_EX );
 
+            wp_safe_redirect( remove_query_arg( [ 'the_log_purge', 'the_cache_purge', '_wpnonce' ] ) );
+            exit;
         }
 
         /** 
