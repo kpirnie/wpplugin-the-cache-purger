@@ -106,21 +106,27 @@ if( ! trait_exists( 'FILE' ) ) {
                     // check if it's a directory
                     if ( $_file -> isDir( ) ) {
 
-                        // attempt to remove it
-                        @rmdir( $_file -> getPathname( ) );
-                    
+                        // attempt to remove it if it exists
+                        if( file_exists( $_file -> getPathname( ) ) ) {
+                            rmdir( $_file -> getPathname( ) );
+                        }
+
                     // it's actually a file    
                     } else {
-                    
-                        // try to delete it
-                        @unlink( $_file -> getPathname( ) );
-                    
+
+                        // try to delete it if it exists
+                        if( file_exists( $_file -> getPathname( ) ) ) {
+                            unlink( $_file -> getPathname( ) );
+                        }
+
                     }
                 
                 }
                 
                 // now try to dump the parent
-                @rmdir( $_path );
+                if( file_exists( $_path ) ) {
+                    rmdir( $_path );
+                }
 
             }
 

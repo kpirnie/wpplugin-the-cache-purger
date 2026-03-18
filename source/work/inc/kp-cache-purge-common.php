@@ -43,205 +43,333 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * @return void Returns nothing
          * 
         */
-        public static function initialize_plugin( ) : void {
+        public static function initialize_plugin(): void
+        {
 
-            // once the plugins are loaded
-            add_action( 'plugins_loaded', function( ) {
-
-                // initialize the field framework
-                // KPTCP::init( );
+            // once the plugins are loaded, fire up the admin
+            add_action( 'plugins_loaded', function(): void {
 
                 // fire up the plugin settings
-                $setts = new KP_Cache_Purge_Admin( );
-                $setts->kpcp_admin( );
+                $setts = new KP_Cache_Purge_Admin();
+                $setts->kpcp_admin();
 
             }, PHP_INT_MAX );
 
-            // hack in some styling
-            add_action( 'admin_enqueue_scripts', function( ) : void {
+            // register our admin hooks
+            self::register_admin_hooks();
 
-                // we are, so queue up our unminified assets
-                wp_register_style( 'kpcp_css', plugins_url( '/assets/css/style.css?_=' . time( ), TCP_PATH . '/' . TCP_FILENAME ), null, null );
+            // register our cron hooks
+            self::register_cron_hooks();
 
-                // enqueue it
-                wp_enqueue_style( 'kpcp_css' );
-                
-            }, PHP_INT_MAX );
+            // fire up the processor class
+            $_processor = new KP_Cache_Purge_Processor();
+
+            // run the processing
+            $_processor->process();
+
+            // clean up
+            unset( $_processor );
+
+        }
+
+        /** 
+         * register_admin_hooks
+         * 
+         * Register the admin hooks for the plugin
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function register_admin_hooks(): void
+        {
 
             // hook into the admin_init
-            add_action( 'admin_init', function( ) : void {
+            add_action( 'admin_init', function(): void {
 
-                // get the querystring for the purge
-                $_do_purge = filter_var( ( isset( $_GET['the_purge'] ) ) ? sanitize_text_field( $_GET['the_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
-            
-                // if it's true
-                if( $_do_purge ) {
+                // handle the manual purge
+                self::handle_manual_purge();
 
-                    // setup the cache purger
-                    $_cp = new KP_Cache_Purge( );
-
-                    // purge
-                    $_cp -> kp_do_purge( );
-
-                    // log the purge
-                    KPCPC::write_log( "Manual Cache Cleared" );
-
-                    // clean it up
-                    unset( $_cp );
-
-                    // show an admin message
-                    add_action( 'admin_notices', function( ) :void {
-
-                        ?>
-                        <div class="notice notice-success is-dismissible">
-                            <?php esc_html_e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
-                        </div>
-                        <?php
-
-                    }, PHP_INT_MAX );
-
-                }
-
-                // get the querystring for purging the log
-                $_do_log_purge = filter_var( ( isset( $_GET['the_log_purge'] ) ) ? sanitize_text_field( $_GET['the_log_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
-
-                /// make sure we are actually purging the log
-                if( $_do_log_purge ) {
-
-                    // get the logs path
-                    $_l_path = ABSPATH . 'wp-content/purge.log';
-
-                    // unfortunately we cannot utilize wordpress's built-in file methods, but let's clear the log
-                    file_put_contents( $_l_path, '', LOCK_EX );
-
-                }
+                // handle the log purge
+                self::handle_log_purge();
 
             }, PHP_INT_MAX );
 
-            // hook into the wordpress initialization
-            add_action( 'init', function( ) : void {
-
-                // initialize the field framework
-                // KPTCP::init( );
-
-                // get our options
-                $_opts = KPCPC::get_options( );
-
-                // get our wp cron info
-                $_cron_info = wp_get_schedules( );
-
-                // set if it's allowed 
-                $_allowed = filter_var( ( $_opts -> cron_schedule_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN );
-                $_l_allowed = filter_var( ( $_opts -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN );
-                $_lp_allowed = filter_var( ( $_opts -> cron_log_purge_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN );
-
-                // if it is
-                if( $_allowed ) {
-
-                    // setup our action and create the job for it
-                    add_action( 'kpcpc_the_purge', [__CLASS__, 'do_the_actual_purge'] );
-
-                    // make sure we're only scheduling this once
-                    if( ! as_has_scheduled_action( 'kpcpc_the_purge' ) ) {
-
-                        // throw a hook here
-                        do_action( 'tcp_cron_cache_purge' );
-
-                        // get our schedule options
-                        $_bi_schedule = ( $_opts -> cron_schedule_builtin ) ?? 'hourly';
-
-                        // schedule the event
-                        as_schedule_recurring_action( time( ), $_cron_info[ $_bi_schedule ]['interval'], 'kpcpc_the_purge' );
-
-                    }
-
-                }
-
-                // if the log is enabled and if the log purging is allowed, and allowed to be on a schedule
-                if( $_l_allowed && $_lp_allowed ) {
-
-                    // setup the action to be performed
-                    add_action( 'kpcpc_the_log_purge', [__CLASS__, 'do_log_purge'] );
-
-                    // make sure we're only scheduling this once
-                    if( ! as_has_scheduled_action( 'kpcpc_the_log_purge' ) ) {
-
-                        // throw a hook here
-                        do_action( 'tcp_cron_log_purge' );
-
-                        // get our schedule options
-                        $_bi_schedule = ( $_opts -> cron_log_purge_schedule ) ?? 'weekly';
-
-                        // schedule the event
-                        as_schedule_recurring_action( time( ), $_cron_info[ $_bi_schedule ]['interval'], 'kpcpc_the_log_purge' );
-
-                    }
-
-                }
-
-                // see if we're purging
-                $_is_purging = filter_var( ( get_transient( 'is_doing_cache_purge' ) ) ?? false, FILTER_VALIDATE_BOOLEAN );
-
-                // if we are purging
-                if( $_is_purging ) {
-
-                    // create a hook for the clearing to occurr in 
-                    add_action( 'kptcp_long_purge', [__CLASS__, 'do_the_long_purge'] );
-
-                    // check if the long purge task already exists
-                    if( ! as_next_scheduled_action( 'kptcp_long_purge' ) ) {
-
-                        // throw a hook here
-                        do_action( 'tcp_long_cache_purge' );
-
-                        // schedule it to run once as soon as possible
-                        as_schedule_single_action( time( ) + 5, 'kptcp_long_purge' );
-
-                    }
-
-                }
-
-            }, PHP_INT_MAX );
-
-            /*
-            // hook into the custom fields loaded
-            add_action( 'kptcp_loaded', function( ) : void {
-
-                // fire up the admin class
-                $_cp_admin = new KP_Cache_Purge_Admin( );
-
-                // do it!
-                $_cp_admin -> kpcp_admin( );
-
-                // clean it up
-                unset( $_cp_admin );
-
-            }, PHP_INT_MAX );
-            */
-            
             // we'll need a message in wp-admin for PHP 8 compatibility
-            add_action( 'admin_notices', function( ) : void {
+            add_action( 'admin_notices', function(): void {
 
-                // if the site is under PHP 8.1
-                if ( version_compare( PHP_VERSION, '8.2', '<=' ) ) {
+                // if the site is under PHP 8.2
+                if( version_compare( PHP_VERSION, '8.2', '<=' ) ) {
 
                     // show this notice
                     ?>
                     <div class="notice notice-info is-dismissible">
                         <?php esc_html_e( "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>", 'the-cache-purger' ); ?>
                     </div>
-                <?php
+                    <?php
+
                 }
+
             }, PHP_INT_MAX );
 
-            // fire up the processor class here.  Inside it are the proper hooks where the actual purging will take place
-            $_processor = new KP_Cache_Purge_Processor( );
+        }
 
-            // run the processing
-            $_processor -> process( );
+        /** 
+         * handle_manual_purge
+         * 
+         * Handle the manual cache purge request
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function handle_manual_purge(): void
+        {
 
-            // clean up
-            unset( $_processor );
+            // get the querystring for the purge
+            $_do_purge = filter_var( ( isset( $_GET['the_cache_purge'] ) ) ? sanitize_text_field( $_GET['the_cache_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
+
+            // if it's not set, bail out
+            if( ! $_do_purge ) {
+                return;
+            }
+
+            // setup the cache purger
+            $_cp = new KP_Cache_Purge();
+
+            // purge
+            $_cp->kp_do_purge();
+
+            // log the purge
+            KPCPC::write_log( "Manual Cache Cleared" );
+
+            // clean it up
+            unset( $_cp );
+
+            // show an admin notice
+            add_action( 'admin_notices', function(): void {
+
+                ?>
+                <div class="notice notice-success is-dismissible">
+                    <?php _e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
+                </div>
+                <?php
+
+            }, PHP_INT_MAX );
+
+        }
+
+        /** 
+         * handle_log_purge
+         * 
+         * Handle the log purge request
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function handle_log_purge(): void
+        {
+
+            // get the querystring for purging the log
+            $_do_log_purge = filter_var( ( isset( $_GET['the_log_purge'] ) ) ? sanitize_text_field( $_GET['the_log_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
+
+            // if it's not set, bail out
+            if( ! $_do_log_purge ) {
+                return;
+            }
+
+            // get the logs path
+            $_l_path = ABSPATH . 'wp-content/purge.log';
+
+            // clear the log
+            file_put_contents( $_l_path, '', LOCK_EX );
+
+        }
+
+        /** 
+         * register_cron_hooks
+         * 
+         * Register the cron hooks for the plugin
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function register_cron_hooks(): void
+        {
+
+            // hook into the wordpress initialization
+            add_action( 'init', function(): void {
+
+                // get our options
+                $_opts = KPCPC::get_options();
+
+                // get our wp cron schedule info
+                $_schedules = wp_get_schedules();
+
+                // maybe schedule the cache purge
+                self::maybe_schedule_cache_purge( $_opts, $_schedules );
+
+                // maybe schedule the log purge
+                self::maybe_schedule_log_purge( $_opts, $_schedules );
+
+                // maybe run the long purge
+                self::maybe_run_long_purge();
+
+            }, PHP_INT_MAX );
+
+        }
+
+        /** 
+         * maybe_schedule_cache_purge
+         * 
+         * Schedule the cache purge if it is allowed and not already scheduled
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @param object $_opts The options object
+         * @param array $_schedules The available cron schedules
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function maybe_schedule_cache_purge( object $_opts, array $_schedules ): void
+        {
+
+            // check if scheduled purges are allowed
+            if( ! filter_var( ( $_opts->cron_schedule_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+                return;
+            }
+
+            // setup our action
+            add_action( 'kpcpc_the_purge', [ __CLASS__, 'do_the_actual_purge' ] );
+
+            // if it's already scheduled, bail out
+            if( as_has_scheduled_action( 'kpcpc_the_purge' ) ) {
+                return;
+            }
+
+            // throw a hook here
+            do_action( 'tcp_cron_cache_purge' );
+
+            // get our schedule
+            $_schedule = ( $_opts->cron_schedule_builtin ) ?? 'hourly';
+
+            // schedule the event
+            as_schedule_recurring_action( time(), $_schedules[ $_schedule ]['interval'], 'kpcpc_the_purge' );
+
+        }
+
+        /** 
+         * maybe_schedule_log_purge
+         * 
+         * Schedule the log purge if it is allowed and not already scheduled
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @param object $_opts The options object
+         * @param array $_schedules The available cron schedules
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function maybe_schedule_log_purge( object $_opts, array $_schedules ): void
+        {
+
+            // check if logging is enabled
+            $_log_enabled = filter_var( ( $_opts->should_log ) ?? false, FILTER_VALIDATE_BOOLEAN );
+
+            // check if log purging is allowed
+            $_lp_allowed  = filter_var( ( $_opts->cron_log_purge_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN );
+
+            // if either isn't set, bail out
+            if( ! $_log_enabled || ! $_lp_allowed ) {
+                return;
+            }
+
+            // setup the action
+            add_action( 'kpcpc_the_log_purge', [ __CLASS__, 'do_log_purge' ] );
+
+            // if it's already scheduled, bail out
+            if( as_has_scheduled_action( 'kpcpc_the_log_purge' ) ) {
+                return;
+            }
+
+            // throw a hook here
+            do_action( 'tcp_cron_log_purge' );
+
+            // get our schedule
+            $_schedule = ( $_opts->cron_log_purge_schedule ) ?? 'weekly';
+
+            // schedule the event
+            as_schedule_recurring_action( time(), $_schedules[ $_schedule ]['interval'], 'kpcpc_the_log_purge' );
+
+        }
+
+        /** 
+         * maybe_run_long_purge
+         * 
+         * Schedule the long purge if it is needed and not already scheduled
+         * 
+         * @since 8.1
+         * @access private
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void Returns nothing
+         * 
+        */
+        private static function maybe_run_long_purge(): void
+        {
+
+            // check if we're currently purging
+            if( ! filter_var( ( get_transient( 'is_doing_cache_purge' ) ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+                return;
+            }
+
+            // setup the action
+            add_action( 'kptcp_long_purge', [ __CLASS__, 'do_the_long_purge' ] );
+
+            // if it's already scheduled, bail out
+            if( as_next_scheduled_action( 'kptcp_long_purge' ) ) {
+                return;
+            }
+
+            // throw a hook here
+            do_action( 'tcp_long_cache_purge' );
+
+            // schedule it to run once as soon as possible
+            as_schedule_single_action( time() + 5, 'kptcp_long_purge' );
 
         }
 
@@ -291,8 +419,13 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             // get the logs path
             $_l_path = ABSPATH . 'wp-content/purge.log';
 
-            // unfortunately we cannot utilize wordpress's built-in file methods, but let's clear the log
-            file_put_contents( $_l_path, '', LOCK_EX );
+            // use WP Filesystem to clear the log
+            global $wp_filesystem;
+            if( empty( $wp_filesystem ) ) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+            $wp_filesystem->put_contents( $_l_path, '', FS_CHMOD_FILE );
 
         }
 
@@ -343,14 +476,25 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
         */
         public static function get_options( ) : ?object {
 
+            // hold a static cache so we only hit the db once per request
+            static $_cached = null;
+
+            // if we already have it, return it
+            if( $_cached !== null ) {
+                return $_cached;
+            }
+
             // get the options
             $_option = get_option( 'kpcp_settings' );
 
             // try to convert the value to an array
             $_opts = maybe_unserialize( $_option );
 
-            // return it or null
-            return ( object ) $_opts;
+            // cache it
+            $_cached = ( object ) $_opts;
+
+            // return it
+            return $_cached;
         }
 
         /** 
@@ -648,7 +792,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 'customizer' => array( 'customize_save_after' ),
                 'gf' => array( 'gform_after_save_form', 'gform_post_form_trashed' ),
                 'acf' => array( 'acf/update_field_group', 'acf/trash_field_group' ),
-                'settings' => array( 'woocommerce_settings_saved', 'pre_set_transient_settings_errors' ), // no matter what, we'll purge on this
+                'settings' => array( 'woocommerce_settings_saved', 'pre_set_transient_settings_errors', 'update_option_kpcp_settings' ), // no matter what, we'll purge on this
                 'plugin' => array( 'activated_plugin', 'deactivated_plugin' ), // no matter what, we'll purge on this
                 'updates' => array( 'upgrader_process_complete', '_core_updated_successfully' ), // no matter what, we'll purge on this
             );
@@ -681,7 +825,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 $_path = ABSPATH . 'wp-content/purge.log';
 
                 // I want to append a timestamp to the message
-                $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg, 'the-cache-purger' ) . PHP_EOL;
+                $_message = '[' . current_time( 'mysql' ) . ']: ' . $_msg . PHP_EOL;
 
                 // unfortunately we cannot use wp's builtin filesystem hanlders for this
                 // the put_contents method only writes/overwrites contents, and does not append
@@ -714,7 +858,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_path = ABSPATH . 'wp-content/purge-exceptions.log';
 
             // I want to append a timestamp to the message
-            $_message = '[' . current_time( 'mysql' ) . ']: ' . __( $_msg, 'the-cache-purger' ) . PHP_EOL;
+            $_message = '[' . current_time( 'mysql' ) . ']: ' . $_msg . PHP_EOL;
 
             // unfortunately we cannot use wp's builtin filesystem hanlders for this
             // the put_contents method only writes/overwrites contents, and does not append

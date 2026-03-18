@@ -1151,8 +1151,6 @@ class ComposerStaticInita8aaed53ba4ac6636f45369518318671
         'GuzzleHttp\\TransferStats' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/TransferStats.php',
         'GuzzleHttp\\Utils' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Utils.php',
         'HOSTING' => __DIR__ . '/../..' . '/work/inc/modules/hosting.php',
-        'KPTCP' => __DIR__ . '/..' . '/custom-fields/classes/setup.class.php',
-        'KPTCP_Setup' => __DIR__ . '/..' . '/custom-fields/classes/setup.class.php',
         'KP\\WPFieldFramework\\BlockGenerator' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/BlockGenerator.php',
         'KP\\WPFieldFramework\\ExportImport' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/ExportImport.php',
         'KP\\WPFieldFramework\\FieldTypes' => __DIR__ . '/..' . '/kevinpirnie/kpt-wpfieldframework/src/FieldTypes.php',

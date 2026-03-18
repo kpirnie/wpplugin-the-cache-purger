@@ -81,7 +81,7 @@ if( ! trait_exists( 'PAGESPEED' ) ) {
             );
 
             // get the server IP
-            $_server_ip = filter_input( INPUT_SERVER, 'SERVER_ADDR', FILTER_VALIDATE_IP );
+            $_server_ip = filter_var( $_SERVER['SERVER_ADDR'] ?? '', FILTER_VALIDATE_IP );
 
             // get our URL list
             $_urls = KPCPC::get_urls( );

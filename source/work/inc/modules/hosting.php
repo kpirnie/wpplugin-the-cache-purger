@@ -351,13 +351,17 @@ if( ! trait_exists( 'HOSTING' ) ) {
                 if( is_multisite( ) ) {
                     
                     // purge all sites caches
-                    @RunCloud_Hub::purge_cache_all_sites( );
-                
+                    if( method_exists( 'RunCloud_Hub', 'purge_cache_all_sites' ) ) {
+                        RunCloud_Hub::purge_cache_all_sites();
+                    }
+
                 // we're not
                 } else {
 
                     // purge the sites caches
-                    @RunCloud_Hub::purge_cache_all();
+                    if( method_exists( 'RunCloud_Hub', 'purge_cache_all' ) ) {
+                        RunCloud_Hub::purge_cache_all();
+                    }
                 }
 
                 // log the purge

@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-17 12:43+0000\n"
+"POT-Creation-Date: 2026-03-18 10:40+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: source/work/doc.php:60, source/work/inc/kp-cache-purge-admin.php:559
+#: source/work/doc.php:60, source/work/inc/kp-cache-purge-admin.php:564
 msgid "Log Purge Actions?"
 msgstr ""
 
@@ -374,7 +374,7 @@ msgstr ""
 msgid "This will attempt to purge all caches for every post update, save, or delete."
 msgstr ""
 
-#: source/work/doc.php:81, source/work/inc/kp-cache-purge-admin.php:595
+#: source/work/doc.php:81, source/work/inc/kp-cache-purge-admin.php:600
 msgid "Ignored Posts"
 msgstr ""
 
@@ -390,7 +390,7 @@ msgstr ""
 msgid "This will attempt to purge all caches for every page update, save, or delete."
 msgstr ""
 
-#: source/work/doc.php:95, source/work/inc/kp-cache-purge-admin.php:620
+#: source/work/doc.php:95, source/work/inc/kp-cache-purge-admin.php:625
 msgid "Ignored Pages"
 msgstr ""
 
@@ -546,39 +546,39 @@ msgstr ""
 msgid "Memcached Servers - Port"
 msgstr ""
 
-#: source/work/doc.php:243, source/work/inc/kp-cache-purge-admin.php:444
+#: source/work/doc.php:243, source/work/inc/kp-cache-purge-admin.php:449
 msgid "Service API Keys"
 msgstr ""
 
-#: source/work/doc.php:246, source/work/inc/kp-cache-purge-admin.php:452
+#: source/work/doc.php:246, source/work/inc/kp-cache-purge-admin.php:457
 msgid "Cloudflare Token"
 msgstr ""
 
-#: source/work/doc.php:249, source/work/inc/kp-cache-purge-admin.php:453
+#: source/work/doc.php:249, source/work/inc/kp-cache-purge-admin.php:458
 msgid "Enter your Cloudflare API Token. If you do not have one, you can create one here: <a href=\"https://dash.cloudflare.com/profile/api-tokens\" target=\"_blank\">https://dash.cloudflare.com/profile/api-tokens</a><br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
-#: source/work/doc.php:253, source/work/inc/kp-cache-purge-admin.php:461
+#: source/work/doc.php:253, source/work/inc/kp-cache-purge-admin.php:466
 msgid "Cloudflare Zone"
 msgstr ""
 
-#: source/work/doc.php:256, source/work/inc/kp-cache-purge-admin.php:462
+#: source/work/doc.php:256, source/work/inc/kp-cache-purge-admin.php:467
 msgid "Enter your Cloudflare Zone ID. You can find this by clicking into your websites overview in your account: <a href=\"https://dash.cloudflare.com/\" target=\"_blank\">https://dash.cloudflare.com/</a><br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
-#: source/work/doc.php:260, source/work/inc/kp-cache-purge-admin.php:471
+#: source/work/doc.php:260, source/work/inc/kp-cache-purge-admin.php:476
 msgid "Sucuri Key"
 msgstr ""
 
-#: source/work/doc.php:263, source/work/inc/kp-cache-purge-admin.php:472
+#: source/work/doc.php:263, source/work/inc/kp-cache-purge-admin.php:477
 msgid "Enter your Sucuri API Key. If you do not have one, you can find it in your site's Firewall here: <a href=\"https://waf.sucuri.net/\" target=\"_blank\">https://waf.sucuri.net/</a>. Click into your site, then Settings, then API.<br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
-#: source/work/doc.php:267, source/work/inc/kp-cache-purge-admin.php:480
+#: source/work/doc.php:267, source/work/inc/kp-cache-purge-admin.php:485
 msgid "Sucuri Secret"
 msgstr ""
 
-#: source/work/doc.php:270, source/work/inc/kp-cache-purge-admin.php:481
+#: source/work/doc.php:270, source/work/inc/kp-cache-purge-admin.php:486
 msgid "Enter your Sucuri API Secret. If you do not have one, you can find it in your site's Firewall here: <a href=\"https://waf.sucuri.net/\" target=\"_blank\">https://waf.sucuri.net/</a>. Click into your site, then Settings, then API.<br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
@@ -626,7 +626,7 @@ msgstr ""
 msgid "The Cache Purger"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:85
+#: source/work/inc/kp-cache-purge-admin.php:85, source/work/inc/kp-cache-purge-admin.php:133, source/work/inc/kp-cache-purge-admin.php:135
 msgid "Cache Purger"
 msgstr ""
 
@@ -634,350 +634,358 @@ msgstr ""
 msgid "Save Your Settings"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:100, source/work/inc/kp-cache-purge-admin.php:906
+#: source/work/inc/kp-cache-purge-admin.php:100, source/work/inc/kp-cache-purge-admin.php:930
 msgid "API/Server Settings"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:101, source/work/inc/kp-cache-purge-admin.php:914
+#: source/work/inc/kp-cache-purge-admin.php:101, source/work/inc/kp-cache-purge-admin.php:956
 msgid "CRON Settings"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:104, source/work/inc/kp-cache-purge-admin.php:864
+#: source/work/inc/kp-cache-purge-admin.php:104, source/work/inc/kp-cache-purge-admin.php:982
 msgid "Purge Log"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:106, source/work/inc/kp-cache-purge-admin.php:923
+#: source/work/inc/kp-cache-purge-admin.php:106, source/work/inc/kp-cache-purge-admin.php:1037
 msgid "Documentation"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:147
-msgid "Master Cache Purge"
+#: source/work/inc/kp-cache-purge-admin.php:143
+msgid "Purge the Cache"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:149
+#: source/work/inc/kp-cache-purge-admin.php:145
 msgid "Click here to purge all of your caches."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:189
+#: source/work/inc/kp-cache-purge-admin.php:153
+msgid "Purge the Log"
+msgstr ""
+
+#: source/work/inc/kp-cache-purge-admin.php:155
+msgid "View the cache purge log."
+msgstr ""
+
+#: source/work/inc/kp-cache-purge-admin.php:194
 msgid "Purge the log?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:190
+#: source/work/inc/kp-cache-purge-admin.php:195
 msgid "Do you want to allow scheduled log purges?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:198, source/work/inc/kp-cache-purge-admin.php:226
+#: source/work/inc/kp-cache-purge-admin.php:203, source/work/inc/kp-cache-purge-admin.php:231
 msgid "Purge Schedule"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:199, source/work/inc/kp-cache-purge-admin.php:227
+#: source/work/inc/kp-cache-purge-admin.php:204, source/work/inc/kp-cache-purge-admin.php:232
 msgid "Select a purge schedule to use."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:217
+#: source/work/inc/kp-cache-purge-admin.php:222
 msgid "Scheduled your Purges?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:218
+#: source/work/inc/kp-cache-purge-admin.php:223
 msgid "Do you want schedule cache purges?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:268
+#: source/work/inc/kp-cache-purge-admin.php:273
 msgid "Remote Redis server?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:269
+#: source/work/inc/kp-cache-purge-admin.php:274
 msgid "Please only switch this on if you utilize Redis Servers."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:277
+#: source/work/inc/kp-cache-purge-admin.php:282
 msgid "Redis Servers"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:282, source/work/inc/kp-cache-purge-admin.php:366, source/work/inc/kp-cache-purge-admin.php:412
+#: source/work/inc/kp-cache-purge-admin.php:287, source/work/inc/kp-cache-purge-admin.php:371, source/work/inc/kp-cache-purge-admin.php:417
 msgid "Add New Server"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:293, source/work/inc/kp-cache-purge-admin.php:377, source/work/inc/kp-cache-purge-admin.php:423
+#: source/work/inc/kp-cache-purge-admin.php:298, source/work/inc/kp-cache-purge-admin.php:382, source/work/inc/kp-cache-purge-admin.php:428
 msgid "Server"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:296, source/work/inc/kp-cache-purge-admin.php:380, source/work/inc/kp-cache-purge-admin.php:426
+#: source/work/inc/kp-cache-purge-admin.php:301, source/work/inc/kp-cache-purge-admin.php:385, source/work/inc/kp-cache-purge-admin.php:431
 msgid "Enter the IP address of the server."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:302, source/work/inc/kp-cache-purge-admin.php:386, source/work/inc/kp-cache-purge-admin.php:432
+#: source/work/inc/kp-cache-purge-admin.php:307, source/work/inc/kp-cache-purge-admin.php:391, source/work/inc/kp-cache-purge-admin.php:437
 msgid "Port"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:305, source/work/inc/kp-cache-purge-admin.php:389, source/work/inc/kp-cache-purge-admin.php:435
+#: source/work/inc/kp-cache-purge-admin.php:310, source/work/inc/kp-cache-purge-admin.php:394, source/work/inc/kp-cache-purge-admin.php:440
 msgid "Enter the Port number of the server."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:312
+#: source/work/inc/kp-cache-purge-admin.php:317
 msgid "Username"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:315
+#: source/work/inc/kp-cache-purge-admin.php:320
 msgid "Enter your redis username"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:320
+#: source/work/inc/kp-cache-purge-admin.php:325
 msgid "Password"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:323
+#: source/work/inc/kp-cache-purge-admin.php:328
 msgid "Enter your redis password"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:330
+#: source/work/inc/kp-cache-purge-admin.php:335
 msgid "Database ID"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:333
+#: source/work/inc/kp-cache-purge-admin.php:338
 msgid "Enter your database ID"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:339
+#: source/work/inc/kp-cache-purge-admin.php:344
 msgid "Prefix/Key"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:342
+#: source/work/inc/kp-cache-purge-admin.php:347
 msgid "Enter your prefix/key"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:352
+#: source/work/inc/kp-cache-purge-admin.php:357
 msgid "Remote Memcache server?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:353
+#: source/work/inc/kp-cache-purge-admin.php:358
 msgid "Please only switch this on if you utilize Memcache Servers."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:361
+#: source/work/inc/kp-cache-purge-admin.php:366
 msgid "Memcache Servers"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:398
+#: source/work/inc/kp-cache-purge-admin.php:403
 msgid "Remote Memcached server?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:399
+#: source/work/inc/kp-cache-purge-admin.php:404
 msgid "Please only switch this on if you utilize Memcached Servers."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:407
+#: source/work/inc/kp-cache-purge-admin.php:412
 msgid "Memcached Servers"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:445
+#: source/work/inc/kp-cache-purge-admin.php:450
 msgid "These are all optional, and only necessary if you do not have the service's plugin installed on your site, but their caches are still used.<br /><br />Please consult with your hosting provider or IT Team if you do not know if they are in use."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:490
+#: source/work/inc/kp-cache-purge-admin.php:495
 msgid "Fastly Token"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:491
+#: source/work/inc/kp-cache-purge-admin.php:496
 msgid "Enter your Fastly CDN Token. If you do not have one, you can find it in your account here: <a href=\"https://manage.fastly.com/account/personal/tokens\" target=\"_blank\">https://manage.fastly.com/account/personal/tokens</a>. You will need to make sure to select a service when you create your token.<br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:499
+#: source/work/inc/kp-cache-purge-admin.php:504
 msgid "Fastly Service ID"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:500
+#: source/work/inc/kp-cache-purge-admin.php:505
 msgid "Enter your Fastly Service ID. If you do not have one, you can find it in your account here: <a href=\"https://manage.fastly.com/account/tokens\" target=\"_blank\">https://manage.fastly.com/account/tokens</a>. You will need to make sure to select a service when you create your token.<br /><strong>NOTE: </strong>This is stored in plain-text."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:541
+#: source/work/inc/kp-cache-purge-admin.php:546
 msgid "Caches To Purge"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:542
+#: source/work/inc/kp-cache-purge-admin.php:547
 msgid "Select which caches should be purged?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:545
+#: source/work/inc/kp-cache-purge-admin.php:550
 msgid "Plugin Caches"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:546
+#: source/work/inc/kp-cache-purge-admin.php:551
 msgid "Wordpress Caches"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:547
+#: source/work/inc/kp-cache-purge-admin.php:552
 msgid "Server Caches"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:548
+#: source/work/inc/kp-cache-purge-admin.php:553
 msgid "Memory Caches"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:549
+#: source/work/inc/kp-cache-purge-admin.php:554
 msgid "API Caches"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:568
+#: source/work/inc/kp-cache-purge-admin.php:573
 msgid "Purge on settings save?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:569
+#: source/work/inc/kp-cache-purge-admin.php:574
 msgid "This will attempt to purge all configured caches for settings save actions.<br /><strong>NOTE:</strong>You need to hard refresh this page after saving this setting in order for this to take effect."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:577
+#: source/work/inc/kp-cache-purge-admin.php:582
 msgid "Purge on Menu Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:578
+#: source/work/inc/kp-cache-purge-admin.php:583
 msgid "This will attempt to purge all configured caches for every menu update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:586
+#: source/work/inc/kp-cache-purge-admin.php:591
 msgid "Purge on Post Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:587
+#: source/work/inc/kp-cache-purge-admin.php:592
 msgid "This will attempt to purge all configured caches for every post update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:596
+#: source/work/inc/kp-cache-purge-admin.php:601
 msgid "select the posts to ignore..."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:597
+#: source/work/inc/kp-cache-purge-admin.php:602
 msgid "Posts to ignore from the purger. This will simply ignore the purge action when the selected posts get updated."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:611
+#: source/work/inc/kp-cache-purge-admin.php:616
 msgid "Purge on Page Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:612
+#: source/work/inc/kp-cache-purge-admin.php:617
 msgid "This will attempt to purge all configured caches for every page update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:621
+#: source/work/inc/kp-cache-purge-admin.php:626
 msgid "select the pages to ignore..."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:622
+#: source/work/inc/kp-cache-purge-admin.php:627
 msgid "Pages to ignore from the purger. This will simply ignore the purge action when the selected pages get updated."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:636
+#: source/work/inc/kp-cache-purge-admin.php:641
 msgid "Purge on Custom Post Type Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:637
+#: source/work/inc/kp-cache-purge-admin.php:642
 msgid "This will attempt to purge all configured caches for every custom post type update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:645
+#: source/work/inc/kp-cache-purge-admin.php:650
 msgid "Ignored CPTs"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:646
+#: source/work/inc/kp-cache-purge-admin.php:651
 msgid "select the cpts to ignore..."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:647
+#: source/work/inc/kp-cache-purge-admin.php:652
 msgid "CPTs to ignore from the purger. This will simply ignore the purge action when the selected CPT get updated."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:661
+#: source/work/inc/kp-cache-purge-admin.php:666
 msgid "Purge on Taxonomy/Term Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:662
+#: source/work/inc/kp-cache-purge-admin.php:667
 msgid "This will attempt to purge all configured caches for every taxonomy/term update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:670
+#: source/work/inc/kp-cache-purge-admin.php:675
 msgid "Purge on Category Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:671
+#: source/work/inc/kp-cache-purge-admin.php:676
 msgid "This will attempt to purge all configured caches for every category update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:679
+#: source/work/inc/kp-cache-purge-admin.php:684
 msgid "Purge on Widget Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:680
+#: source/work/inc/kp-cache-purge-admin.php:685
 msgid "This will attempt to purge all configured caches for every widget update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:688
+#: source/work/inc/kp-cache-purge-admin.php:693
 msgid "Purge on Customizer Save?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:689
+#: source/work/inc/kp-cache-purge-admin.php:694
 msgid "This will attempt to purge all configured caches for every customizer update or save."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:702
+#: source/work/inc/kp-cache-purge-admin.php:707
 msgid "Purge on Form Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:703
+#: source/work/inc/kp-cache-purge-admin.php:708
 msgid "This will attempt to purge all configured caches for every form update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:711
+#: source/work/inc/kp-cache-purge-admin.php:716
 msgid "Ignored Forms"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:712
+#: source/work/inc/kp-cache-purge-admin.php:717
 msgid "select the forms to ignore..."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:713
+#: source/work/inc/kp-cache-purge-admin.php:718
 msgid "Forms to ignore from the purger. This will simply ignore the purge action when the selected forms get updated."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:732
+#: source/work/inc/kp-cache-purge-admin.php:737
 msgid "Purge on ACF Save/Delete?"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:733
+#: source/work/inc/kp-cache-purge-admin.php:738
 msgid "This will attempt to purge all configured caches for every \"advanced custom field\" group update, save, or delete."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:741
+#: source/work/inc/kp-cache-purge-admin.php:746
 msgid "Ignored Field Groups"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:742
+#: source/work/inc/kp-cache-purge-admin.php:747
 msgid "select the field groupd to ignore..."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:743
+#: source/work/inc/kp-cache-purge-admin.php:748
 msgid "Field Groups to ignore from the purger. This will simply ignore the purge action when the selected field groups get updated."
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:879
-msgid "Refresh the Log"
-msgstr ""
-
-#: source/work/inc/kp-cache-purge-admin.php:886
-msgid "Clear the Log"
-msgstr ""
-
-#: source/work/inc/kp-cache-purge-admin.php:898
+#: source/work/inc/kp-cache-purge-admin.php:904
 msgid "General Settings"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-admin.php:967, source/work/inc/kp-cache-purge-admin.php:1012, source/work/inc/kp-cache-purge-common.php:376, source/work/inc/kp-cache-purge-common.php:461
+#: source/work/inc/kp-cache-purge-admin.php:997
+msgid "Refresh the Log"
+msgstr ""
+
+#: source/work/inc/kp-cache-purge-admin.php:1006
+msgid "Clear the Log"
+msgstr ""
+
+#: source/work/inc/kp-cache-purge-admin.php:1073, source/work/inc/kp-cache-purge-admin.php:1118, source/work/inc/kp-cache-purge-common.php:520, source/work/inc/kp-cache-purge-common.php:605
 msgid " -- None -- "
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-common.php:97
-msgid "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>"
+#: source/work/inc/kp-cache-purge-common.php:112
+msgid "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>"
 msgstr ""
 
-#: source/work/inc/kp-cache-purge-common.php:231
-msgid "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>"
+#: source/work/inc/kp-cache-purge-common.php:164
+msgid "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>"
 msgstr ""

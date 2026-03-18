@@ -124,33 +124,38 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 // only do this if we're NOT in a network admin
                 if( ! is_network_admin( ) ) {
 
-                    // get the current page we are on
-                    $_uri = sanitize_url( isset( $_SERVER['REQUEST_URI'] ) ?? '' );
+                    // setup the querys
+                    $cache_purge_uri = add_query_arg( 'the_cache_purge', 'true' );
+                    $log_purge_uri = add_query_arg( 'the_log_purge', 'true' );
 
-                    // see if the uri contains any ?
-                    if( strpos( $_uri, '?' ) !== false ) {
+                    $_args = array(
+                        'id'    => 'tcpmp',
+                        'title' => '<span class="ab-icon dashicons-layout"></span> ' . __( 'Cache Purger', 'the-cache-purger' ),
+                        'href'  => false,
+                        'meta'  => array( 'title' => __( 'Cache Purger', 'the-cache-purger' ) ),
+                    );
 
-                        // append
-                        $_uri .= '&the_purge=true';
+                    $_admin_bar -> add_node( $_args );
 
-                    // it does not, so make sure we add it
-                    } else {
+                    $_admin_bar -> add_node( array(
+                        'id'     => 'tcpmp-purge',
+                        'parent' => 'tcpmp',
+                        'title'  => __( 'Purge the Cache', 'the-cache-purger' ),
+                        'href'   => $cache_purge_uri,
+                        'meta'   => array( 'title' => __( 'Click here to purge all of your caches.', 'the-cache-purger' ) ),
+                    ) );
 
-                        // insert
-                        $_uri .= '?the_purge=true';
+                    if( filter_var( ( $this->opts -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+
+                        $_admin_bar -> add_node( array(
+                            'id'     => 'tcpmp-log',
+                            'parent' => 'tcpmp',
+                            'title'  => __( 'Purge the Log', 'the-cache-purger' ),
+                            'href'   => $log_purge_uri,
+                            'meta'   => array( 'title' => __( 'View the cache purge log.', 'the-cache-purger' ) ),
+                        ) );
 
                     }
-
-                    // set the arguments for this admin bar menu item
-                    $_args = array (
-                        'id' => 'tcpmp',
-                        'title' => '<span class="ab-icon dashicons-layout"></span> ' . __( 'Master Cache Purge', 'the-cache-purger' ),
-                        'href' => $_uri,
-                        'meta' => array( 'title' => __( 'Click here to purge all of your caches.', 'the-cache-purger' ) ),
-                    );
-                
-                    // add the node with the arguments above
-                    $_admin_bar -> add_node( $_args );
 
                 }
 
@@ -779,7 +784,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
             $_path = TCP_PATH . "/work/doc.php";
 
             // if the file exists
-            if( @is_readable( $_path ) ) {
+            if( file_exists( $_path ) && is_readable( $_path ) ) {
 
                 // start the output buffer
                 ob_start( );
@@ -822,7 +827,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
             $_path = ABSPATH . 'wp-content/purge.log';
 
             // if the file exists
-            if( @is_readable( $_path ) ) {
+            if( file_exists( $_path ) && is_readable( $_path ) ) {
 
                 // start the output buffer
                 ob_start( );
@@ -843,108 +848,209 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
 
         }
 
-        /**
+        /** 
          * add_tabs
          * 
-         * The method is responsible for adding tabs to the settings page.  
-         * This is where we will inject our different sections of settings
+         * Private method to build the tabs array for the settings page
          * 
          * @since 8.1
          * @access private
          * @author Kevin Pirnie <me@kpirnie.com>
          * @package The Cache Purger
          * 
-         * @return array Returns an array of tabs to be added to the settings page
-         */
+         * @return array Returns an array of tabs
+         * 
+        */
         private function add_tabs(): array
         {
-                        
-            // hold the log if we need to
-            $the_log = [
-                    'title' => __( 'Purge Log', 'the-cache-purger' ),
-                    'hide_save_button' => true,
-                    'sections' => [
-                        'd' => [
-                            'fields' => [
-                                [
-                                    'id' => 'kptcp_log',
-                                    'type' => 'html',
-                                    'content' => $this -> kpcp_purge_log(),
-                                ],
+
+            // build the tabs array
+            $ret = [
+                'general' => $this->build_general_tab(),
+                'api'     => $this->build_api_tab(),
+                'cron'    => $this->build_cron_tab(),
+                'log'     => $this->build_log_tab(),
+                'docs'    => $this->build_docs_tab(),
+            ];
+
+            // if we don't need the log tab, remove it
+            if( ! filter_var( ( $this->opts->should_log ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+                unset( $ret['log'] );
+            }
+
+            // return the tabs
+            return $ret;
+
+        }
+
+        /** 
+         * build_general_tab
+         * 
+         * Private method to build the general settings tab
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return array Returns the general tab configuration array
+         * 
+        */
+        private function build_general_tab(): array
+        {
+
+            // return the tab configuration
+            return [
+                'title'    => __( 'General Settings', 'the-cache-purger' ),
+                'sections' => [
+                    'a' => [ 'fields' => $this->kpcp_settings() ],
+                ],
+            ];
+
+        }
+
+        /** 
+         * build_api_tab
+         * 
+         * Private method to build the API/Server settings tab
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return array Returns the API/Server tab configuration array
+         * 
+        */
+        private function build_api_tab(): array
+        {
+
+            // return the tab configuration
+            return [
+                'title'    => __( 'API/Server Settings', 'the-cache-purger' ),
+                'sections' => [
+                    'b' => [ 'fields' => $this->kpcp_apiserver_settings() ],
+                ],
+            ];
+
+        }
+
+        /** 
+         * build_cron_tab
+         * 
+         * Private method to build the CRON settings tab
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return array Returns the CRON tab configuration array
+         * 
+        */
+        private function build_cron_tab(): array
+        {
+
+            // return the tab configuration
+            return [
+                'title'    => __( 'CRON Settings', 'the-cache-purger' ),
+                'sections' => [
+                    'c' => [ 'fields' => $this->kpcp_cron_settings() ],
+                ],
+            ];
+
+        }
+
+        /** 
+         * build_log_tab
+         * 
+         * Private method to build the purge log tab
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return array Returns the log tab configuration array
+         * 
+        */
+        private function build_log_tab(): array
+        {
+
+            // return the tab configuration
+            return [
+                'title'            => __( 'Purge Log', 'the-cache-purger' ),
+                'hide_save_button' => true,
+                'sections'         => [
+                    'd' => [
+                        'fields' => [
+                            [
+                                'id'      => 'kptcp_log',
+                                'type'    => 'html',
+                                'content' => $this->kpcp_purge_log(),
                             ],
                         ],
                     ],
-                    'buttons' => [
-                        [
-                            'label' => __('Refresh the Log', 'the-cache-purger'),
-                            'type' => 'button',
-                            'class' => 'button button-primary',
-                            'id' => 'kptcp-refresh-log',
-                            'attributes' => ['data-action' => 'refresh_log'],
-                        ],
-                        [
-                            'label' => __('Clear the Log', 'the-cache-purger'),
-                            'type' => 'button',
-                            'id' => 'kptcp-clear-log',
-                            'class' => 'button button-secondary',
-                            'attributes' => ['data-action' => 'clear_log'],
+                ],
+                'buttons' => [
+                    [
+                        'label'      => __( 'Refresh the Log', 'the-cache-purger' ),
+                        'type'       => 'button',
+                        'class'      => 'button button-primary',
+                        'id'         => 'kptcp-refresh-log',
+                        'attributes' => [
+                            'onclick' => 'window.location="' . admin_url( 'admin.php?page=kpcp_settings&tab=log' ) . '"; return false;',
                         ],
                     ],
-                ];
+                    [
+                        'label'      => __( 'Clear the Log', 'the-cache-purger' ),
+                        'type'       => 'button',
+                        'id'         => 'kptcp-clear-log',
+                        'class'      => 'button button-secondary',
+                        'attributes' => [
+                            'onclick' => 'window.location="' . add_query_arg( 'the_log_purge', 'true', admin_url( 'admin.php?page=kpcp_settings&tab=log' ) ) . '"; return false;',
+                        ],
+                    ],
+                ],
+            ];
 
-            // set the return to an array containing our settings tabs
-            $ret = [
-                'general' => [
-                    'title' => __( 'General Settings', 'the-cache-purger' ),
-                    'sections' => [
-                        'a' => [
-                            'fields' => $this -> kpcp_settings(),
-                        ],
-                    ],
-                ],
-                'api' => [
-                    'title' => __( 'API/Server Settings', 'the-cache-purger' ),
-                    'sections' => [
-                        'b' => [
-                            'fields' => $this -> kpcp_apiserver_settings(),
-                        ],
-                    ],
-                ],
-                'cron' => [
-                    'title' => __( 'CRON Settings', 'the-cache-purger' ),
-                    'sections' => [
-                        'c' => [
-                            'fields' => $this -> kpcp_cron_settings(),
-                        ],
-                    ],
-                ],
-                'log' => ($the_log) ?? [],
-                'docs' => [
-                    'title' => __( 'Documentation', 'the-cache-purger' ),
-                    'hide_save_button' => true,
-                    'sections' => [
-                        'e' => [
-                            'fields' => [
-                                [
-                                    'id' => 'kptcp_docs',
-                                    'type' => 'html',
-                                    'content' => $this -> kpcp_docs(),
-                                ],
+        }
+
+        /** 
+         * build_docs_tab
+         * 
+         * Private method to build the documentation tab
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return array Returns the documentation tab configuration array
+         * 
+        */
+        private function build_docs_tab(): array
+        {
+
+            // return the tab configuration
+            return [
+                'title'            => __( 'Documentation', 'the-cache-purger' ),
+                'hide_save_button' => true,
+                'sections'         => [
+                    'e' => [
+                        'fields' => [
+                            [
+                                'id'      => 'kptcp_docs',
+                                'type'    => 'html',
+                                'content' => $this->kpcp_docs(),
                             ],
                         ],
                     ],
                 ],
             ];
 
-            // if we don't need it, remove it
-            if( ! filter_var( ( $this->opts -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
-                unset($ret['log']);
-            }
-            
-            // return the array
-            return $ret;
         }
-
+    
         /** 
          * get_forms
          * 

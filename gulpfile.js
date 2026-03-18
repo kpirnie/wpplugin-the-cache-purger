@@ -232,7 +232,7 @@ gulp.task( 'production_copy', function( done ) {
 gulp.task( 'default', gulp.series(
     'cleanup',
     //'sass',
-    'stylesheets',
+    //'stylesheets',
     //'javascripts',
     'cleanupconcat',
     //'fonts', 
@@ -242,6 +242,6 @@ gulp.task( 'default', gulp.series(
     'templates', 
     'customs',
     'vendor', 
-    'debug_assets',
+    //'debug_assets',
     'production_copy',
 ) );

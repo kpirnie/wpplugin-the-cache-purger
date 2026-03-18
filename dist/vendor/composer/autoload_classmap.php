@@ -1090,8 +1090,6 @@ return array(
     'GuzzleHttp\\TransferStats' => $vendorDir . '/guzzlehttp/guzzle/src/TransferStats.php',
     'GuzzleHttp\\Utils' => $vendorDir . '/guzzlehttp/guzzle/src/Utils.php',
     'HOSTING' => $baseDir . '/work/inc/modules/hosting.php',
-    'KPTCP' => $vendorDir . '/custom-fields/classes/setup.class.php',
-    'KPTCP_Setup' => $vendorDir . '/custom-fields/classes/setup.class.php',
     'KP\\WPFieldFramework\\BlockGenerator' => $vendorDir . '/kevinpirnie/kpt-wpfieldframework/src/BlockGenerator.php',
     'KP\\WPFieldFramework\\ExportImport' => $vendorDir . '/kevinpirnie/kpt-wpfieldframework/src/ExportImport.php',
     'KP\\WPFieldFramework\\FieldTypes' => $vendorDir . '/kevinpirnie/kpt-wpfieldframework/src/FieldTypes.php',

@@ -138,7 +138,7 @@ if( ! trait_exists( 'MEMORY' ) ) {
                                     do {
 
                                         // Scan for keys matching the prefix
-                                        $_keys = $_redis -> scan( $_idx, $_prefix . '*' );
+                                        $_keys = $_redis -> scan( $_idx, $_prefix . '*', 1000 );
 
                                         // make sure we aren't throwing ourselves into an endless loop here
                                         if ( $_keys === false ) {
@@ -151,7 +151,7 @@ if( ! trait_exists( 'MEMORY' ) ) {
                                         if ( ! empty( $_keys ) ) {
                                             
                                             // delete the item
-                                            $_redis -> unlink( $_keys );
+                                            $_redis -> unlink( ...$_keys );
                                         }
 
                                     // while we're greater than 0

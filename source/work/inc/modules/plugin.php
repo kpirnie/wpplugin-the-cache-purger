@@ -808,8 +808,8 @@ if( ! trait_exists( 'PLUGIN' ) ) {
                 }
 
                 // clear the files from the cache path.  This should take care of the rest
-                if( @is_readable ( $_et_cache ) ) {
-
+                if( file_exists( $_et_cache ) && is_readable( $_et_cache ) ) {
+                    
                     // get a list of the files/folders in the cache path
                     $_files = glob( $_et_cache . '*' );
 
