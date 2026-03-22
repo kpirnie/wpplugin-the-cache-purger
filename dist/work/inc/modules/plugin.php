@@ -112,10 +112,10 @@ if( ! trait_exists( 'PLUGIN' ) ) {
         protected function purge_plugin_cloudflare( ) : void {
 
             // Cloudflare - even though it's not a host
-            if ( class_exists( '\CF\WordPress\Hooks' ) ) {
+            if ( class_exists( '\Cloudflare\APO\WordPress\Hooks' ) ) {
 
                 // Initiliaze Hooks class which contains WordPress hook functions from Cloudflare plugin.
-                $_cf_hooks = new \CF\WordPress\Hooks( );
+                $_cf_hooks = new \Cloudflare\APO\WordPress\Hooks( );
                 
                 // If we have an instantiated class.
                 if ( $_cf_hooks ) {

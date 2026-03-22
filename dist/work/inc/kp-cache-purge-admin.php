@@ -91,6 +91,7 @@ if( ! class_exists( 'KP_Cache_Purge_Admin' ) ) {
                 'show_export_import' => true,
                 'autoload'           => false, // false, true, null
                 'tab_layout'         => 'vertical',
+                'footer_text'        => __( 'Thank you for using The Cache Purger!<br /><a href="https://kevinpirnie.com/" target="_blank">Visit our Website</a>', 'the-cache-purger' ),
             ] );
 
             // register the options page
