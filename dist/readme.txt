@@ -5,7 +5,7 @@ Tags: cache, cache purging, purge cache, caching, performance
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.2
-Stable tag: 2.2.78
+Stable tag: 2.2.88
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -134,6 +134,10 @@ At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge 
 5. The Purge Log — Live log viewer with manual clear button
 
 == Changelog ==
+
+= 2.2.88 =
+* Upgrade: Fastly CDN library
+* Fix: Issue saving some fields in settings library
 
 = 2.2.78 =
 * Upgrade: Fastly CDN library
