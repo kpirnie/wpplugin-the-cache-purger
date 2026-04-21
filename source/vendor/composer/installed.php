@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'fastly/fastly' => array(
-            'pretty_version' => 'v13.0.0',
-            'version' => '13.0.0.0',
-            'reference' => '409728e2b6b89dc97134bf4e4ed8ba5fca6fb5f0',
+            'pretty_version' => 'v13.1.0',
+            'version' => '13.1.0.0',
+            'reference' => 'fdda8af405e5fd76b4111d0be13e9dc41c28994c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fastly/fastly',
             'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'kevinpirnie/kpt-wpfieldframework' => array(
-            'pretty_version' => 'v1.7.23',
-            'version' => '1.7.23.0',
-            'reference' => 'eb0d9b41701c4db2485494bd3ae24aabe878ffef',
+            'pretty_version' => 'v1.7.30',
+            'version' => '1.7.30.0',
+            'reference' => 'b50dd482fdd1b134c976e4e1ae5b306da6fe7f22',
             'type' => 'library',
             'install_path' => __DIR__ . '/../kevinpirnie/kpt-wpfieldframework',
             'aliases' => array(),

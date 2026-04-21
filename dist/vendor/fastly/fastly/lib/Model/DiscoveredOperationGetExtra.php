@@ -53,9 +53,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
       * @var string[]
       */
     protected static $fastlyTypes = [
-        'status' => 'string',
+        'id' => 'string',
         'updated_at' => '\DateTime',
-        'last_seen_at' => '\DateTime'
+        'last_seen_at' => '\DateTime',
+        'rps' => 'float'
     ];
 
     /**
@@ -66,9 +67,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
       * @psalm-var array<string, string|null>
       */
     protected static $fastlyFormats = [
-        'status' => null,
+        'id' => null,
         'updated_at' => 'date-time',
-        'last_seen_at' => 'date-time'
+        'last_seen_at' => 'date-time',
+        'rps' => null
     ];
 
     /**
@@ -98,9 +100,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $attributeMap = [
-        'status' => 'status',
+        'id' => 'id',
         'updated_at' => 'updated_at',
-        'last_seen_at' => 'last_seen_at'
+        'last_seen_at' => 'last_seen_at',
+        'rps' => 'rps'
     ];
 
     /**
@@ -109,9 +112,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $setters = [
-        'status' => 'setStatus',
+        'id' => 'setId',
         'updated_at' => 'setUpdatedAt',
-        'last_seen_at' => 'setLastSeenAt'
+        'last_seen_at' => 'setLastSeenAt',
+        'rps' => 'setRps'
     ];
 
     /**
@@ -120,9 +124,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $getters = [
-        'status' => 'getStatus',
+        'id' => 'getId',
         'updated_at' => 'getUpdatedAt',
-        'last_seen_at' => 'getLastSeenAt'
+        'last_seen_at' => 'getLastSeenAt',
+        'rps' => 'getRps'
     ];
 
     /**
@@ -166,23 +171,6 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
         return self::$fastlyModelName;
     }
 
-    const STATUS_DISCOVERED = 'DISCOVERED';
-    const STATUS_SAVED = 'SAVED';
-    const STATUS_IGNORED = 'IGNORED';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getStatusAllowableValues()
-    {
-        return [
-            self::STATUS_DISCOVERED,
-            self::STATUS_SAVED,
-            self::STATUS_IGNORED,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -199,9 +187,10 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
      */
     public function __construct(array $data = null)
     {
-        $this->container['status'] = $data['status'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
         $this->container['updated_at'] = $data['updated_at'] ?? null;
         $this->container['last_seen_at'] = $data['last_seen_at'] ?? null;
+        $this->container['rps'] = $data['rps'] ?? null;
     }
 
     /**
@@ -213,15 +202,9 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
     {
         $invalidProperties = [];
 
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($this->container['status']) && !in_array($this->container['status'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'status', must be one of '%s'",
-                $this->container['status'],
-                implode("', '", $allowedValues)
-            );
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
         }
-
         return $invalidProperties;
     }
 
@@ -238,35 +221,25 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
 
 
     /**
-     * Gets status
+     * Gets id
      *
-     * @return string|null
+     * @return string
      */
-    public function getStatus()
+    public function getId()
     {
-        return $this->container['status'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets status
+     * Sets id
      *
-     * @param string|null $status The current status of the operation.
+     * @param string $id The unique identifier of the discovered operation.
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setId($id)
     {
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($status) && !in_array($status, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'status', must be one of '%s'",
-                    $status,
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        $this->container['status'] = $status;
+        $this->container['id'] = $id;
 
         return $this;
     }
@@ -315,6 +288,30 @@ class DiscoveredOperationGetExtra implements ModelInterface, ArrayAccess, \JsonS
     public function setLastSeenAt($last_seen_at)
     {
         $this->container['last_seen_at'] = $last_seen_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets rps
+     *
+     * @return float|null
+     */
+    public function getRps()
+    {
+        return $this->container['rps'];
+    }
+
+    /**
+     * Sets rps
+     *
+     * @param float|null $rps Requests per second observed for this operation.
+     *
+     * @return self
+     */
+    public function setRps($rps)
+    {
+        $this->container['rps'] = $rps;
 
         return $this;
     }

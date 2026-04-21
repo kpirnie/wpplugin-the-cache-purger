@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "fastly/fastly",
-            "version": "v13.0.0",
-            "version_normalized": "13.0.0.0",
+            "version": "v13.1.0",
+            "version_normalized": "13.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fastly/fastly-php.git",
-                "reference": "409728e2b6b89dc97134bf4e4ed8ba5fca6fb5f0"
+                "reference": "fdda8af405e5fd76b4111d0be13e9dc41c28994c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fastly/fastly-php/zipball/409728e2b6b89dc97134bf4e4ed8ba5fca6fb5f0",
-                "reference": "409728e2b6b89dc97134bf4e4ed8ba5fca6fb5f0",
+                "url": "https://api.github.com/repos/fastly/fastly-php/zipball/fdda8af405e5fd76b4111d0be13e9dc41c28994c",
+                "reference": "fdda8af405e5fd76b4111d0be13e9dc41c28994c",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.12"
             },
-            "time": "2026-02-16T09:19:54+00:00",
+            "time": "2026-03-31T05:24:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -57,7 +57,7 @@
             "support": {
                 "email": "oss@fastly.com",
                 "issues": "https://github.com/fastly/fastly-php/issues",
-                "source": "https://github.com/fastly/fastly-php/tree/v13.0.0"
+                "source": "https://github.com/fastly/fastly-php/tree/v13.1.0"
             },
             "install-path": "../fastly/fastly"
         },
@@ -398,23 +398,23 @@
         },
         {
             "name": "kevinpirnie/kpt-wpfieldframework",
-            "version": "v1.7.23",
-            "version_normalized": "1.7.23.0",
+            "version": "v1.7.30",
+            "version_normalized": "1.7.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kpirnie/kp-wpfieldframework.git",
-                "reference": "eb0d9b41701c4db2485494bd3ae24aabe878ffef"
+                "reference": "b50dd482fdd1b134c976e4e1ae5b306da6fe7f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kpirnie/kp-wpfieldframework/zipball/eb0d9b41701c4db2485494bd3ae24aabe878ffef",
-                "reference": "eb0d9b41701c4db2485494bd3ae24aabe878ffef",
+                "url": "https://api.github.com/repos/kpirnie/kp-wpfieldframework/zipball/b50dd482fdd1b134c976e4e1ae5b306da6fe7f22",
+                "reference": "b50dd482fdd1b134c976e4e1ae5b306da6fe7f22",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2"
             },
-            "time": "2026-03-17T13:07:00+00:00",
+            "time": "2026-04-21T14:59:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

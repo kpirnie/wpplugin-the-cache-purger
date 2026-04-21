@@ -671,6 +671,9 @@ if (! class_exists('\KP\WPFieldFramework\OptionsPage')) {
                     if (in_array($type, ['checkbox', 'switch'], true) && !isset($input[$field_id])) {
                         $sanitized[$field_id] = false;
                     }
+                    if (in_array($type, ['checkboxes', 'multiselect'], true) && !isset($input[$field_id])) {
+                        $sanitized[$field_id] = [];
+                    }
                 }
             }
             return $sanitized;
