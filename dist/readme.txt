@@ -5,7 +5,7 @@ Tags: cache, cache purging, purge cache, caching, performance
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.2
-Stable tag: 2.2.88
+Stable tag: 2.2.97
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -135,6 +135,13 @@ At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge 
 
 == Changelog ==
 
+= 2.2.97 =
+* Add: SQLite Object Cache support
+* Upgrade: Fastly CDN library
+* Upgrade: Action Scheduler library
+* Upgrade: Field library
+* Cleanup: Pre version 2
+
 = 2.2.88 =
 * Upgrade: Fastly CDN library
 * Fix: Issue saving some fields in settings library
@@ -180,119 +187,3 @@ At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge 
 * Update: Action Scheduler library
 * Fix: Action Scheduler calls for background purge jobs
 * Fix: Footer link
-
-= 1.9.89 =
-* Verify: WordPress 6.7 compatibility
-* Fix: Null check for purge type configuration
-* Add: Fastly CDN purge support
-* Replace: WP Cron with WooCommerce Action Scheduler for more reliable background processing
-* Add: New action hooks — `tcp_cron_cache_purge`, `tcp_cron_log_purge`, `tcp_long_cache_purge`
-
-= 1.9.27 =
-* Verify: WordPress 6.6 compatibility
-* Add: Flying Press plugin cache support
-* Add: Setting to select which cache types are purged
-* Add: Selfless plug
-
-= 1.8.01 =
-* Verify: PHP 8.3 compatibility
-* Fix: PHP 8.x compatibility and deprecation notices
-* Update: Framework JS libraries
-
-= 1.7.33 =
-* Verify: WordPress 6.5 compatibility
-* Update: Minimum WordPress version to 5.6
-
-= 1.7.12 =
-* Fix: Missing variable on activation
-
-= 1.7.11 =
-* Optimize: Class loading via Composer autoloader
-* Update: JS libraries (CodeMirror, Leaflet, etc.)
-* Patch: PHP 8.2 deprecation notices
-
-= 1.6.04 =
-* Verify: WordPress 6.3 compatibility
-
-= 1.6.03 =
-* Fix: Warning for OPcache scripts
-* Fix: Fatal error on log clearing in PHP 8+
-
-= 1.5.99 =
-* Verify: WordPress 6.2 compatibility
-* Fix: Cron schedule check
-* Fix: File cache clearing could cause a fatal error in some environments
-* Fix: Long purge actions moved from admin-ajax to a one-time WP Cron job
-
-= 1.5.22 =
-* Fix: File cache clearing — better performance, suppresses warnings
-
-= 1.5.12 =
-* Add: Option to clear caches on plugin settings save
-* Add: Purge log viewer tab in settings UI
-* Add: Manual and cron-based log clearing
-* Fix: tcp_post_purge hook
-* Add: Pure Varnish purging support
-* Update: Move Varnish and PageSpeed purging to admin-ajax for better wp-admin performance
-
-= 1.4.02 =
-* Verify: WordPress 6.1.2 compatibility
-* Update: Settings field framework
-* Fix: Purging action exclusions
-* Update: Exclusion field labelling
-
-= 1.3.11 =
-* Fix: WP-Optimize static call to non-static method in PHP 8+
-* Fix: Nginx cache purging — more path detection, more efficient clearing
-* Fix: File cache purging — more efficient clearing
-* Fix: Cloudflare and Sucuri purges — only attempt if API credentials are present
-* Fix: Master Purge admin bar link positioning
-
-= 1.2.79 =
-* Fix: NitroPack purge AJAX response causing page redirect
-
-= 1.2.66 =
-* Add: NitroPack cache purge support
-* Add: XCache purge support
-* Update: Module structure
-* Update: Logging actions
-
-= 1.1.01 =
-* Verify: WordPress 6.0 compatibility
-* Verify: PHP 8.1 compatibility
-* New: Plugin icon
-* Update: Settings field framework
-
-= 1.0.27 =
-* Add: WP Cron-based scheduled cache purging with configurable schedules
-* Add: WP-CLI purge command (`wp the_cache purge`)
-* Fix: Sucuri purge logging
-* Fix: Network activation guard
-* Fix: Master Purge showing in network admin
-* Fix: PageSpeed purge performance
-* Fix: OOM issue on WooCommerce sites with large product catalogs
-* Add: WP REST Cache purge support
-
-= 0.8.88 =
-* Add: Translation readiness (text domain: the-cache-purger)
-* Add: Minified asset compilation with debug-mode detection
-
-= 0.8.09 =
-* Add: Elementor CSS auto-regeneration
-* Add: Divi cache purge
-* Update: W3 Total Cache, WP Super Cache, Hummingbird, Cache Enabler, LiteSpeed Cache, Kinsta, Autoptimize, WP-Optimize clearing
-* Add: SiteGround, Bluehost, Cloudways (Breezeway) hosting cache purge
-
-= 0.7.16 =
-* Fix: Settings conflict with another plugin
-* Add: Remote Redis, Memcache, Memcached server configuration
-* Add: Direct Cloudflare and Sucuri API clearing
-
-= 0.4.15 =
-* Add: Manual Cache Purge button
-
-= 0.3.98 =
-* Initial feature build — purging methods, settings, documentation, export/import
-
-= 0.1.01 =
-* Initial release

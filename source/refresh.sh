@@ -15,7 +15,7 @@ composer update;
 composer dumpautoload -o -n;
 
 # just inn case php is caching
-service php8.3-fpm restart && service nginx reload
+service php8.5-fpm restart && service nginx reload
 
 # clear out our redis cache
 redis-cli flushall

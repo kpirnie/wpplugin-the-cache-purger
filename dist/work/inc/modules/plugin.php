@@ -1,4 +1,5 @@
 <?php
+
 /** 
  * PLUGIN module
  * 
@@ -8,13 +9,13 @@
  * @author Kevin Pirnie <me@kpirnie.com>
  * @package The Cache Purger
  * 
-*/
+ */
 
 // We don't want to allow direct access to this
-defined( 'ABSPATH' ) || die( 'No direct script access allowed' );
+defined('ABSPATH') || die('No direct script access allowed');
 
 // check if this trait already exists
-if( ! trait_exists( 'PLUGIN' ) ) {
+if (! trait_exists('PLUGIN')) {
 
     /**
      * Trait PLUGIN
@@ -25,8 +26,9 @@ if( ! trait_exists( 'PLUGIN' ) ) {
      * @author Kevin Pirnie <me@kpirnie.com>
      * @package The Cache Purger
      *
-    */
-    trait PLUGIN {
+     */
+    trait PLUGIN
+    {
 
         // hold the internal list of plugins we have methods for
         protected $_plugin_caches = array(
@@ -55,6 +57,7 @@ if( ! trait_exists( 'PLUGIN' ) ) {
             'purge_plugin_wprestcache',
             'purge_plugin_nitropack',
             'purge_plugin_flyingpress',
+            'purge_plugin_sqliteobjectcache',
         );
 
         /** 
@@ -70,29 +73,79 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        private function purge_plugin_caches( ) : void {
+         */
+        private function purge_plugin_caches(): void
+        {
 
             // throw a hook here
-            do_action( 'tcp_pre_plugin_purge' );
+            do_action('tcp_pre_plugin_purge');
 
             // log it
-            KPCPC::write_log( "\tPLUGIN PURGE" );
+            KPCPC::write_log("\tPLUGIN PURGE");
 
             // loop over the slug array
-            foreach( $this -> _plugin_caches as $_plugin ) {
+            foreach ($this->_plugin_caches as $_plugin) {
 
                 // fire up the method to do the purge
-                $this -> { $_plugin }( );
-
+                $this->{$_plugin}();
             }
-            
+
             // release the array
-            unset( $this -> _plugin_caches );
+            unset($this->_plugin_caches);
 
             // throw a hook here
-            do_action( 'tcp_post_plugin_purge' );
+            do_action('tcp_post_plugin_purge');
+        }
 
+        /** 
+         * purge_plugin_sqliteobjectcache
+         * 
+         * This method attempts to utilize the purge methods
+         * of SQLite Object Cache plugin to purge it's caches
+         * 
+         * @since 8.1
+         * @access protected
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return void This method does not return anything
+         * 
+         */
+        protected function purge_plugin_sqliteobjectcache(): void
+        {
+
+            // check if it's installed
+            if (class_exists('SQLite_Object_Cache')) {
+
+                // setup the wp global
+                global $wp_object_cache;
+
+                // flush wordpress cache
+                wp_cache_flush();
+
+                // check if we can vacuum.  this isnt necessary to clear the cache, but may help with its timing
+                if (method_exists($wp_object_cache, 'vacuum')) {
+                    $wp_object_cache->vacuum();
+                }
+
+                // let's see if we can remove expired items at this point
+                if (method_exists($wp_object_cache, 'sqlite_remove_expired')) {
+                    $wp_object_cache->sqlite_remove_expired();
+                }
+
+                // check if we can flush it
+                if (method_exists($wp_object_cache, 'flush')) {
+                    $wp_object_cache->flush(true);
+                }
+
+                // check if we can clear the apcu cache enabled by the plugin
+                if (method_exists($wp_object_cache, 'apcu-clear_cache')) {
+                    $wp_object_cache->apcu_clear_cache();
+                }
+
+                // log the purge
+                KPCPC::write_log("\t\tSQLite Object Cache");
+            }
         }
 
         /** 
@@ -108,30 +161,29 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_cloudflare( ) : void {
+         */
+        protected function purge_plugin_cloudflare(): void
+        {
 
-            // Cloudflare - even though it's not a host
-            if ( class_exists( '\CF\WordPress\Hooks' ) ) {
+            // Cloudflare
+            if (class_exists('\CF\WordPress\Hooks')) {
 
                 // Initiliaze Hooks class which contains WordPress hook functions from Cloudflare plugin.
-                $_cf_hooks = new \CF\WordPress\Hooks( );
-                
+                $_cf_hooks = new \CF\WordPress\Hooks();
+
                 // If we have an instantiated class.
-                if ( $_cf_hooks ) {
-                
+                if ($_cf_hooks) {
+
                     // Purge all cache.
-                    $_cf_hooks -> purgeCacheEverything( );
-                
+                    $_cf_hooks->purgeCacheEverything();
                 }
 
                 // clean up
-                unset( $_cf_hooks );
+                unset($_cf_hooks);
 
                 // log the purge
-                KPCPC::write_log( "\t\tCloudflare Cache" );
+                KPCPC::write_log("\t\tCloudflare Cache");
             }
-
         }
 
         /** 
@@ -147,23 +199,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_sucuri( ) : void {
+         */
+        protected function purge_plugin_sucuri(): void
+        {
 
             // Sucuri - even though it's not a host, we'll need to rely on the sucuri plugin being installed
-            if( class_exists( 'SucuriScanFirewall' ) ) {
+            if (class_exists('SucuriScanFirewall')) {
 
                 // get the sucuri api key
-                $_key = SucuriScanFirewall::getKey( );
+                $_key = SucuriScanFirewall::getKey();
 
                 // fireoff the cache clearing ajax method
-                SucuriScanFirewall::clearCache( $_key );
+                SucuriScanFirewall::clearCache($_key);
 
                 // log the purge
-                KPCPC::write_log( "\t\tSucuri Cache" );
-
+                KPCPC::write_log("\t\tSucuri Cache");
             }
-
         }
 
         /** 
@@ -179,20 +230,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_siteground( ) : void {
+         */
+        protected function purge_plugin_siteground(): void
+        {
 
             // SG Optimizer.
-            if ( class_exists( 'SiteGround_Optimizer\Supercacher\Supercacher' ) ) {
+            if (class_exists('SiteGround_Optimizer\Supercacher\Supercacher')) {
 
                 // clear siteground cache
-                SiteGround_Optimizer\Supercacher\Supercacher::purge_cache( );
+                SiteGround_Optimizer\Supercacher\Supercacher::purge_cache();
 
                 // log the purge
-                KPCPC::write_log( "\t\tSiteGround Cache" );
-
+                KPCPC::write_log("\t\tSiteGround Cache");
             }
-
         }
 
         /** 
@@ -208,19 +258,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_nginxhelper( ) : void {
+         */
+        protected function purge_plugin_nginxhelper(): void
+        {
 
             // Nginx helper Plugin (Gridpane and others)
-            if ( class_exists( 'Nginx_Helper' ) ) {
+            if (class_exists('Nginx_Helper')) {
 
                 // clear nginx helper cache
-                do_action( 'rt_nginx_helper_purge_all' );
+                do_action('rt_nginx_helper_purge_all');
 
                 // log the purge
-                KPCPC::write_log( "\t\tNginx Helper Cache" );
+                KPCPC::write_log("\t\tNginx Helper Cache");
             }
-            
         }
 
         /** 
@@ -236,22 +286,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_lightspeed( ) : void {
+         */
+        protected function purge_plugin_lightspeed(): void
+        {
 
             // LiteSpeed Cache.
-            if ( class_exists( 'LiteSpeed_Cache_Purge' ) ) {
+            if (class_exists('LiteSpeed_Cache_Purge')) {
 
                 // litespeed
-                LiteSpeed_Cache_Purge::all( );
+                LiteSpeed_Cache_Purge::all();
 
                 // just in case
-                do_action( 'litespeed_purge_all' );
+                do_action('litespeed_purge_all');
 
                 // log the purge
-                KPCPC::write_log( "\t\tLiteSpeed Cache" );
+                KPCPC::write_log("\t\tLiteSpeed Cache");
             }
-
         }
 
         /** 
@@ -267,19 +317,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_cachify( ) : void {
+         */
+        protected function purge_plugin_cachify(): void
+        {
 
             // Clear Cachify Cache
-            if ( has_action('cachify_flush_cache') ) {
+            if (has_action('cachify_flush_cache')) {
 
                 // clear cachify
-                do_action( 'cachify_flush_cache' );
+                do_action('cachify_flush_cache');
 
                 // log the purge
-                KPCPC::write_log( "\t\tCachify Cache" );
+                KPCPC::write_log("\t\tCachify Cache");
             }
-
         }
 
         /** 
@@ -295,22 +345,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_autoptimize( ) : void {
+         */
+        protected function purge_plugin_autoptimize(): void
+        {
 
             // Autoptimize
-            if( class_exists( 'autoptimizeCache' ) ) {
+            if (class_exists('autoptimizeCache')) {
 
                 // autoptimize
-                autoptimizeCache::clearall_actionless( );
+                autoptimizeCache::clearall_actionless();
 
                 // try this too
-                autoptimizeCache::clearall( );
+                autoptimizeCache::clearall();
 
                 // log the purge
-                KPCPC::write_log( "\t\tAutoptimize Cache" );
+                KPCPC::write_log("\t\tAutoptimize Cache");
             }
-
         }
 
         /** 
@@ -326,19 +376,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_fastvelocity( ) : void {
+         */
+        protected function purge_plugin_fastvelocity(): void
+        {
 
             // Fast Velocity Minify
-            if( function_exists( 'fvm_purge_all' ) ) {
+            if (function_exists('fvm_purge_all')) {
 
                 // fmv purge
-                fvm_purge_all( );
+                fvm_purge_all();
 
                 // log the purge
-                KPCPC::write_log( "\t\tFast Velocity Minify Cache" );
+                KPCPC::write_log("\t\tFast Velocity Minify Cache");
             }
-
         }
 
         /** 
@@ -354,20 +404,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wprocket( ) : void {
+         */
+        protected function purge_plugin_wprocket(): void
+        {
 
             // WPRocket
-            if( function_exists( 'rocket_clean_domain' ) ) {
+            if (function_exists('rocket_clean_domain')) {
 
                 // wp rocker cache
-                rocket_clean_domain( );
+                rocket_clean_domain();
 
                 // log the purge
-                KPCPC::write_log( "\t\tWPRocket Cache" );
-
+                KPCPC::write_log("\t\tWPRocket Cache");
             }
-
         }
 
         /** 
@@ -383,20 +432,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_swift( ) : void {
-            
+         */
+        protected function purge_plugin_swift(): void
+        {
+
             // Swift Performance
-            if( class_exists( 'Swift_Performance_Cache' ) ) {
+            if (class_exists('Swift_Performance_Cache')) {
 
                 // swift cache
-                Swift_Performance_Cache::clear_all_cache( );
+                Swift_Performance_Cache::clear_all_cache();
 
                 // log the purge
-                KPCPC::write_log( "\t\tSwift Performance Cache" );
-
+                KPCPC::write_log("\t\tSwift Performance Cache");
             }
-
         }
 
         /** 
@@ -412,19 +460,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_comet( ) : void {
+         */
+        protected function purge_plugin_comet(): void
+        {
 
             // Comet Cache.
-            if ( class_exists( 'comet_cache' ) ) {
+            if (class_exists('comet_cache')) {
 
                 // clear it
-                comet_cache::clear( );
+                comet_cache::clear();
 
                 // log the purge
-                KPCPC::write_log( "\t\tComet Cache" );
-            }            
-
+                KPCPC::write_log("\t\tComet Cache");
+            }
         }
 
         /** 
@@ -440,22 +488,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_hummingbird( ) : void {
+         */
+        protected function purge_plugin_hummingbird(): void
+        {
 
             // Hummingbird.
-            if ( class_exists( 'Hummingbird\Core\Filesystem' ) ) {
+            if (class_exists('Hummingbird\Core\Filesystem')) {
 
                 // I would use Hummingbird\WP_Hummingbird::flush_cache( true, false ) instead, but it's disabling the page cache option in Hummingbird settings.
-                Hummingbird\Core\Filesystem::instance( ) -> clean_up( );
+                Hummingbird\Core\Filesystem::instance()->clean_up();
 
                 // just in case
-                do_action( 'wphb_clear_page_cache' );
+                do_action('wphb_clear_page_cache');
 
                 // log the purge
-                KPCPC::write_log( "\t\tHummingbird Cache" );
+                KPCPC::write_log("\t\tHummingbird Cache");
             }
-
         }
 
         /** 
@@ -471,22 +519,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wpfastest( ) : void {
+         */
+        protected function purge_plugin_wpfastest(): void
+        {
 
             // WP Fastest Cache
-            if( class_exists( 'WpFastestCache' ) ) {
-            
+            if (class_exists('WpFastestCache')) {
+
                 // fire up the class
-                $wpfc = new WpFastestCache( );
-                
+                $wpfc = new WpFastestCache();
+
                 // purge the cache
-                $wpfc -> deleteCache( );
+                $wpfc->deleteCache();
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Fastest Cache" );
+                KPCPC::write_log("\t\tWP Fastest Cache");
             }
-
         }
 
         /** 
@@ -502,20 +550,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wpfastest2( ) : void {
+         */
+        protected function purge_plugin_wpfastest2(): void
+        {
 
             // WP Fastest Cache 2
-            if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
-            
+            if (isset($GLOBALS['wp_fastest_cache']) && method_exists($GLOBALS['wp_fastest_cache'], 'deleteCache')) {
+
                 // delete the caches    
-                $GLOBALS['wp_fastest_cache'] -> deleteCache( );
+                $GLOBALS['wp_fastest_cache']->deleteCache();
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Fastest 2 Cache" );
-            
+                KPCPC::write_log("\t\tWP Fastest 2 Cache");
             }
-
         }
 
         /** 
@@ -531,29 +578,27 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wpsupercache( ) : void {
+         */
+        protected function purge_plugin_wpsupercache(): void
+        {
 
             // WP Super Cache
-            if( function_exists( 'wp_cache_clear_cache' ) ) {
+            if (function_exists('wp_cache_clear_cache')) {
 
                 // check if we're multisite
-                if( is_multisite( ) ) {
+                if (is_multisite()) {
 
                     // we are so utilize the cache clearing for it
-                    wp_cache_clear_cache( $this -> site_id );
-                
+                    wp_cache_clear_cache($this->site_id);
                 } else {
-                    
+
                     // we're not
-                    wp_cache_clear_cache( );
-                
+                    wp_cache_clear_cache();
                 }
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Super Cache" );
+                KPCPC::write_log("\t\tWP Super Cache");
             }
-
         }
 
         /** 
@@ -569,22 +614,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_w3totalcache( ) : void {
+         */
+        protected function purge_plugin_w3totalcache(): void
+        {
 
             // W3 Total Cache
-            if( function_exists( 'w3tc_flush_all' ) ) {
+            if (function_exists('w3tc_flush_all')) {
 
                 // flush
-                w3tc_flush_all( );
+                w3tc_flush_all();
 
                 // just in case
-                do_action( 'w3tc_flush_posts' );
+                do_action('w3tc_flush_posts');
 
                 // log the purge
-                KPCPC::write_log( "\t\tW3 Total Cache" );
+                KPCPC::write_log("\t\tW3 Total Cache");
             }
-
         }
 
         /** 
@@ -600,22 +645,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_hypercache( ) : void {
+         */
+        protected function purge_plugin_hypercache(): void
+        {
 
             // Hyper Cache
-            if( class_exists( 'HyperCache' ) ) {
-            
+            if (class_exists('HyperCache')) {
+
                 // fire it up
-                $hypercache = new HyperCache( );
-                
+                $hypercache = new HyperCache();
+
                 // clean the cache
-                $hypercache -> clean( );
+                $hypercache->clean();
 
                 // log the purge
-                KPCPC::write_log( "\t\tHyper Cache" );
+                KPCPC::write_log("\t\tHyper Cache");
             }
-
         }
 
         /** 
@@ -631,35 +676,33 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wpotimize( ) : void {
+         */
+        protected function purge_plugin_wpotimize(): void
+        {
 
             // WP Optimize
-            if( function_exists( 'wpo_cache_flush' ) ) {
+            if (function_exists('wpo_cache_flush')) {
 
                 // flush the cache
-                wpo_cache_flush( );
+                wpo_cache_flush();
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Optimize Cache" );
-
+                KPCPC::write_log("\t\tWP Optimize Cache");
             }
 
             // WP-Optimize
-            if ( class_exists( 'WP_Optimize' ) && defined( 'WPO_PLUGIN_MAIN_PATH' ) ) {
-                
+            if (class_exists('WP_Optimize') && defined('WPO_PLUGIN_MAIN_PATH')) {
+
                 // check for the page cache
-                if( is_callable( array( 'WP_Optimize', 'get_page_cache' ) ) && is_callable( array( WP_Optimize( ) -> get_page_cache( ), 'purge' ) ) ) {
-                    
+                if (is_callable(array('WP_Optimize', 'get_page_cache')) && is_callable(array(WP_Optimize()->get_page_cache(), 'purge'))) {
+
                     // purge
-                    WP_Optimize( ) -> get_page_cache( ) -> purge( );
+                    WP_Optimize()->get_page_cache()->purge();
                 }
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Optimize (try 2) Cache" );
-
+                KPCPC::write_log("\t\tWP Optimize (try 2) Cache");
             }
-
         }
 
         /** 
@@ -675,36 +718,35 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wpoptimize2( ) : void {
+         */
+        protected function purge_plugin_wpoptimize2(): void
+        {
 
             // WP-Optimize 2
-            if ( class_exists( 'WP_Optimize_Cache_Commands' ) ) {
+            if (class_exists('WP_Optimize_Cache_Commands')) {
 
                 // fir eup the class
-                $_wpo_cc = new WP_Optimize_Cache_Commands( );
+                $_wpo_cc = new WP_Optimize_Cache_Commands();
 
                 // purge the caches
-                $_wpo_cc -> purge_page_cache( );
+                $_wpo_cc->purge_page_cache();
 
                 // clean up
-                unset( $_wpo_cc );
+                unset($_wpo_cc);
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Optimize 2 Cache" );
+                KPCPC::write_log("\t\tWP Optimize 2 Cache");
             }
 
             // WP-Optimize minification files have a different cache.
-            if ( class_exists( 'WP_Optimize_Minify_Cache_Functions' ) ) {
+            if (class_exists('WP_Optimize_Minify_Cache_Functions')) {
 
                 // purge the caches
-                WP_Optimize_Minify_Cache_Functions::purge( );
+                WP_Optimize_Minify_Cache_Functions::purge();
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Optimize Minify Cache" );
-
+                KPCPC::write_log("\t\tWP Optimize Minify Cache");
             }
-
         }
 
         /** 
@@ -720,23 +762,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_cacheenabler( ) {
+         */
+        protected function purge_plugin_cacheenabler()
+        {
 
             // Cache Enabler
-            if( class_exists( 'Cache_Enabler' ) ) {
-                
+            if (class_exists('Cache_Enabler')) {
+
                 // clear it all out
-                Cache_Enabler::clear_total_cache( );
+                Cache_Enabler::clear_total_cache();
 
                 // just in case
-                do_action( 'ce_clear_cache' );
+                do_action('ce_clear_cache');
 
                 // log the purge
-                KPCPC::write_log( "\t\tCache Enabler Cache" );
-
+                KPCPC::write_log("\t\tCache Enabler Cache");
             }
-
         }
 
         /** 
@@ -752,20 +793,19 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_elementor( ) : void {
+         */
+        protected function purge_plugin_elementor(): void
+        {
 
             // Elementor
-            if( did_action( 'elementor/loaded' ) ) {
+            if (did_action('elementor/loaded')) {
 
                 // Automatically purge and regenerate the Elementor CSS cache
-                \Elementor\Plugin::instance( ) -> files_manager -> clear_cache( );
+                \Elementor\Plugin::instance()->files_manager->clear_cache();
 
                 // log the purge
-                KPCPC::write_log( "\t\tElementor Cache" );
-
+                KPCPC::write_log("\t\tElementor Cache");
             }
-
         }
 
         /** 
@@ -781,14 +821,15 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_divi( ) : void {
+         */
+        protected function purge_plugin_divi(): void
+        {
 
             // Divi
-            if( defined( 'ET_CORE_CACHE_DIR' ) ) {
+            if (defined('ET_CORE_CACHE_DIR')) {
 
                 // clear the Divi caches
-                ET_Core_PageResource::remove_static_resources( 'all', 'all', true );
+                ET_Core_PageResource::remove_static_resources('all', 'all', true);
 
                 // clear the ET cache folder as well
                 $_et_cache = ET_CORE_CACHE_DIR;
@@ -797,56 +838,49 @@ if( ! trait_exists( 'PLUGIN' ) ) {
                 global $wp_filesystem;
 
                 // if we do not have the global yet
-                if( empty( $wp_filesystem ) ) {
+                if (empty($wp_filesystem)) {
 
                     // require the file
                     require_once ABSPATH . '/wp-admin/includes/file.php';
 
                     // initialize the wordpress filesystem
-                    WP_Filesystem( );
-
+                    WP_Filesystem();
                 }
 
                 // clear the files from the cache path.  This should take care of the rest
-                if( file_exists( $_et_cache ) && is_readable( $_et_cache ) ) {
-                    
+                if (file_exists($_et_cache) && is_readable($_et_cache)) {
+
                     // get a list of the files/folders in the cache path
-                    $_files = glob( $_et_cache . '*' );
+                    $_files = glob($_et_cache . '*');
 
                     // loop over them
-                    foreach( $_files as $_file ) {
+                    foreach ($_files as $_file) {
 
                         // if the location is readable
-                        if( @is_readable( $_file ) ) {
+                        if (@is_readable($_file)) {
 
                             // if it's a directory
-                            if( $wp_filesystem -> is_dir( $_file ) ) {
+                            if ($wp_filesystem->is_dir($_file)) {
 
                                 // try to delete it recursively
-                                $wp_filesystem -> delete( $_file, true, 'd' );
+                                $wp_filesystem->delete($_file, true, 'd');
 
                                 // for my own OCDness, let's then recreate the path
-                                $wp_filesystem -> mkdir( $_file );
+                                $wp_filesystem->mkdir($_file);
 
-                            // otherwise it's a file
+                                // otherwise it's a file
                             } else {
 
                                 // try to delete it
-                                $wp_filesystem -> delete( $_file, false, 'f' );
-
+                                $wp_filesystem->delete($_file, false, 'f');
                             }
-
                         }
-
                     }
-
                 }
 
                 // log the purge
-                KPCPC::write_log( "\t\tDivi Cache & Divi File Cache" );
-
+                KPCPC::write_log("\t\tDivi Cache & Divi File Cache");
             }
-
         }
 
         /** 
@@ -862,34 +896,33 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_wprestcache( ) : void {
+         */
+        protected function purge_plugin_wprestcache(): void
+        {
 
             // WP REST Cache
-            if( class_exists( 'WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching' ) ) {
+            if (class_exists('WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching')) {
 
                 // fire up the database global
                 global $wpdb;
 
                 // get the table names
-                $_cache_tbl = ( defined( 'WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching::TABLE_CACHES' ) ) ? WP_Rest_Cache_Plugin\Includes\Caching\Caching::TABLE_CACHES : 'wrc_caches';
-                $_cache_rel_tbl = ( defined( 'WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching::TABLE_RELATIONS' ) ) ? WP_Rest_Cache_Plugin\Includes\Caching\Caching::TABLE_RELATIONS : 'wrc_relations';
+                $_cache_tbl = (defined('WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching::TABLE_CACHES')) ? WP_Rest_Cache_Plugin\Includes\Caching\Caching::TABLE_CACHES : 'wrc_caches';
+                $_cache_rel_tbl = (defined('WP_Rest_Cache_Plugin\\Includes\\Caching\\Caching::TABLE_RELATIONS')) ? WP_Rest_Cache_Plugin\Includes\Caching\Caching::TABLE_RELATIONS : 'wrc_relations';
 
                 // now append the table prefix
-                $_cache_tbl = sprintf( '%s%s', $wpdb -> prefix, $_cache_tbl );
-                $_cache_rel_tbl = sprintf( '%s%s', $wpdb -> prefix, $_cache_rel_tbl );
+                $_cache_tbl = sprintf('%s%s', $wpdb->prefix, $_cache_tbl);
+                $_cache_rel_tbl = sprintf('%s%s', $wpdb->prefix, $_cache_rel_tbl);
 
                 // truncate the relationship table
-                $wpdb->query( "TRUNCATE `{$_cache_rel_tbl}`;" );
+                $wpdb->query("TRUNCATE `{$_cache_rel_tbl}`;");
 
                 // truncate the cache table
-                $wpdb->query( "TRUNCATE `{$_cache_tbl}`;" );
+                $wpdb->query("TRUNCATE `{$_cache_tbl}`;");
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP REST Cache" );
-
+                KPCPC::write_log("\t\tWP REST Cache");
             }
-
         }
 
         /** 
@@ -905,37 +938,35 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_nitropack( ) : void {
+         */
+        protected function purge_plugin_nitropack(): void
+        {
 
             // NitroPack Cache
-            if( class_exists( 'NitroPack\\SDK\\NitroPack' ) ) {
+            if (class_exists('NitroPack\\SDK\\NitroPack')) {
 
                 // get the nitro site config
-                $_sc = nitropack_get_site_config( );
+                $_sc = nitropack_get_site_config();
 
                 // fire it up and try to clear the proxy cache
-                if ( $_sc && null !== $_nitro = get_nitropack_sdk( $_sc["siteId"], $_sc["siteSecret"] ) ) {
-                    
+                if ($_sc && null !== $_nitro = get_nitropack_sdk($_sc["siteId"], $_sc["siteSecret"])) {
+
                     // try to clear the proxy caches    
-                    $_nitro -> purgeProxyCache( );
-                
+                    $_nitro->purgeProxyCache();
                 }
 
                 // purge the nitro local 
-                nitropack_sdk_purge_local( );
+                nitropack_sdk_purge_local();
 
                 // delete the nitro backlog
-                nitropack_sdk_delete_backlog( );
+                nitropack_sdk_delete_backlog();
 
                 // one more final try to purge nitro cache
-                nitropack_sdk_purge( NULL, NULL, '' );
+                nitropack_sdk_purge(NULL, NULL, '');
 
                 // log the purge
-                KPCPC::write_log( "\t\tNitroPack Cache" );
-
+                KPCPC::write_log("\t\tNitroPack Cache");
             }
-
         }
 
         /** 
@@ -951,25 +982,22 @@ if( ! trait_exists( 'PLUGIN' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_plugin_flyingpress( ) : void {
+         */
+        protected function purge_plugin_flyingpress(): void
+        {
 
             // make sure the plugin is installed and active 
-            if( class_exists( 'FlyingPress\\Purge' ) ) {
+            if (class_exists('FlyingPress\\Purge')) {
 
                 // purge all pages
-                FlyingPress\Purge::purge_pages( );
+                FlyingPress\Purge::purge_pages();
 
                 // now, just in case... purge everything
-                FlyingPress\Purge::purge_everything( );
+                FlyingPress\Purge::purge_everything();
 
                 // log the purge
-                KPCPC::write_log( "\t\tFlyingPress Cache" );
-
+                KPCPC::write_log("\t\tFlyingPress Cache");
             }
-
         }
-
     }
-
 }
