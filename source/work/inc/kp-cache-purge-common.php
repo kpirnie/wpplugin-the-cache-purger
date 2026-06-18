@@ -1,4 +1,5 @@
 <?php
+
 /** 
  * Cache Purger Common
  * 
@@ -8,13 +9,13 @@
  * @author Kevin Pirnie <me@kpirnie.com>
  * @package The Cache Purger
  * 
-*/
+ */
 
 // We don't want to allow direct access to this
-defined( 'ABSPATH' ) || die( 'No direct script access allowed' );
+defined('ABSPATH') || die('No direct script access allowed');
 
 // check if this class already exists
-if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
+if (! class_exists('KP_Cache_Purge_Common')) {
 
     /** 
      * Class KP_Cache_Purge_Common
@@ -26,8 +27,9 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
      * @author Kevin Pirnie <me@kpirnie.com>
      * @package The Cache Purger
      *  
-    */
-    class KP_Cache_Purge_Common {
+     */
+    class KP_Cache_Purge_Common
+    {
 
         /** 
          * initialize_plugin
@@ -42,18 +44,17 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         public static function initialize_plugin(): void
         {
 
             // once the plugins are loaded, fire up the admin
-            add_action( 'plugins_loaded', function(): void {
+            add_action('plugins_loaded', function (): void {
 
                 // fire up the plugin settings
                 $setts = new KP_Cache_Purge_Admin();
                 $setts->kpcp_admin();
-
-            }, PHP_INT_MAX );
+            }, PHP_INT_MAX);
 
             // register our admin hooks
             self::register_admin_hooks();
@@ -68,8 +69,7 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_processor->process();
 
             // clean up
-            unset( $_processor );
-
+            unset($_processor);
         }
 
         /** 
@@ -85,50 +85,47 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         private static function register_admin_hooks(): void
         {
 
             // hook into the admin_init
-            add_action( 'admin_init', function(): void {
+            add_action('admin_init', function (): void {
 
                 // handle the manual purge
                 self::handle_manual_purge();
 
                 // handle the log purge
                 self::handle_log_purge();
-
-            }, PHP_INT_MAX );
+            }, PHP_INT_MAX);
 
             // hook for clearing the purge log ajainly
-            add_action( 'wp_ajax_tcp_clear_log', [ __CLASS__, 'ajax_clear_log' ] );
+            add_action('wp_ajax_tcp_clear_log', [__CLASS__, 'ajax_clear_log']);
 
             // we'll need a message in wp-admin for PHP 8 compatibility
-            add_action( 'admin_notices', function(): void {
+            add_action('admin_notices', function (): void {
 
                 // if the site is under PHP 8.2
-                if( version_compare( PHP_VERSION, '8.2', '<=' ) ) {
+                if (version_compare(PHP_VERSION, '8.2', '<=')) {
 
                     // show this notice
-                    ?>
+?>
                     <div class="notice notice-info is-dismissible">
-                        <?php esc_html_e( "<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>", 'the-cache-purger' ); ?>
+                        <?php esc_html_e("<h3>PHP Upgrade Notice</h3><p>To maintain optimal security standards, this will be the final version that supports PHP versions lower than 8.2. Your site must be upgraded in order to update the plugin to future versions.</p><p>Please see here for up to date PHP version information: <a href='https://www.php.net/supported-versions.php' target='_blank'>https://www.php.net/supported-versions.php</a></p>", 'the-cache-purger'); ?>
                     </div>
-                    <?php
+                <?php
 
                 }
 
-                if( get_transient( 'tcp_purge_notice' ) ) {
-                    delete_transient( 'tcp_purge_notice' );
-                    ?>
+                if (get_transient('tcp_purge_notice')) {
+                    delete_transient('tcp_purge_notice');
+                ?>
                     <div class="notice notice-success is-dismissible">
-                        <?php _e( "<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger' ); ?>
+                        <?php _e("<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger'); ?>
                     </div>
-                    <?php
+<?php
                 }
-
-            }, PHP_INT_MAX );
-
+            }, PHP_INT_MAX);
         }
 
         /** 
@@ -144,14 +141,15 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        public static function ajax_clear_log(): void {
-            check_ajax_referer( 'tcp_log_purge' );
-            if( ! current_user_can( 'manage_options' ) ) {
-                wp_send_json_error( [ 'message' => __( 'Unauthorized', 'the-cache-purger' ) ] );
+         */
+        public static function ajax_clear_log(): void
+        {
+            check_ajax_referer('tcp_log_purge');
+            if (! current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Unauthorized', 'the-cache-purger')]);
             }
             self::do_log_purge();
-            wp_send_json_success( [ 'message' => __( 'Log cleared.', 'the-cache-purger' ) ] );
+            wp_send_json_success(['message' => __('Log cleared.', 'the-cache-purger')]);
         }
 
         /** 
@@ -167,20 +165,23 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         private static function handle_manual_purge(): void
         {
 
+            // doing the log purge?
+            $are_we = wp_unslash($_GET['the_cache_purge']) ?? null;
+
             // get the querystring for the purge
-            $_do_purge = filter_var( ( isset( $_GET['the_cache_purge'] ) ) ? sanitize_text_field( $_GET['the_cache_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
+            $_do_purge = filter_var((isset($are_we)) ? sanitize_text_field($are_we) : false, FILTER_VALIDATE_BOOLEAN);
 
             // if it's not set, bail out
-            if( ! $_do_purge ) {
+            if (! $_do_purge) {
                 return;
             }
-            
+
             // check the nonce as well
-            if( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ?? '' ), 'tcp_cache_purge' ) ) {
+            if (! wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce']) ?? ''), 'tcp_cache_purge')) {
                 return;
             }
 
@@ -191,16 +192,15 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_cp->kp_do_purge();
 
             // log the purge
-            KPCPC::write_log( "Manual Cache Cleared" );
+            KPCPC::write_log("Manual Cache Cleared");
 
             // clean it up
-            unset( $_cp );
-            
-            // the a transient for showing the notice and safely redirect removing the query's
-            set_transient( 'tcp_purge_notice', true, 60 );
-            wp_safe_redirect( remove_query_arg( [ 'the_log_purge', 'the_cache_purge', '_wpnonce' ] ) );
-            exit;
+            unset($_cp);
 
+            // the a transient for showing the notice and safely redirect removing the query's
+            set_transient('tcp_purge_notice', true, 60);
+            wp_safe_redirect(remove_query_arg(['the_log_purge', 'the_cache_purge', '_wpnonce']));
+            exit;
         }
 
         /** 
@@ -216,20 +216,22 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         private static function handle_log_purge(): void
         {
+            // doing the log purge?
+            $are_we = wp_unslash($_GET['the_log_purge']) ?? null;
 
             // get the querystring for purging the log
-            $_do_log_purge = filter_var( ( isset( $_GET['the_log_purge'] ) ) ? sanitize_text_field( $_GET['the_log_purge'] ) : false, FILTER_VALIDATE_BOOLEAN );
+            $_do_log_purge = filter_var((isset($are_we)) ? sanitize_text_field($are_we) : false, FILTER_VALIDATE_BOOLEAN);
 
             // if it's not set, bail out
-            if( ! $_do_log_purge ) {
+            if (! $_do_log_purge) {
                 return;
             }
-            
+
             // verify the wp nonce was passed as well
-            if( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ?? '' ), 'tcp_log_purge' ) ) {
+            if (! wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce']) ?? ''), 'tcp_log_purge')) {
                 return;
             }
 
@@ -237,9 +239,9 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
             $_l_path = ABSPATH . 'wp-content/purge.log';
 
             // clear the log
-            file_put_contents( $_l_path, '', LOCK_EX );
+            file_put_contents($_l_path, '', LOCK_EX);
 
-            wp_safe_redirect( remove_query_arg( [ 'the_log_purge', 'the_cache_purge', '_wpnonce' ] ) );
+            wp_safe_redirect(remove_query_arg(['the_log_purge', 'the_cache_purge', '_wpnonce']));
             exit;
         }
 
@@ -256,12 +258,12 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         private static function register_cron_hooks(): void
         {
 
             // hook into the wordpress initialization
-            add_action( 'init', function(): void {
+            add_action('init', function (): void {
 
                 // get our options
                 $_opts = KPCPC::get_options();
@@ -270,16 +272,14 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 $_schedules = wp_get_schedules();
 
                 // maybe schedule the cache purge
-                self::maybe_schedule_cache_purge( $_opts, $_schedules );
+                self::maybe_schedule_cache_purge($_opts, $_schedules);
 
                 // maybe schedule the log purge
-                self::maybe_schedule_log_purge( $_opts, $_schedules );
+                self::maybe_schedule_log_purge($_opts, $_schedules);
 
                 // maybe run the long purge
                 self::maybe_run_long_purge();
-
-            }, PHP_INT_MAX );
-
+            }, PHP_INT_MAX);
         }
 
         /** 
@@ -298,32 +298,31 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        private static function maybe_schedule_cache_purge( object $_opts, array $_schedules ): void
+         */
+        private static function maybe_schedule_cache_purge(object $_opts, array $_schedules): void
         {
 
             // check if scheduled purges are allowed
-            if( ! filter_var( ( $_opts->cron_schedule_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+            if (! filter_var(($_opts->cron_schedule_allowed) ?? false, FILTER_VALIDATE_BOOLEAN)) {
                 return;
             }
 
             // setup our action
-            add_action( 'kpcpc_the_purge', [ __CLASS__, 'do_the_actual_purge' ] );
+            add_action('kpcpc_the_purge', [__CLASS__, 'do_the_actual_purge']);
 
             // if it's already scheduled, bail out
-            if( as_has_scheduled_action( 'kpcpc_the_purge' ) ) {
+            if (as_has_scheduled_action('kpcpc_the_purge')) {
                 return;
             }
 
             // throw a hook here
-            do_action( 'tcp_cron_cache_purge' );
+            do_action('tcp_cron_cache_purge');
 
             // get our schedule
-            $_schedule = ( $_opts->cron_schedule_builtin ) ?? 'hourly';
+            $_schedule = ($_opts->cron_schedule_builtin) ?? 'hourly';
 
             // schedule the event
-            as_schedule_recurring_action( time(), $_schedules[ $_schedule ]['interval'], 'kpcpc_the_purge' );
-
+            as_schedule_recurring_action(time(), $_schedules[$_schedule]['interval'], 'kpcpc_the_purge');
         }
 
         /** 
@@ -342,38 +341,37 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        private static function maybe_schedule_log_purge( object $_opts, array $_schedules ): void
+         */
+        private static function maybe_schedule_log_purge(object $_opts, array $_schedules): void
         {
 
             // check if logging is enabled
-            $_log_enabled = filter_var( ( $_opts->should_log ) ?? false, FILTER_VALIDATE_BOOLEAN );
+            $_log_enabled = filter_var(($_opts->should_log) ?? false, FILTER_VALIDATE_BOOLEAN);
 
             // check if log purging is allowed
-            $_lp_allowed  = filter_var( ( $_opts->cron_log_purge_allowed ) ?? false, FILTER_VALIDATE_BOOLEAN );
+            $_lp_allowed  = filter_var(($_opts->cron_log_purge_allowed) ?? false, FILTER_VALIDATE_BOOLEAN);
 
             // if either isn't set, bail out
-            if( ! $_log_enabled || ! $_lp_allowed ) {
+            if (! $_log_enabled || ! $_lp_allowed) {
                 return;
             }
 
             // setup the action
-            add_action( 'kpcpc_the_log_purge', [ __CLASS__, 'do_log_purge' ] );
+            add_action('kpcpc_the_log_purge', [__CLASS__, 'do_log_purge']);
 
             // if it's already scheduled, bail out
-            if( as_has_scheduled_action( 'kpcpc_the_log_purge' ) ) {
+            if (as_has_scheduled_action('kpcpc_the_log_purge')) {
                 return;
             }
 
             // throw a hook here
-            do_action( 'tcp_cron_log_purge' );
+            do_action('tcp_cron_log_purge');
 
             // get our schedule
-            $_schedule = ( $_opts->cron_log_purge_schedule ) ?? 'weekly';
+            $_schedule = ($_opts->cron_log_purge_schedule) ?? 'weekly';
 
             // schedule the event
-            as_schedule_recurring_action( time(), $_schedules[ $_schedule ]['interval'], 'kpcpc_the_log_purge' );
-
+            as_schedule_recurring_action(time(), $_schedules[$_schedule]['interval'], 'kpcpc_the_log_purge');
         }
 
         /** 
@@ -389,29 +387,28 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
+         */
         private static function maybe_run_long_purge(): void
         {
 
             // check if we're currently purging
-            if( ! filter_var( ( get_transient( 'is_doing_cache_purge' ) ) ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+            if (! filter_var((get_transient('is_doing_cache_purge')) ?? false, FILTER_VALIDATE_BOOLEAN)) {
                 return;
             }
 
             // setup the action
-            add_action( 'kptcp_long_purge', [ __CLASS__, 'do_the_long_purge' ] );
+            add_action('kptcp_long_purge', [__CLASS__, 'do_the_long_purge']);
 
             // if it's already scheduled, bail out
-            if( as_next_scheduled_action( 'kptcp_long_purge' ) ) {
+            if (as_next_scheduled_action('kptcp_long_purge')) {
                 return;
             }
 
             // throw a hook here
-            do_action( 'tcp_long_cache_purge' );
+            do_action('tcp_long_cache_purge');
 
             // schedule it to run once as soon as possible
-            as_schedule_single_action( time() + 5, 'kptcp_long_purge' );
-
+            as_schedule_single_action(time() + 5, 'kptcp_long_purge');
         }
 
         /** 
@@ -427,18 +424,18 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        public static function do_the_long_purge( ) : void {
+         */
+        public static function do_the_long_purge(): void
+        {
 
             // fire up the cache purge
-            $_cp = new KP_Cache_Purge( );
+            $_cp = new KP_Cache_Purge();
 
             // run the long runner
-            $_cp -> kp_do_long_purge( );
+            $_cp->kp_do_long_purge();
 
             // clean up
-            unset( $_cp );
-
+            unset($_cp);
         }
 
         /** 
@@ -454,20 +451,20 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        public static function do_log_purge( ) : void {
+         */
+        public static function do_log_purge(): void
+        {
 
             // get the logs path
             $_l_path = ABSPATH . 'wp-content/purge.log';
 
             // use WP Filesystem to clear the log
             global $wp_filesystem;
-            if( empty( $wp_filesystem ) ) {
+            if (empty($wp_filesystem)) {
                 require_once ABSPATH . '/wp-admin/includes/file.php';
                 WP_Filesystem();
             }
-            $wp_filesystem->put_contents( $_l_path, '', FS_CHMOD_FILE );
-
+            $wp_filesystem->put_contents($_l_path, '', FS_CHMOD_FILE);
         }
 
         /** 
@@ -483,21 +480,21 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void Returns nothing
          * 
-        */
-        public static function do_the_actual_purge( ) : void {
+         */
+        public static function do_the_actual_purge(): void
+        {
 
             // run the purge!
-            $_cp = new KP_Cache_Purge( );
+            $_cp = new KP_Cache_Purge();
 
             // purge
-            $_cp -> kp_do_purge( );
+            $_cp->kp_do_purge();
 
             // log the purge
-            KPCPC::write_log( "CRONJOB Cache Cleared" );
+            KPCPC::write_log("CRONJOB Cache Cleared");
 
             // clean it up
-            unset( $_cp );
-
+            unset($_cp);
         }
 
 
@@ -514,25 +511,26 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return object Returns the nullable object for all options
          * 
-        */
-        public static function get_options( ) : ?object {
+         */
+        public static function get_options(): ?object
+        {
 
             // hold a static cache so we only hit the db once per request
             static $_cached = null;
 
             // if we already have it, return it
-            if( $_cached !== null ) {
+            if ($_cached !== null) {
                 return $_cached;
             }
 
             // get the options
-            $_option = get_option( 'kpcp_settings' );
+            $_option = get_option('kpcp_settings');
 
             // try to convert the value to an array
-            $_opts = maybe_unserialize( $_option );
+            $_opts = maybe_unserialize($_option);
 
             // cache it
-            $_cached = ( object ) $_opts;
+            $_cached = (object) $_opts;
 
             // return it
             return $_cached;
@@ -551,32 +549,33 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return array Returns an array of posts types
          * 
-        */
-        public static function get_post_types_for_select( ) : array {
+         */
+        public static function get_post_types_for_select(): array
+        {
 
             // setup a return array
-            $_ret = array( );
+            $_ret = array();
 
             // the first item needs to be NONE
-            $_ret['none'] = __( ' -- None -- ', 'the-cache-purger' );
+            $_ret['none'] = __(' -- None -- ', 'the-cache-purger');
 
             // see if we've already got this in cache
-            $_post_types = wp_cache_get( 'kpcp_post_types', 'kpcp_post_types' );
+            $_post_types = wp_cache_get('kpcp_post_types', 'kpcp_post_types');
 
             // check if we're already cached
-            if( $_post_types ) {
+            if ($_post_types) {
 
                 // we are, so return the object
                 return $_post_types;
 
-            // we aren't cached yet
+                // we aren't cached yet
             } else {
 
                 // get the inherent post types
-                $_the_pts = get_post_types( array( '_builtin' => false, 'public' => true, ), 'names' );
+                $_the_pts = get_post_types(array('_builtin' => false, 'public' => true,), 'names');
 
                 // check if we have any
-                if( empty( $_the_pts ) ) {
+                if (empty($_the_pts)) {
 
                     // we don't yet because they aren't registered as of this point, we'll need to try to get them from the existing posts
 
@@ -584,41 +583,34 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                     global $wpdb;
 
                     // run a query to get all post types
-                    $_pts = $wpdb -> get_results( "SELECT DISTINCT post_type FROM $wpdb->posts WHERE post_status = 'publish' AND post_type NOT IN ( 'nav_menu_item', 'page', 'post', 'acf-field-group', 'attachment', 'custom_css', 'customize_changeset' ) ORDER BY post_type ASC;", ARRAY_A );
+                    $_pts = $wpdb->get_results("SELECT DISTINCT post_type FROM $wpdb->posts WHERE post_status = 'publish' AND post_type NOT IN ( 'nav_menu_item', 'page', 'post', 'acf-field-group', 'attachment', 'custom_css', 'customize_changeset' ) ORDER BY post_type ASC;", ARRAY_A);
 
                     // make sure we have some
-                    if( $_pts ) {
+                    if ($_pts) {
 
                         // loop over them
-                        foreach( $_pts as $_pt ) {
+                        foreach ($_pts as $_pt) {
 
                             // add the post type to the returnable array
-                            $_ret[ $_pt['post_type'] ] = ucwords( __( str_replace( '_', ' ', $_pt['post_type'] ), 'the-cache-purger' ) );
-
+                            $_ret[$_pt['post_type']] = ucwords(__(str_replace('_', ' ', $_pt['post_type']), 'the-cache-purger'));
                         }
-
                     }
-
                 } else {
 
                     // loop over them
-                    foreach( $_the_pts as $_pt ) {
+                    foreach ($_the_pts as $_pt) {
 
-                            // add the post type to the returnable array
-                            $_ret[ $_pt ] = ucwords( __( str_replace( '_', ' ', $_pt ), 'the-cache-purger' ) );
-
+                        // add the post type to the returnable array
+                        $_ret[$_pt] = ucwords(__(str_replace('_', ' ', $_pt), 'the-cache-purger'));
                     }
-
                 }
 
                 // set the array to the cache for 1 hour
-                wp_cache_add( 'kpcp_post_types', $_ret, 'kpcp_post_types', HOUR_IN_SECONDS );
-
+                wp_cache_add('kpcp_post_types', $_ret, 'kpcp_post_types', HOUR_IN_SECONDS);
             }
 
             // return the array
-            return ( is_array( $_ret ) ) ? $_ret : array( );
-            
+            return (is_array($_ret)) ? $_ret : array();
         }
 
         /** 
@@ -636,25 +628,26 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return array Returns an array of posts
          * 
-        */
-        public static function get_posts_for_select( string $_type = 'posts' ) : array {
+         */
+        public static function get_posts_for_select(string $_type = 'posts'): array
+        {
 
             // setup a return array
-            $_ret = array( );
+            $_ret = array();
 
             // the first item needs to be NONE
-            $_ret[0] = __( ' -- None -- ', 'the-cache-purger' );
+            $_ret[0] = __(' -- None -- ', 'the-cache-purger');
 
             // see if we've already got this in cache
-            $_posts = wp_cache_get( "kpcp_posts_$_type", "kpcp_posts_$_type" );
+            $_posts = wp_cache_get("kpcp_posts_$_type", "kpcp_posts_$_type");
 
             // we do
-            if( $_posts ) {
+            if ($_posts) {
 
                 // return the merged arrays
-                return array_merge( $_ret, $_posts );
+                return array_merge($_ret, $_posts);
 
-            // we don't
+                // we don't
             } else {
 
                 // hold the query variable
@@ -664,72 +657,64 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
                 $_rs = null;
 
                 // if it's posts we want
-                if( $_type == 'posts' ) {
+                if ($_type == 'posts') {
 
                     // query for our posts
-                    $_qry = new WP_Query( array( 'posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => 'post' ) );
-                    
-                    // the recordset
-                    $_rs = $_qry -> get_posts( );
+                    $_qry = new WP_Query(array('posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => 'post'));
 
+                    // the recordset
+                    $_rs = $_qry->get_posts();
                 }
 
                 // if it's pages we want
-                if( $_type == 'pages' ) {
+                if ($_type == 'pages') {
 
                     // query for our pages
-                    $_qry = new WP_Query( array( 'posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => 'page' ) );
-                    
-                    // the recordset
-                    $_rs = $_qry -> get_posts( );
+                    $_qry = new WP_Query(array('posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => 'page'));
 
+                    // the recordset
+                    $_rs = $_qry->get_posts();
                 }
 
                 // if it's CPTs we want
-                if( $_type == 'cpts' ) {
+                if ($_type == 'cpts') {
 
                     // get our publicly queryable post types that are not builtin... ie... CPTs
-                    $_pts = get_post_types( array( '_builtin' => false, 'public' => true, 'publicly_queryable' => true, ), 'names', 'and' );
+                    $_pts = get_post_types(array('_builtin' => false, 'public' => true, 'publicly_queryable' => true,), 'names', 'and');
 
                     // make sure this is not empty
-                    if( ! empty( $_pts ) ) {
+                    if (! empty($_pts)) {
 
                         // query for our cpts
-                        $_qry = new WP_Query( array( 'posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => $_pts ) );
-                        
-                        // the recordset
-                        $_rs = $_qry -> get_posts( );
+                        $_qry = new WP_Query(array('posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC', 'post_status' => 'publish', 'post_type' => $_pts));
 
+                        // the recordset
+                        $_rs = $_qry->get_posts();
                     }
 
                     // clean up the post types
-                    unset( $_pts );
-
+                    unset($_pts);
                 }
 
                 // make sure there is something for our recordset
-                if( $_rs ) {
+                if ($_rs) {
 
                     // loop over the recordset
-                    foreach( $_rs as $_post ) {
+                    foreach ($_rs as $_post) {
 
                         // add the id as an array index, and the title to the return array
-                        $_ret[$_post -> ID] = __( $_post -> post_title, 'the-cache-purger' );
-
+                        $_ret[$_post->ID] = __($_post->post_title, 'the-cache-purger');
                     }
 
                     // cache the return for 1 hour
-                    wp_cache_add( "kpcp_posts_$_type", $_ret, "kpcp_posts_$_type", HOUR_IN_SECONDS );
-
+                    wp_cache_add("kpcp_posts_$_type", $_ret, "kpcp_posts_$_type", HOUR_IN_SECONDS);
                 }
-
             }
 
             // return the array
             return $_ret;
-
         }
-        
+
         /** 
          * get_urls
          * 
@@ -743,65 +728,62 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return array Returns an array of URLs
          * 
-        */
-        public static function get_urls( ) : array {
+         */
+        public static function get_urls(): array
+        {
 
             // see if we've already got this in cache
-            $_urls = wp_cache_get( "kpcp_urls", "kpcp_urls" );
+            $_urls = wp_cache_get("kpcp_urls", "kpcp_urls");
 
             // if we have it in our cache already
-            if( $_urls ) {
+            if ($_urls) {
 
                 // return it
                 return $_urls;
 
-            // we don't    
+                // we don't    
             } else {
 
                 // hold our return array
-                $_ret = array( );
+                $_ret = array();
 
                 // all we're interested in is publicly accessible posts/pages
-                $_post_types = get_post_types( array( 'public' => true, ), 'names' );
+                $_post_types = get_post_types(array('public' => true,), 'names');
 
                 // setup some arguments
-                $_args = array( 
-                    'no_found_rows' => true, 
-                    'update_post_meta_cache' => false, 
-                    'update_post_term_cache' => false, 
+                $_args = array(
+                    'no_found_rows' => true,
+                    'update_post_meta_cache' => false,
+                    'update_post_term_cache' => false,
                     'fields' => 'ids',
-                    'post_type' => $_post_types, 
-                    'posts_per_page' => -1, 
+                    'post_type' => $_post_types,
+                    'posts_per_page' => -1,
                     'post_status' => 'publish',
                 );
 
                 // our query for all public posts
-                $_qry = new WP_Query( $_args );
+                $_qry = new WP_Query($_args);
 
                 // fire up the recordset
-                $_rs = $_qry -> get_posts( );
+                $_rs = $_qry->get_posts();
 
                 // make sure we have a recordset
-                if( $_rs ) {
+                if ($_rs) {
 
                     // loop and and populate the URL array with the posts permalinks
-                    foreach( $_rs as $_id ) {
+                    foreach ($_rs as $_id) {
 
                         // add it to the return array
-                        $_ret[] = get_permalink( $_id );
-
+                        $_ret[] = get_permalink($_id);
                     }
-
                 }
 
                 // cache it for 1 hour
-                wp_cache_add( "kpcp_urls", $_ret, "kpcp_urls", HOUR_IN_SECONDS );
+                wp_cache_add("kpcp_urls", $_ret, "kpcp_urls", HOUR_IN_SECONDS);
 
                 // return the array
                 return $_ret;
-                
             }
-
         }
 
         /** 
@@ -818,26 +800,26 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return array Returns an array of categorized action objects
          * 
-        */
-        public static function get_actions( ) : array {
+         */
+        public static function get_actions(): array
+        {
 
             // return the array
             return array(
-                'menu' => array( 'wp_update_nav_menu', 'wp_delete_nav_menu' ),
-                'post' => array( 'save_post', 'edit_post', 'trashed_post' ),
-                'page' => array( 'save_post', 'edit_post', 'trashed_post' ),
-                'cpt' => array( 'save_post', 'edit_post', 'trashed_post' ),
-                'tax' => array( 'saved_term', 'delete_term' ),
-                'cat' => array( 'saved_category', 'delete_category' ),
-                'widget' => array( 'wp_ajax_save-widget', 'wp_ajax_widgets-order', 'sidebar_admin_setup' ),
-                'customizer' => array( 'customize_save_after' ),
-                'gf' => array( 'gform_after_save_form', 'gform_post_form_trashed' ),
-                'acf' => array( 'acf/update_field_group', 'acf/trash_field_group' ),
-                'settings' => array( 'woocommerce_settings_saved', 'pre_set_transient_settings_errors', 'update_option_kpcp_settings' ), // no matter what, we'll purge on this
-                'plugin' => array( 'activated_plugin', 'deactivated_plugin' ), // no matter what, we'll purge on this
-                'updates' => array( 'upgrader_process_complete', '_core_updated_successfully' ), // no matter what, we'll purge on this
+                'menu' => array('wp_update_nav_menu', 'wp_delete_nav_menu'),
+                'post' => array('save_post', 'edit_post', 'trashed_post'),
+                'page' => array('save_post', 'edit_post', 'trashed_post'),
+                'cpt' => array('save_post', 'edit_post', 'trashed_post'),
+                'tax' => array('saved_term', 'delete_term'),
+                'cat' => array('saved_category', 'delete_category'),
+                'widget' => array('wp_ajax_save-widget', 'wp_ajax_widgets-order', 'sidebar_admin_setup'),
+                'customizer' => array('customize_save_after'),
+                'gf' => array('gform_after_save_form', 'gform_post_form_trashed'),
+                'acf' => array('acf/update_field_group', 'acf/trash_field_group'),
+                'settings' => array('woocommerce_settings_saved', 'pre_set_transient_settings_errors', 'update_option_kpcp_settings'), // no matter what, we'll purge on this
+                'plugin' => array('activated_plugin', 'deactivated_plugin'), // no matter what, we'll purge on this
+                'updates' => array('upgrader_process_complete', '_core_updated_successfully'), // no matter what, we'll purge on this
             );
-
         }
 
         /** 
@@ -853,30 +835,29 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        public static function write_log( string $_msg ) : void {
+         */
+        public static function write_log(string $_msg): void
+        {
 
             // get our setting
-            $_should_log = filter_var( ( KPCPC::get_options( ) -> should_log ) ?? false, FILTER_VALIDATE_BOOLEAN );
+            $_should_log = filter_var((KPCPC::get_options()->should_log) ?? false, FILTER_VALIDATE_BOOLEAN);
 
             // let's make sure we should be logging
-            if( $_should_log ) {
-                
+            if ($_should_log) {
+
                 // set a path to hold the purge log
                 $_path = ABSPATH . 'wp-content/purge.log';
 
                 // I want to append a timestamp to the message
-                $_message = '[' . current_time( 'mysql' ) . ']: ' . $_msg . PHP_EOL;
+                $_message = '[' . current_time('mysql') . ']: ' . $_msg . PHP_EOL;
 
                 // unfortunately we cannot use wp's builtin filesystem hanlders for this
                 // the put_contents method only writes/overwrites contents, and does not append
                 // we need this to append the content
 
                 // append the message to the purge log file
-                file_put_contents( $_path, $_message, FILE_APPEND | LOCK_EX );
-                
+                file_put_contents($_path, $_message, FILE_APPEND | LOCK_EX);
             }
-            
         }
 
         /** 
@@ -892,22 +873,22 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        public static function write_error( string $_msg ) : void {
+         */
+        public static function write_error(string $_msg): void
+        {
 
             // set a path to hold the exception log
             $_path = ABSPATH . 'wp-content/purge-exceptions.log';
 
             // I want to append a timestamp to the message
-            $_message = '[' . current_time( 'mysql' ) . ']: ' . $_msg . PHP_EOL;
+            $_message = '[' . current_time('mysql') . ']: ' . $_msg . PHP_EOL;
 
             // unfortunately we cannot use wp's builtin filesystem hanlders for this
             // the put_contents method only writes/overwrites contents, and does not append
             // we need this to append the content
 
             // append the message to the purge log file
-            file_put_contents( $_path, $_message, FILE_APPEND | LOCK_EX );
-
+            file_put_contents($_path, $_message, FILE_APPEND | LOCK_EX);
         }
 
         /** 
@@ -925,14 +906,12 @@ if( ! class_exists( 'KP_Cache_Purge_Common' ) ) {
          * 
          * @return array Returns either the array or an empty one
          * 
-        */
-        public static function arr_or_empty( $_val ) : array {
+         */
+        public static function arr_or_empty($_val): array
+        {
 
             // return either the array or an empty array
-            return ( is_array( $_val ) && ! empty( $_val ) ) ? $_val : array( );
-
+            return (is_array($_val) && ! empty($_val)) ? $_val : array();
         }
-
     }
-
 }
