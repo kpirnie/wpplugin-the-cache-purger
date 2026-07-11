@@ -89,15 +89,9 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         private static function register_admin_hooks(): void
         {
 
-            // hook into the admin_init
-            add_action('admin_init', function (): void {
-
-                // handle the manual purge
-                self::handle_manual_purge();
-
-                // handle the log purge
-                self::handle_log_purge();
-            }, PHP_INT_MAX);
+            // hook the manual purge and log purge into admin-post
+            add_action('admin_post_tcp_cache_purge', [__CLASS__, 'handle_manual_purge']);
+            add_action('admin_post_tcp_log_purge', [__CLASS__, 'handle_log_purge']);
 
             // hook for clearing the purge log ajainly
             add_action('wp_ajax_tcp_clear_log', [__CLASS__, 'ajax_clear_log']);
@@ -166,24 +160,21 @@ if (! class_exists('KP_Cache_Purge_Common')) {
          * @return void Returns nothing
          * 
          */
-        private static function handle_manual_purge(): void
+        public static function handle_manual_purge(): void
         {
 
-            // doing the log purge?
-            $are_we = wp_unslash($_GET['the_cache_purge']) ?? null;
+            // only allow POST requests
+            if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405);
+            }
 
-            // get the querystring for the purge
-            $_do_purge = filter_var((isset($are_we)) ? sanitize_text_field($are_we) : false, FILTER_VALIDATE_BOOLEAN);
-
-            // if it's not set, bail out
-            if (! $_do_purge) {
-                return;
+            // make sure the current user is allowed to purge
+            if (! current_user_can(apply_filters('tcp_purge_capability', 'manage_options'))) {
+                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403);
             }
 
             // check the nonce as well
-            if (! wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce']) ?? ''), 'tcp_cache_purge')) {
-                return;
-            }
+            check_admin_referer('tcp_cache_purge');
 
             // setup the cache purger
             $_cp = new KP_Cache_Purge();
@@ -197,9 +188,9 @@ if (! class_exists('KP_Cache_Purge_Common')) {
             // clean it up
             unset($_cp);
 
-            // the a transient for showing the notice and safely redirect removing the query's
+            // the a transient for showing the notice and safely redirect back
             set_transient('tcp_purge_notice', true, 60);
-            wp_safe_redirect(remove_query_arg(['the_log_purge', 'the_cache_purge', '_wpnonce']));
+            wp_safe_redirect(wp_get_referer() ?: admin_url());
             exit;
         }
 
@@ -217,31 +208,27 @@ if (! class_exists('KP_Cache_Purge_Common')) {
          * @return void Returns nothing
          * 
          */
-        private static function handle_log_purge(): void
+        public static function handle_log_purge(): void
         {
-            // doing the log purge?
-            $are_we = wp_unslash($_GET['the_log_purge']) ?? null;
 
-            // get the querystring for purging the log
-            $_do_log_purge = filter_var((isset($are_we)) ? sanitize_text_field($are_we) : false, FILTER_VALIDATE_BOOLEAN);
+            // only allow POST requests
+            if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405);
+            }
 
-            // if it's not set, bail out
-            if (! $_do_log_purge) {
-                return;
+            // make sure the current user is allowed to purge the log
+            if (! current_user_can('manage_options')) {
+                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403);
             }
 
             // verify the wp nonce was passed as well
-            if (! wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce']) ?? ''), 'tcp_log_purge')) {
-                return;
-            }
-
-            // get the logs path
-            $_l_path = ABSPATH . 'wp-content/purge.log';
+            check_admin_referer('tcp_log_purge');
 
             // clear the log
-            file_put_contents($_l_path, '', LOCK_EX);
+            self::do_log_purge();
 
-            wp_safe_redirect(remove_query_arg(['the_log_purge', 'the_cache_purge', '_wpnonce']));
+            // safely redirect back
+            wp_safe_redirect(wp_get_referer() ?: admin_url('admin.php?page=kpcp_settings&tab=log'));
             exit;
         }
 
@@ -456,7 +443,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         {
 
             // get the logs path
-            $_l_path = ABSPATH . 'wp-content/purge.log';
+            $_l_path = self::get_log_path();
 
             // use WP Filesystem to clear the log
             global $wp_filesystem;
@@ -823,6 +810,61 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         }
 
         /** 
+         * get_log_path
+         * 
+         * Public method to get the protected path for a log file
+         * 
+         * @since 8.1
+         * @access public
+         * @static
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return string Returns the full path to the log file
+         * 
+         */
+        public static function get_log_path(string $_type = 'purge'): string
+        {
+
+            // get or create the log filename salt
+            $_salt = get_option('kpcp_log_salt');
+            if (empty($_salt)) {
+                $_salt = wp_generate_password(32, false, false);
+                update_option('kpcp_log_salt', $_salt, false);
+            }
+
+            // setup the log directory in uploads
+            $_dir = wp_upload_dir()['basedir'] . '/the-cache-purger';
+
+            // make sure the directory exists and is not web accessible
+            if (! is_dir($_dir)) {
+                wp_mkdir_p($_dir);
+            }
+            if (! file_exists($_dir . '/.htaccess')) {
+                file_put_contents($_dir . '/.htaccess', "Require all denied\n", LOCK_EX);
+            }
+            if (! file_exists($_dir . '/index.php')) {
+                file_put_contents($_dir . '/index.php', "<?php\n// silence is golden\n", LOCK_EX);
+            }
+
+            // build the hashed log path
+            $_path = $_dir . '/' . $_type . '-' . substr(wp_hash($_type . $_salt), 0, 16) . '.log';
+
+            // migrate the legacy web-readable log if it still exists
+            $_legacy = ABSPATH . 'wp-content/' . (($_type === 'purge') ? 'purge.log' : 'purge-exceptions.log');
+            if (file_exists($_legacy)) {
+                $_content = file_get_contents($_legacy);
+                if (! empty($_content)) {
+                    file_put_contents($_path, $_content, FILE_APPEND | LOCK_EX);
+                }
+                wp_delete_file($_legacy);
+            }
+
+            // return the path
+            return $_path;
+        }
+
+        /** 
          * write_log
          * 
          * Public method to write to a cache purge log
@@ -846,7 +888,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
             if ($_should_log) {
 
                 // set a path to hold the purge log
-                $_path = ABSPATH . 'wp-content/purge.log';
+                $_path = self::get_log_path();
 
                 // I want to append a timestamp to the message
                 $_message = '[' . current_time('mysql') . ']: ' . $_msg . PHP_EOL;
@@ -878,7 +920,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         {
 
             // set a path to hold the exception log
-            $_path = ABSPATH . 'wp-content/purge-exceptions.log';
+            $_path = self::get_log_path('exceptions');
 
             // I want to append a timestamp to the message
             $_message = '[' . current_time('mysql') . ']: ' . $_msg . PHP_EOL;

@@ -124,12 +124,13 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
             // for this we'll hook directly into the admin menu bar
             add_action('admin_bar_menu', function ($_admin_bar): void {
 
+                // only show this to users that are allowed to purge
+                if (! current_user_can(apply_filters('tcp_purge_capability', 'manage_options'))) {
+                    return;
+                }
+
                 // only do this if we're NOT in a network admin
                 if (! is_network_admin()) {
-
-                    // setup the querys
-                    $cache_purge_uri = wp_nonce_url(add_query_arg('the_cache_purge', 'true'), 'tcp_cache_purge');
-                    $log_purge_uri = wp_nonce_url(add_query_arg('the_log_purge', 'true', admin_url('admin.php?page=kpcp_settings&tab=log')), 'tcp_log_purge');
 
                     // setup the rest of the args for the main item
                     $_args = array(
@@ -147,8 +148,11 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                         'id'     => 'tcpmp-purge',
                         'parent' => 'tcpmp',
                         'title'  => __('Purge the Cache', 'the-cache-purger'),
-                        'href'   => $cache_purge_uri,
-                        'meta'   => array('title' => __('Click here to purge all of your caches.', 'the-cache-purger')),
+                        'href'   => '#',
+                        'meta'   => array(
+                            'title' => __('Click here to purge all of your caches.', 'the-cache-purger'),
+                            'onclick' => $this->tcp_post_onclick('tcp_cache_purge')
+                        ),
                     ));
 
                     // if we are indeed logging, add the child node to purge it
@@ -157,12 +161,41 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                             'id'     => 'tcpmp-log',
                             'parent' => 'tcpmp',
                             'title'  => __('Purge the Log', 'the-cache-purger'),
-                            'href'   => $log_purge_uri,
-                            'meta'   => array('title' => __('View the cache purge log.', 'the-cache-purger')),
+                            'href'   => '#',
+                            'meta'   => array(
+                                'title' => __('View the cache purge log.', 'the-cache-purger'),
+                                'onclick' => $this->tcp_post_onclick('tcp_log_purge')
+                            ),
+
                         ));
                     }
                 }
             }, PHP_INT_MAX);
+        }
+
+        /** 
+         * tcp_post_onclick
+         * 
+         * Private method to build the onclick javascript that POSTs an action to admin-post
+         * 
+         * @since 8.1
+         * @access private
+         * @author Kevin Pirnie <me@kpirnie.com>
+         * @package The Cache Purger
+         * 
+         * @return string Returns the onclick javascript string
+         * 
+         */
+        private function tcp_post_onclick(string $_action): string
+        {
+
+            // build and return the javascript, no double quotes so it is attribute safe
+            return sprintf(
+                "var f=document.createElement('form'),i;f.method='POST';f.action='%s';i=document.createElement('input');i.type='hidden';i.name='action';i.value='%s';f.appendChild(i);i=document.createElement('input');i.type='hidden';i.name='_wpnonce';i.value='%s';f.appendChild(i);document.body.appendChild(f);f.submit();return false;",
+                esc_url(admin_url('admin-post.php')),
+                esc_js($_action),
+                esc_js(wp_create_nonce($_action))
+            );
         }
 
         /** 
@@ -564,7 +597,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                     'id' => 'should_log',
                     'type' => 'switch',
                     'label' => __('Log Purge Actions?', 'the-cache-purger'),
-                    'description' => __('This will attempt to write a log of all purge actions performed.<br />The file location is: <code>' . ABSPATH . 'wp-content/purge.log</code><br /><strong>NOTE: </strong>Make sure you hard refresh this page once you save the settings.', 'the-cache-purger'),
+                    'description' => __('This will attempt to write a log of all purge actions performed.<br />The file location is: <code>' . KPCPC::get_log_path() . '</code><br /><strong>NOTE: </strong>Make sure you hard refresh this page once you save the settings.', 'the-cache-purger'),
                     'default' => false,
                 ),
 
@@ -823,16 +856,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
             $_ret = '';
 
             // setup the path
-            $_path = ABSPATH . 'wp-content/purge.log';
-
-            // doing the log purge?
-            $are_we = wp_unslash($_GET['the_log_purge']) ?? null;
-
-            // see if we're purging the log before displaying it
-            $_do_log_purge = filter_var((isset($are_we)) ? sanitize_text_field($are_we) : false, FILTER_VALIDATE_BOOLEAN);
-            if ($_do_log_purge && current_user_can('manage_options') && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce']) ?? ''), 'tcp_log_purge')) {
-                file_put_contents($_path, '', LOCK_EX);
-            }
+            $_path = KPCPC::get_log_path();
 
             // if the file exists
             if (file_exists($_path) && is_readable($_path)) {
@@ -1015,7 +1039,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                         'id'     => 'kptcp-clear-log',
                         'class'  => 'button button-secondary',
                         'attributes' => [
-                            'onclick' => 'window.location="' . wp_nonce_url(add_query_arg('the_log_purge', 'true', admin_url('admin.php?page=kpcp_settings&tab=log')), 'tcp_log_purge') . '"; return false;',
+                            'onclick' => $this->tcp_post_onclick('tcp_log_purge'),
                         ],
                     ],
                 ],

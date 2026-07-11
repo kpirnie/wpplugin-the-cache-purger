@@ -16,7 +16,7 @@
     "url": "https://gitlab.com/kp-development/wordpress/plugins/the-cache-purger.git"
   },
   "engines": {
-    "node": ">=21"
+    "node": ">=26"
   },
   "type": "module",
   "author": {
@@ -47,9 +47,9 @@
     "node-fetch": "latest"
   },
   "allowScripts": {
-    "@parcel/watcher@2.5.6": true,
     "gifsicle@5.3.0": true,
     "mozjpeg@8.0.0": true,
-    "optipng-bin@7.0.1": true
+    "optipng-bin@7.0.1": true,
+    "@parcel/watcher@2.5.6": true
   }
 }
