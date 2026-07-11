@@ -102,8 +102,8 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
             // add in the sub menu items linking to the tabs
             add_submenu_page('kpcp_settings', '', __('API/Server Settings', 'the-cache-purger'), 'manage_options', 'admin.php?page=kpcp_settings&tab=api', '');
             add_submenu_page('kpcp_settings', '', __('CRON Settings', 'the-cache-purger'), 'manage_options', 'admin.php?page=kpcp_settings&tab=cron', '');
-            // only if we need them
-            if (filter_var(($this->opts->should_log) ?? false, FILTER_VALIDATE_BOOLEAN)) {
+            // the log purge handler requires manage_options, so gate the node the same
+            if (current_user_can('manage_options') && filter_var(($this->opts->should_log) ?? false, FILTER_VALIDATE_BOOLEAN)) {
                 add_submenu_page('kpcp_settings', '', __('Purge Log', 'the-cache-purger'), 'manage_options', 'admin.php?page=kpcp_settings&tab=log', '');
             }
             add_submenu_page('kpcp_settings', '', __('Documentation', 'the-cache-purger'), 'manage_options', 'admin.php?page=kpcp_settings&tab=docs', '');
@@ -151,7 +151,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                         'href'   => '#',
                         'meta'   => array(
                             'title' => __('Click here to purge all of your caches.', 'the-cache-purger'),
-                            'onclick' => $this->tcp_post_onclick('tcp_cache_purge')
+                            'onclick' => $this->kpcp_post_onclick('tcp_cache_purge')
                         ),
                     ));
 
@@ -164,7 +164,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                             'href'   => '#',
                             'meta'   => array(
                                 'title' => __('View the cache purge log.', 'the-cache-purger'),
-                                'onclick' => $this->tcp_post_onclick('tcp_log_purge')
+                                'onclick' => $this->kpcp_post_onclick('tcp_log_purge')
                             ),
 
                         ));
@@ -174,7 +174,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
         }
 
         /** 
-         * tcp_post_onclick
+         * kpcp_post_onclick
          * 
          * Private method to build the onclick javascript that POSTs an action to admin-post
          * 
@@ -186,12 +186,14 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
          * @return string Returns the onclick javascript string
          * 
          */
-        private function tcp_post_onclick(string $_action): string
+        private function kpcp_post_onclick(string $_action): string
         {
 
-            // build and return the javascript, no double quotes so it is attribute safe
+            // build and return the javascript, double quotes only: core's admin bar
+            // renderer runs onclick meta through esc_js, which backslash-escapes
+            // single quotes and breaks the single-quoted attribute it prints
             return sprintf(
-                "var f=document.createElement('form'),i;f.method='POST';f.action='%s';i=document.createElement('input');i.type='hidden';i.name='action';i.value='%s';f.appendChild(i);i=document.createElement('input');i.type='hidden';i.name='_wpnonce';i.value='%s';f.appendChild(i);document.body.appendChild(f);f.submit();return false;",
+                'var f=document.createElement("form"),i;f.method="POST";f.action="%s";i=document.createElement("input");i.type="hidden";i.name="action";i.value="%s";f.appendChild(i);i=document.createElement("input");i.type="hidden";i.name="_wpnonce";i.value="%s";f.appendChild(i);document.body.appendChild(f);f.submit();return false;',
                 esc_url(admin_url('admin-post.php')),
                 esc_js($_action),
                 esc_js(wp_create_nonce($_action))
@@ -1039,7 +1041,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                         'id'     => 'kptcp-clear-log',
                         'class'  => 'button button-secondary',
                         'attributes' => [
-                            'onclick' => $this->tcp_post_onclick('tcp_log_purge'),
+                            'onclick' => $this->kpcp_post_onclick('tcp_log_purge'),
                         ],
                     ],
                 ],

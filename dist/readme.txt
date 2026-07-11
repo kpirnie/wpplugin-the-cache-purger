@@ -5,7 +5,7 @@ Tags: cache, cache purging, purge cache, caching, performance
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 2.3.03
+Stable tag: 2.3.21
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,7 +123,7 @@ By design. Activating per-subsite gives each site its own independent configurat
 
 = Where is the purge log stored? =
 
-At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge Actions?** and it will be viewable directly in the **The Purge Log** tab. You can clear it manually from that tab, or set it to auto-clear on a schedule under **CRON Action Settings**.
+At `{ABSPATH}wp-content/uploads/the-cache-purger/*`. Enable logging under **Settings > Log Purge Actions?** and it will be viewable directly in the **The Purge Log** tab. You can clear it manually from that tab, or set it to auto-clear on a schedule under **CRON Action Settings**.
 
 == Screenshots ==
 
@@ -134,6 +134,12 @@ At `{ABSPATH}wp-content/purge.log`. Enable logging under **Settings > Log Purge 
 5. The Purge Log — Live log viewer with manual clear button
 
 == Changelog ==
+
+= 2.3.21 =
+* Fix: Permissions for Log purging in admin bar
+* Update: Logging path and filenames
+* Update: Guzzle, Symphony, and Action Scheduler packages
+* Fix: Admin bar onclick events
 
 = 2.3.03 =
 * Fix: pre-unslashing purge querystrings
