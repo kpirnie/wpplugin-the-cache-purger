@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Build release zip
+        run: |
+          # Create a clean staging directory using the plugin slug
+          mkdir -p dist/the-cache-purger
+
+          # Copy only the files that belong in the release
+          cp -r distribute/. dist/the-cache-purger/
+
+          # Zip it up with the plugin folder as root
+          cd dist
+          zip -r ../the-cache-purger-${{ steps.version.outputs.VERSION }}.zip the-cache-purger/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: v${{ steps.version.outputs.VERSION }}
+          generate_release_notes: true
+          files: the-cache-purger-${{ steps.version.outputs.VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

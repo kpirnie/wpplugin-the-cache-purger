@@ -1,55 +1,12 @@
 {
-  "name": "the-cache-purger",
-  "package": "The Cache Purger",
-  "version": "2.0.11",
-  "description": "Server-side cache purging plugin incorporating a slew of plugin, hosting, and general server based cache purges.",
-  "main": "gulpfile.js",
-  "source": "source",
-  "distribution": "dist",
-  "production": {
-    "shouldcopy": false,
-    "path": "/home/kpirnie/SVN/the-cache-purger/trunk/"
+  "name": "security-header-generator",
+  "version": "6.0.75",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "./build.sh"
   },
-  "license": "GPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.com/kp-development/wordpress/plugins/the-cache-purger.git"
-  },
-  "engines": {
-    "node": ">=26"
-  },
-  "type": "module",
-  "author": {
-    "name": "Kevin Pirnie",
-    "email": "me@kpirnie.com",
-    "url": "https://kevinpirnie.com/"
-  },
-  "bugs": {
-    "url": "https://gitlab.com/kp-development/wordpress/plugins/the-cache-purger/issues",
-    "email": "me@kpirnie.com"
-  },
-  "homepage": "https://kevinpirnie.com/kevin-pirnies-articles/wordpress-plugin-the-cache-purger/",
   "devDependencies": {
-    "gulp": "latest",
-    "gulp-clean": "latest",
-    "gulp-concat": "latest",
-    "gulp-cssnano": "latest",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-rename": "latest",
-    "gulp-replace": "latest",
-    "gulp-sass": "latest",
-    "gulp-svgo": "^1.2.5",
-    "gulp-uglify": "latest",
-    "gulp-wp-pot": "latest",
-    "sass": "latest"
-  },
-  "dependencies": {
-    "node-fetch": "latest"
-  },
-  "allowScripts": {
-    "gifsicle@5.3.0": true,
-    "@parcel/watcher@2.5.6": true,
-    "mozjpeg@8.0.0": true,
-    "optipng-bin@7.0.1": true
+    "esbuild": "latest"
   }
 }
