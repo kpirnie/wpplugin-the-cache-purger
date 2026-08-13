@@ -3,9 +3,9 @@ Contributors: kevp75
 Donate link: https://paypal.me/kevinpirnie
 Tags: cache, cache purging, purge cache, caching, performance
 Requires at least: 6.2
-Tested up to: 7.2
+Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 2.3.39
+Stable tag: 2.3.40
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -134,6 +134,10 @@ At `{ABSPATH}wp-content/uploads/the-cache-purger/*`. Enable logging under **Sett
 5. The Purge Log — Live log viewer with manual clear button
 
 == Changelog ==
+
+= 2.3.40 =
+* Fix version tested bump back to 7.1
+   * 7.2 is in too early stages to use
 
 = 2.3.39 =
 * Verify: WP Core 7.2
