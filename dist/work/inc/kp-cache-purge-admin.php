@@ -599,7 +599,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                     'id' => 'should_log',
                     'type' => 'switch',
                     'label' => __('Log Purge Actions?', 'the-cache-purger'),
-                    'description' => __('This will attempt to write a log of all purge actions performed.<br />The file location is: <code>' . KPCPC::get_log_path() . '</code><br /><strong>NOTE: </strong>Make sure you hard refresh this page once you save the settings.', 'the-cache-purger'),
+                    'description' => __('This will attempt to write a log of all purge actions performed.<br />The file location is: <code>' . KPCPC::get_log_path() . '</code><br /><strong>NOTE: </strong>Make sure you hard refresh this page once you save the settings.', 'the-cache-purger'), // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     'default' => false,
                 ),
 
@@ -1117,7 +1117,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                 for ($_i = 0; $_i < $_fCt; ++$_i) {
 
                     // setup the return array
-                    $_ret[$_forms[$_i]['id']] = __($_forms[$_i]['title'], 'the-cache-purger');
+                    $_ret[$_forms[$_i]['id']] = __($_forms[$_i]['title'], 'the-cache-purger'); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                 }
             }
 
@@ -1160,7 +1160,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
                 for ($_i = 0; $_i < $_fCt; ++$_i) {
 
                     // add to the array
-                    $_ret[$_fgs[$_i]['ID']] = __($_fgs[$_i]['title'], 'the-cache-purger');
+                    $_ret[$_fgs[$_i]['ID']] = __($_fgs[$_i]['title'], 'the-cache-purger'); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                 }
             }
 
@@ -1194,7 +1194,7 @@ if (! class_exists('KP_Cache_Purge_Admin')) {
             foreach ($_sched as $_k => $_v) {
 
                 // populate the returnable array
-                $_ret[$_k] = __($_v['display'], 'the-cache-purger');
+                $_ret[$_k] = __($_v['display'], 'the-cache-purger'); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             }
 
             // return the array

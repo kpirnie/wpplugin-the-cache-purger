@@ -2,10 +2,10 @@
 Contributors: kevp75
 Donate link: https://paypal.me/kevinpirnie
 Tags: cache, cache purging, purge cache, caching, performance
-Requires at least: 6.0
-Tested up to: 7.1
+Requires at least: 6.2
+Tested up to: 7.2
 Requires PHP: 8.2
-Stable tag: 2.3.21
+Stable tag: 2.3.39
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -134,6 +134,14 @@ At `{ABSPATH}wp-content/uploads/the-cache-purger/*`. Enable logging under **Sett
 5. The Purge Log — Live log viewer with manual clear button
 
 == Changelog ==
+
+= 2.3.39 =
+* Verify: WP Core 7.2
+* Update: File cache purging now uses the WordPress Filesystem API
+* Update: WP REST Cache table truncation now uses prepared identifiers
+* Fix: Unslash and sanitize request method checks on manual and log purges
+* Update: Required min. core version to 6.2 
+* Update: Frameworks; fastly, guzzle, field framework, woocommerce action scheduler
 
 = 2.3.21 =
 * Fix: Permissions for Log purging in admin bar

@@ -73,7 +73,7 @@ if (! trait_exists('VARNISH')) {
             }
 
             // get the server IP — only needed if cloudflare, but grab it regardless
-            $_server_ip = filter_var(wp_unslash($_SERVER['SERVER_ADDR']) ?? '', FILTER_VALIDATE_IP);
+            $_server_ip = isset($_SERVER['SERVER_ADDR']) ? filter_var(wp_unslash($_SERVER['SERVER_ADDR']) ?? '', FILTER_VALIDATE_IP) : '';
 
             // let's get the home page URL
             $_hp = get_home_url();

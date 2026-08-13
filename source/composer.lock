@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "fastly/fastly",
-            "version": "v13.1.0",
+            "version": "v14.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fastly/fastly-php.git",
-                "reference": "fdda8af405e5fd76b4111d0be13e9dc41c28994c"
+                "reference": "2ec8a4a24122148306eef824a77100157c5b1395"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fastly/fastly-php/zipball/fdda8af405e5fd76b4111d0be13e9dc41c28994c",
-                "reference": "fdda8af405e5fd76b4111d0be13e9dc41c28994c",
+                "url": "https://api.github.com/repos/fastly/fastly-php/zipball/2ec8a4a24122148306eef824a77100157c5b1395",
+                "reference": "2ec8a4a24122148306eef824a77100157c5b1395",
                 "shasum": ""
             },
             "require": {
@@ -60,28 +60,28 @@
             "support": {
                 "email": "oss@fastly.com",
                 "issues": "https://github.com/fastly/fastly-php/issues",
-                "source": "https://github.com/fastly/fastly-php/tree/v13.1.0"
+                "source": "https://github.com/fastly/fastly-php/tree/v14.0.0"
             },
-            "time": "2026-03-31T05:24:53+00:00"
+            "time": "2026-07-17T12:51:13+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.14.0",
+            "version": "7.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "aef242412e13128b5049864867bb49fc37dd39de"
+                "reference": "ae311b8f045ea93ce7b1c9cdb7cec06c53f944bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/aef242412e13128b5049864867bb49fc37dd39de",
-                "reference": "aef242412e13128b5049864867bb49fc37dd39de",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ae311b8f045ea93ce7b1c9cdb7cec06c53f944bc",
+                "reference": "ae311b8f045ea93ce7b1c9cdb7cec06c53f944bc",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^2.5.1",
-                "guzzlehttp/psr7": "^2.12.4",
+                "guzzlehttp/promises": "^2.5.2",
+                "guzzlehttp/psr7": "^2.13",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
@@ -94,7 +94,7 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "guzzle/client-integration-tests": "3.0.3",
-                "guzzlehttp/test-server": "^0.6",
+                "guzzlehttp/test-server": "^0.7",
                 "php-http/message-factory": "^1.1",
                 "phpunit/phpunit": "^8.5.52 || ^9.6.34",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
@@ -174,7 +174,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.14.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.15.3"
             },
             "funding": [
                 {
@@ -190,20 +190,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T22:54:09+00:00"
+            "time": "2026-08-05T19:48:21+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29"
+                "reference": "2823687acff28b2dbe67b2508a6b300e2c3fa4ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/9ad1e4fc607446a055b95870c7f668e93b5cff29",
-                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/2823687acff28b2dbe67b2508a6b300e2c3fa4ce",
+                "reference": "2823687acff28b2dbe67b2508a6b300e2c3fa4ce",
                 "shasum": ""
             },
             "require": {
@@ -258,7 +258,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.5.1"
+                "source": "https://github.com/guzzle/promises/tree/2.5.2"
             },
             "funding": [
                 {
@@ -274,20 +274,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T15:48:39+00:00"
+            "time": "2026-08-05T19:30:54+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.4",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c"
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
-                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dad89620b7a6edb60c15858442eb2e408b45d8f4",
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4",
                 "shasum": ""
             },
             "require": {
@@ -377,7 +377,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.4"
+                "source": "https://github.com/guzzle/psr7/tree/2.13.0"
             },
             "funding": [
                 {
@@ -393,20 +393,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T15:56:20+00:00"
+            "time": "2026-07-16T22:23:49+00:00"
         },
         {
             "name": "kevinpirnie/kpt-wpfieldframework",
-            "version": "v1.7.30",
+            "version": "v1.7.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kpirnie/kp-wpfieldframework.git",
-                "reference": "b50dd482fdd1b134c976e4e1ae5b306da6fe7f22"
+                "reference": "0939e7bb8331fcf3632fecfc4ca4577caec1b47a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kpirnie/kp-wpfieldframework/zipball/b50dd482fdd1b134c976e4e1ae5b306da6fe7f22",
-                "reference": "b50dd482fdd1b134c976e4e1ae5b306da6fe7f22",
+                "url": "https://api.github.com/repos/kpirnie/kp-wpfieldframework/zipball/0939e7bb8331fcf3632fecfc4ca4577caec1b47a",
+                "reference": "0939e7bb8331fcf3632fecfc4ca4577caec1b47a",
                 "shasum": ""
             },
             "require": {
@@ -452,7 +452,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2026-04-21T14:59:26+00:00"
+            "time": "2026-07-22T15:29:47+00:00"
         },
         {
             "name": "psr/http-client",
@@ -815,16 +815,16 @@
         },
         {
             "name": "woocommerce/action-scheduler",
-            "version": "4.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/action-scheduler.git",
-                "reference": "7321e865436e125a997de5ad95bdc8821c5a53e3"
+                "reference": "40a3df93a251590c58717b91b1049a13410e2ac4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/7321e865436e125a997de5ad95bdc8821c5a53e3",
-                "reference": "7321e865436e125a997de5ad95bdc8821c5a53e3",
+                "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/40a3df93a251590c58717b91b1049a13410e2ac4",
+                "reference": "40a3df93a251590c58717b91b1049a13410e2ac4",
                 "shasum": ""
             },
             "require": {
@@ -832,16 +832,20 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5",
-                "woocommerce/woocommerce-sniffs": "0.1.0",
+                "sirbrillig/phpcs-changed": "^2.11",
+                "woocommerce/woocommerce-sniffs": "^1.0.1",
                 "wp-cli/wp-cli": "~2.5.0",
                 "yoast/phpunit-polyfills": "^2.0"
             },
             "type": "wordpress-plugin",
             "extra": {
                 "scripts-description": {
+                    "lint": "Run phpcs against PHP files with unstaged changes",
                     "test": "Run unit tests",
                     "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
-                    "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+                    "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier",
+                    "lint-branch": "Run phpcs against PHP files changed on the current branch compared to its base branch",
+                    "lint-staged": "Run phpcs against PHP files with staged changes"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -852,9 +856,9 @@
             "homepage": "https://actionscheduler.org/",
             "support": {
                 "issues": "https://github.com/woocommerce/action-scheduler/issues",
-                "source": "https://github.com/woocommerce/action-scheduler/tree/4.0.0"
+                "source": "https://github.com/woocommerce/action-scheduler/tree/4.1.0"
             },
-            "time": "2026-06-16T15:01:01+00:00"
+            "time": "2026-08-05T21:19:48+00:00"
         }
     ],
     "packages-dev": [],

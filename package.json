@@ -34,11 +34,11 @@
     "gulp-clean": "latest",
     "gulp-concat": "latest",
     "gulp-cssnano": "latest",
-    "gulp-imagemin": "latest",
+    "gulp-imagemin": "^7.1.0",
     "gulp-rename": "latest",
     "gulp-replace": "latest",
     "gulp-sass": "latest",
-    "gulp-svgo": "latest",
+    "gulp-svgo": "^1.2.5",
     "gulp-uglify": "latest",
     "gulp-wp-pot": "latest",
     "sass": "latest"
@@ -48,8 +48,8 @@
   },
   "allowScripts": {
     "gifsicle@5.3.0": true,
+    "@parcel/watcher@2.5.6": true,
     "mozjpeg@8.0.0": true,
-    "optipng-bin@7.0.1": true,
-    "@parcel/watcher@2.5.6": true
+    "optipng-bin@7.0.1": true
   }
 }

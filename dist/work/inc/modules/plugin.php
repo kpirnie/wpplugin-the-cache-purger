@@ -915,10 +915,12 @@ if (! trait_exists('PLUGIN')) {
                 $_cache_rel_tbl = sprintf('%s%s', $wpdb->prefix, $_cache_rel_tbl);
 
                 // truncate the relationship table
-                $wpdb->query("TRUNCATE `{$_cache_rel_tbl}`;");
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+                $wpdb->query($wpdb->prepare('TRUNCATE %i', $_cache_rel_tbl));
 
                 // truncate the cache table
-                $wpdb->query("TRUNCATE `{$_cache_tbl}`;");
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+                $wpdb->query($wpdb->prepare('TRUNCATE %i', $_cache_tbl));
 
                 // log the purge
                 KPCPC::write_log("\t\tWP REST Cache");

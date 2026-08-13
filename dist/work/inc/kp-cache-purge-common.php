@@ -115,7 +115,9 @@ if (! class_exists('KP_Cache_Purge_Common')) {
                     delete_transient('tcp_purge_notice');
                 ?>
                     <div class="notice notice-success is-dismissible">
-                        <?php _e("<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger'); ?>
+                        <?php
+                        _e("<p>The cache purge has initialized.</p><p>The majority is run in the background, so please wait around 2 minutes for it to complete.</p>", 'the-cache-purger'); //phpcs:ignore WordPress.Security.EscapeOutput.UnsafePrintingFunction 
+                        ?>
                     </div>
 <?php
                 }
@@ -164,13 +166,13 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         {
 
             // only allow POST requests
-            if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405);
+            if (strtoupper(sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'] ?? ''))) !== 'POST') {
+                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405); // phpcs:ignore: WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             // make sure the current user is allowed to purge
             if (! current_user_can(apply_filters('tcp_purge_capability', 'manage_options'))) {
-                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403);
+                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403); // phpcs:ignore: WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             // check the nonce as well
@@ -212,13 +214,13 @@ if (! class_exists('KP_Cache_Purge_Common')) {
         {
 
             // only allow POST requests
-            if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405);
+            if (strtoupper(sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'] ?? ''))) !== 'POST') {
+                wp_die(__('Invalid request method.', 'the-cache-purger'), '', 405); // phpcs:ignore: WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             // make sure the current user is allowed to purge the log
             if (! current_user_can('manage_options')) {
-                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403);
+                wp_die(__('Unauthorized', 'the-cache-purger'), '', 403); // phpcs:ignore: WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             // verify the wp nonce was passed as well
@@ -570,6 +572,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
                     global $wpdb;
 
                     // run a query to get all post types
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- result is cached in the wp_cache_set below
                     $_pts = $wpdb->get_results("SELECT DISTINCT post_type FROM $wpdb->posts WHERE post_status = 'publish' AND post_type NOT IN ( 'nav_menu_item', 'page', 'post', 'acf-field-group', 'attachment', 'custom_css', 'customize_changeset' ) ORDER BY post_type ASC;", ARRAY_A);
 
                     // make sure we have some
@@ -579,7 +582,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
                         foreach ($_pts as $_pt) {
 
                             // add the post type to the returnable array
-                            $_ret[$_pt['post_type']] = ucwords(__(str_replace('_', ' ', $_pt['post_type']), 'the-cache-purger'));
+                            $_ret[$_pt['post_type']] = ucwords(__(str_replace('_', ' ', $_pt['post_type']), 'the-cache-purger')); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         }
                     }
                 } else {
@@ -588,7 +591,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
                     foreach ($_the_pts as $_pt) {
 
                         // add the post type to the returnable array
-                        $_ret[$_pt] = ucwords(__(str_replace('_', ' ', $_pt), 'the-cache-purger'));
+                        $_ret[$_pt] = ucwords(__(str_replace('_', ' ', $_pt), 'the-cache-purger')); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     }
                 }
 
@@ -690,7 +693,7 @@ if (! class_exists('KP_Cache_Purge_Common')) {
                     foreach ($_rs as $_post) {
 
                         // add the id as an array index, and the title to the return array
-                        $_ret[$_post->ID] = __($_post->post_title, 'the-cache-purger');
+                        $_ret[$_post->ID] = __($_post->post_title, 'the-cache-purger'); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     }
 
                     // cache the return for 1 hour

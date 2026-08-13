@@ -1,4 +1,5 @@
 <?php
+
 /** 
  * WORDPRESS module
  * 
@@ -8,13 +9,13 @@
  * @author Kevin Pirnie <me@kpirnie.com>
  * @package The Cache Purger
  * 
-*/
+ */
 
 // We don't want to allow direct access to this
-defined( 'ABSPATH' ) || die( 'No direct script access allowed' );
+defined('ABSPATH') || die('No direct script access allowed');
 
 // check if this trait already exists
-if( ! trait_exists( 'WORDPRESS' ) ) {
+if (! trait_exists('WORDPRESS')) {
 
     /**
      * Trait WORDPRESS
@@ -25,8 +26,9 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
      * @author Kevin Pirnie <me@kpirnie.com>
      * @package The Cache Purger
      *
-    */
-    trait WORDPRESS {
+     */
+    trait WORDPRESS
+    {
 
         // setup the wordpress cache modules to be purged
         protected $_wordpress_caches = array(
@@ -49,29 +51,28 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        private function purge_wordpress_caches( ) : void {
+         */
+        private function purge_wordpress_caches(): void
+        {
 
             // throw a hook here
-            do_action( 'tcp_pre_wp_purge' );
+            do_action('tcp_pre_wp_purge');
 
             // log it
-            KPCPC::write_log( "\tWORDPRESS PURGE" );
+            KPCPC::write_log("\tWORDPRESS PURGE");
 
             // loop over the slug array
-            foreach( $this -> _wordpress_caches as $_wordpress ) {
+            foreach ($this->_wordpress_caches as $_wordpress) {
 
                 // fire up the method to do the purge
-                $this -> { $_wordpress }( );
-
+                $this->{$_wordpress}();
             }
-            
-            // release the array
-            unset( $this -> _wordpress_caches );
-            
-            // throw a hook here
-            do_action( 'tcp_post_wp_purge' );
 
+            // release the array
+            unset($this->_wordpress_caches);
+
+            // throw a hook here
+            do_action('tcp_post_wp_purge');
         }
 
         /** 
@@ -87,15 +88,15 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_wp_object( ) : void {
+         */
+        protected function purge_wp_object(): void
+        {
 
             // try to clear Wordpress's built-in object cache
-            wp_cache_flush( );
+            wp_cache_flush();
 
             // log the purge
-            KPCPC::write_log( "\t\tWP Object Cache" );
-
+            KPCPC::write_log("\t\tWP Object Cache");
         }
 
         /** 
@@ -111,31 +112,31 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_wp_options( ) : void {
+         */
+        protected function purge_wp_options(): void
+        {
 
             // now try to delete the wp object cache
-            if( function_exists( 'wp_cache_delete' ) ) {
+            if (function_exists('wp_cache_delete')) {
 
                 // clear the plugin object cache
-                wp_cache_delete( 'uninstall_plugins', 'options' );
+                wp_cache_delete('uninstall_plugins', 'options');
 
                 // clear the options object cache
-                wp_cache_delete( 'alloptions', 'options' );
+                wp_cache_delete('alloptions', 'options');
 
                 // clear the rest of the object cache
-                wp_cache_delete( 'notoptions', 'options' );
+                wp_cache_delete('notoptions', 'options');
 
                 // clear the rest of the object cache for the parent site in a multisite install
-                wp_cache_delete( $this -> site_id . '-notoptions', 'site-options' );
+                wp_cache_delete($this->site_id . '-notoptions', 'site-options');
 
                 // clear the plugin object cache for the parent site in a multisite install
-                wp_cache_delete( $this -> site_id . '-active_sitewide_plugins', 'site-options' );
+                wp_cache_delete($this->site_id . '-active_sitewide_plugins', 'site-options');
 
                 // log the purge
-                KPCPC::write_log( "\t\tWP Option Cache" );
+                KPCPC::write_log("\t\tWP Option Cache");
             }
-
         }
 
         /** 
@@ -151,18 +152,19 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_wp_transients( ) : void {
+         */
+        protected function purge_wp_transients(): void
+        {
 
             // get our WPDB global
             global $wpdb;
-            
+
             // delete the transients
-            $wpdb -> query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE '_transient_%'" );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- transient rows are being removed; caching the removal is meaningless
+            $wpdb->query("DELETE FROM `$wpdb->options` WHERE `option_name` LIKE '_transient_%'");
 
             // log the purge
-            KPCPC::write_log( "\t\tWP Transient Cache" );
-
+            KPCPC::write_log("\t\tWP Transient Cache");
         }
 
         /** 
@@ -178,20 +180,18 @@ if( ! trait_exists( 'WORDPRESS' ) ) {
          * 
          * @return void This method does not return anything
          * 
-        */
-        protected function purge_wp_global_object( ) : void {
+         */
+        protected function purge_wp_global_object(): void
+        {
 
             // probably overkill, but let's fire off the rest of the builtin cache flushing mechanisms
             global $wp_object_cache;
 
             // try to flush the object cache
-            $wp_object_cache -> flush( 0 );
+            $wp_object_cache->flush(0);
 
             // log the purge
-            KPCPC::write_log( "\t\tWP Global Object Cache" );
-
+            KPCPC::write_log("\t\tWP Global Object Cache");
         }
-
     }
-
 }
